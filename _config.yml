@@ -7,6 +7,15 @@
 
 # Site Settings
 locale                   : "en-US"
+<<<<<<< HEAD
+title                    : "Dr. Gregory Bedwell"
+title_separator          : "-"
+name                     : &name "Your Name"
+description              : &description "Research Fellow at Dana-Farber Cancer Institute/Harvard Medical School"
+url                      : https://gbedwell.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+baseurl                  : "" # the subpath of your site, e.g. "/blog"
+repository               : "gbedwell.github.io"
+=======
 title                    : "Your Name / Site Title"
 title_separator          : "-"
 name                     : &name "Your Name"
@@ -14,6 +23,7 @@ description              : &description "personal description"
 url                      : https://academicpages.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "academicpages/academicpages.github.io"
+>>>>>>> 25c30de2b4ce3e3f23559384699bb4b9865d6473
 teaser                   :  # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 breadcrumbs              : false # true, false (default)
 words_per_minute         : 160
@@ -80,6 +90,17 @@ analytics:
 
 # Site Author
 author:
+<<<<<<< HEAD
+  name             : "Greg Bedwell"
+  avatar           : "gb_profile.png"
+  bio              : "protein chemist and computational biologist"
+  location         : "Boston, MA"
+  employer         : "Dana-Farber Cancer Institute/Harvard Medical School"
+  pubmed           : "https://pubmed.ncbi.nlm.nih.gov/?term=Bedwell+GJ+NOT+South+Africa&sort=date&size=50"
+  googlescholar    : "https://scholar.google.com/citations?user=2SF6NyQAAAAJ&hl=en"
+  email            : "gregoryjbedwell@gmail.com"
+  researchgate     :
+=======
   name             : "Your Sidebar Name"
   avatar           : "profile.png"
   bio              : "Your biography for the left-hand sidebar"
@@ -89,6 +110,7 @@ author:
   googlescholar    : "http://yourfullgooglescholarurl.com"
   email            :
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
+>>>>>>> 25c30de2b4ce3e3f23559384699bb4b9865d6473
   uri              :
   bitbucket        :
   codepen          :
@@ -96,6 +118,22 @@ author:
   flickr           :
   facebook         :
   foursquare       :
+<<<<<<< HEAD
+  github           : "https://github.com/gbedwell"
+  google_plus      :
+  keybase          :
+  instagram        :
+  impactstory      :
+  lastfm           :
+  linkedin         : "https://www.linkedin.com/in/gregory-bedwell/"
+  orcid            : "https://orcid.org/0000-0003-0456-0032"
+  pinterest        :
+  soundcloud       :
+  stackoverflow    :
+  steam            :
+  tumblr           :
+  twitter          : "@greg_bedwell"
+=======
   github           : "academicpages"
   google_plus      :
   keybase          :
@@ -110,6 +148,7 @@ author:
   steam            :
   tumblr           :
   twitter          : "replacethistwitterhandle"
+>>>>>>> 25c30de2b4ce3e3f23559384699bb4b9865d6473
   vine             :
   weibo            :
   xing             :
