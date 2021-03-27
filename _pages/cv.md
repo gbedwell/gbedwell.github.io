@@ -14,7 +14,7 @@ Education
 * B.S. in Chemistry, University of Alabama at Birmingham, 2010
 * Ph.D. in Biophysics, University of Alabama at Birmingham, 2016
 
-Work experience
+Experience
 ======
 * Summer 2011-Summer 2016: Graduate Student
   * University of Alabama at Birmingham
