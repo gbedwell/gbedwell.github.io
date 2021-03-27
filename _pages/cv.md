@@ -18,22 +18,39 @@ Work experience
 ======
 * Summer 2011-Summer 2016: Graduate Student
   * University of Alabama at Birmingham
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
+  * Areas of interest: virus assembly, virus-inspired nanoparticles, hydrodynamics, structural mass spectrometry, data analysis
+  * Supervisor: Peter Prevelige
 
-* Fall 2015: Research Assistant
-  * Github University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+* Fall 2016-Present: Post-doctoral Research Fellow
+  * Dana-Farber Cancer Institute/Harvard Medical School
+  * Areas of interest: protein expression systems, HIV-1 integration, next-generation sequencing, data analysis and visualization, computational biology
+  * Supervisor: Alan Engelman
   
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* recombinant expression systems
+* protein purification
+    * FPLC/HPLC
+    * ion exchange chromatography
+    * affinity chromatography
+    * gel filtration chromatography
+    * reverse-phase chromatography
+* hydrodynamics
+    * analytical ultracentrifugation
+    * dynamic light scattering
+    * static light scattering
+* structural mass spectrometry
+    * hydrogen/deuterium exchange
+    * non-covalent mass spectrometry
+* macromolecular assembly
+* system design and optimization
+* bioinformatics
+    * sequence alignment
+    * expression analysis
+* R
+    * tidyverse
+    * parametric and non-parametric statistics
+    * mathematical modelling 
 
 Publications
 ======
