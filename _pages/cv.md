@@ -10,12 +10,12 @@ redirect_from:
 {% include base_path %}
 
 Education
-======
+----
 * B.S. in Chemistry, University of Alabama at Birmingham, 2010
 * Ph.D. in Biophysics, University of Alabama at Birmingham, 2016
 
 Experience
-======
+----
 * Summer 2011-Summer 2016: Graduate Student
   * University of Alabama at Birmingham
   * Areas of interest: virus assembly, virus-inspired nanoparticles, hydrodynamics, structural mass spectrometry, data analysis
@@ -27,7 +27,7 @@ Experience
   * Supervisor: Alan Engelman
   
 Skills
-======
+----
 * recombinant expression systems
 * protein purification
     * FPLC/HPLC
@@ -53,9 +53,9 @@ Skills
     * mathematical modelling 
 
 Publications
-======
+----
 A complete list of publications is available on [PubMed](https://pubmed.ncbi.nlm.nih.gov/?term=Bedwell+GJ+NOT+South+Africa&sort=date)
   
 Formal CVs
-======
+----
 * [Personal Resumé](http://gbedwell.github.io/files/personal_resume_2021.pdf)

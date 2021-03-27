@@ -7,7 +7,7 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Greg Bedwell's Personal Website"
+title                    : "Dr. Gregory J. Bedwell"
 title_separator          : "-"
 name                     : &name "Greg Bedwell"
 description              : &description "personal description"
