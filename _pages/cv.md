@@ -11,14 +11,13 @@ redirect_from:
 
 Education
 ======
-* B.S. in GitHub, GitHub University, 2012
-* M.S. in Jekyll, GitHub University, 2014
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
+* B.S. in Chemistry, University of Alabama at Birmingham, 2010
+* Ph.D. in Biophysics, University of Alabama at Birmingham, 2016
 
 Work experience
 ======
-* Summer 2015: Research Assistant
-  * Github University
+* Summer 2011-Summer 2016: Graduate Student
+  * University of Alabama at Birmingham
   * Duties included: Tagging issues
   * Supervisor: Professor Git
 
@@ -38,22 +37,9 @@ Skills
 
 Publications
 ======
-  <ul>{% for post in site.publications %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
+A complete list of publications is available on [PubMed](https://pubmed.ncbi.nlm.nih.gov/?term=Bedwell+GJ+NOT+South+Africa&sort=date)
   
-Talks
+Formal CVs
 ======
-  <ul>{% for post in site.talks %}
-    {% include archive-single-talk-cv.html %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+* [Harvard CV](http://gbedwell.github.io/files/harvard_cv_2021.pdf)
+* [Personal Resumé](http://gbedwell.github.io/files/personal_resume_2021.pdf)
