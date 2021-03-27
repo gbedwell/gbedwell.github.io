@@ -16,6 +16,6 @@ In the Engelman lab, my research is focused primarily on better defining the nuc
 
 Beyond scientific interests
 ------
-Outside of the laboratory, I happily spend the majority of my time with my wife Jess and daughter Sofia. We enjoy fantastical stories, good food, and music we can sing along to. I've been known to obsess from time to time over various topics or events (Jess and Sofia thoughtfully tolerate my pedantry), and my weekend mornings are usually spent watching an assortment of football matches on television. I enjoy listening to and discovering good music and I am always happy to read a good book.
+Outside of the laboratory, I happily spend the majority of my time with my wife and daughter. We enjoy fantastical stories, good food, and music we can sing along to. I've been known to obsess from time to time over various topics or events (my family thoughtfully tolerates my pedantry), and my weekend mornings are usually spent watching an assortment of football matches on television. I enjoy listening to and discovering good music and I am always happy to read a good book.
 
 

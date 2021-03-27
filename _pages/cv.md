@@ -58,5 +58,4 @@ A complete list of publications is available on [PubMed](https://pubmed.ncbi.nlm
   
 Formal CVs
 ======
-* [Harvard CV](http://gbedwell.github.io/files/harvard_cv_2021.pdf)
 * [Personal Resumé](http://gbedwell.github.io/files/personal_resume_2021.pdf)
