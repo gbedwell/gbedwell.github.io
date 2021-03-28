@@ -46,6 +46,7 @@ Skills
 * system design and optimization
 * bioinformatics
     * sequence alignment
+    * integration site mapping
     * expression analysis
 * R
     * tidyverse
@@ -58,4 +59,4 @@ A complete list of publications is available on [PubMed](https://pubmed.ncbi.nlm
   
 Formal CVs
 ----
-* [Personal Resumé](http://gbedwell.github.io/files/personal_resume_2021.pdf)
+ [Personal Resumé](http://gbedwell.github.io/files/personal_resume_2021.pdf)
