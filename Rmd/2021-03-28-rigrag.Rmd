@@ -1,7 +1,7 @@
 ---
 title: "rigrag"
 author: "Greg Bedwell"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+#date: "`r format(Sys.time(), '%d %B, %Y')`"
 permalink: /tools/rigrag/
 output:
   html_document
@@ -101,8 +101,8 @@ rm(dat1, dat2, dat3)
 #              options = list(scrollX = TRUE, scrollY = "200px",
 #                             scrollCollapse = TRUE, autoWidth = FALSE))
 
-knitr::kable(head(models.trim)) %>%
-   kableExtra::kable_styling(full_width = F)
+#knitr::kable(head(models.trim)) %>%
+#   kableExtra::kable_styling(full_width = F)
 ```
 
 ## Output model plots
