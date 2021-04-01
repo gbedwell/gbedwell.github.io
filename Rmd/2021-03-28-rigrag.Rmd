@@ -1,6 +1,7 @@
 ---
 title: "rigrag"
 author: "Greg Bedwell"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 permalink: /tools/rigrag/
 output:
   html_document
@@ -74,9 +75,7 @@ models.df <- pattern_frag_model(df=sample.df, pattern="MB")
 
 The output contains the same information as the input dataframe, but with additional columns denoting the expected fraction of genic integration for an equally sized random dataset (expected.frac), the expected upper limit of integration frequency (upper.limit), the expected lower limit of integration frequency (lower.limit), and whether or not the gene scores as an upper-, lower-, or non-outlier in the given sample (outlier.type).
 
-An brief example table is shown below:
-
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=FALSE}
 dat1 <- models.df %>%
   dplyr::filter(outlier.type=="UPPER")
 
@@ -96,11 +95,14 @@ models.trim <- rbind(dat1, dat2, dat3) %>%
 rm(dat1, dat2, dat3)
 
 
-DT::datatable(models.trim,
-              fillContainer = TRUE, 
-              extensions = 'FixedColumns',
-              options = list(scrollX = TRUE, scrollY = "200px",
-                             scrollCollapse = TRUE, autoWidth = FALSE))
+#DT::datatable(models.trim,
+#              fillContainer = TRUE, 
+#              extensions = 'FixedColumns',
+#              options = list(scrollX = TRUE, scrollY = "200px",
+#                             scrollCollapse = TRUE, autoWidth = FALSE))
+
+knitr::kable(head(models.trim)) %>%
+   kableExtra::kable_styling(full_width = F)
 ```
 
 ## Output model plots
