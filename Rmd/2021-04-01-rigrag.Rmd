@@ -67,7 +67,7 @@ sample.df <- int_file_import(files=files, sample.ids=sample.ids, collapsed = TRU
 
 ```{r, echo=FALSE}
 knitr::kable(head(sample.df[1:10, c(1:10)]), align = "cccccccccc", format='html', escape=TRUE) %>%
-   kableExtra::kable_styling(full_width=TRUE, position="center") %>% 
+   kableExtra::kable_styling(full_width=FALSE, position="center", font_size = 11) %>% 
    kableExtra::row_spec(0 , align="c")
 ```
 

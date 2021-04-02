@@ -4,6 +4,7 @@ permalink: /tools/rigrag
 ---
 
 rigrag is an R package for identifying genes preferentially targeted or avoided for integration during HIV-1 infection. The integration frequency into each gene is compared to the expected integration frequency according to phenomenological models of random integration. Genes with integration frequencies higher than random are called upper outliers or recurrent integration genes (RIGs) and genes with integration frequencies lower than random are called lower outliers or recurrent avoided genes (RAGs). Genes with integration frequencies indistinguishable from random are called non-outliers. The package includes functions to easily import genic integration site bed files <i>en masse</i>, to easily generate matched random models of HIV-1 integration, to classify genes into their respective outlier category, to easily and reproducibly generate plots of the data, and an assortment of other functions useful for comparing samples to each other. rigrag is described in more detail in a manuscript currently under review.
+
 <html>
 
 <head>
@@ -207,7 +208,7 @@ sample.ids &lt;- list(&quot;Sample #1&quot;, &quot;Sample #2&quot;)</code></pre>
 <h4>Import the listed files</h4>
 <p>The flag <code>collpased = TRUE</code> counts the number of integration sites in each gene in each sample and returns a collapsed data frame containing all unique genes, the number of integration events per gene, and the fraction of genic integration in each gene. To simply view all integration sites, set the flag to <code>FALSE</code>. rigrag is designed to operate on the collapsed form of the data (seen below).</p>
 <pre class="r"><code>sample.df &lt;- int_file_import(files=files, sample.ids=sample.ids, collapsed = TRUE)</code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
+<table class="table" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:center;text-align: center;">
@@ -475,30 +476,13 @@ outlier.type
 <tbody>
 <tr>
 <td style="text-align:center;">
-ACACA
+AP3D1
 </td>
 <td style="text-align:center;">
-0.0002314
+0.0000472
 </td>
 <td style="text-align:center;">
-0.0007224
-</td>
-<td style="text-align:center;">
-0
-</td>
-<td style="text-align:center;">
-UPPER
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-ANAPC11
-</td>
-<td style="text-align:center;">
-0.0000097
-</td>
-<td style="text-align:center;">
-0.0003123
+0.0004180
 </td>
 <td style="text-align:center;">
 0
@@ -509,13 +493,30 @@ UPPER
 </tr>
 <tr>
 <td style="text-align:center;">
-APPL1
+ASH1L
 </td>
 <td style="text-align:center;">
-0.0000347
+0.0001628
 </td>
 <td style="text-align:center;">
-0.0003894
+0.0006205
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+UPPER
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+ATF6
+</td>
+<td style="text-align:center;">
+0.0001418
+</td>
+<td style="text-align:center;">
+0.0005877
 </td>
 <td style="text-align:center;">
 0
@@ -526,53 +527,53 @@ NONE
 </tr>
 <tr>
 <td style="text-align:center;">
-ATXN10
+ATP2B1
 </td>
 <td style="text-align:center;">
-0.0001247
+0.0000879
 </td>
 <td style="text-align:center;">
-0.0005602
-</td>
-<td style="text-align:center;">
-0
-</td>
-<td style="text-align:center;">
-UPPER
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-ATXN2
-</td>
-<td style="text-align:center;">
-0.0001064
-</td>
-<td style="text-align:center;">
-0.0005295
-</td>
-<td style="text-align:center;">
-0
-</td>
-<td style="text-align:center;">
-UPPER
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-CASC3
-</td>
-<td style="text-align:center;">
-0.0000249
-</td>
-<td style="text-align:center;">
-0.0003641
+0.0004973
 </td>
 <td style="text-align:center;">
 0
 </td>
 <td style="text-align:center;">
 NONE
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+ATP7A
+</td>
+<td style="text-align:center;">
+0.0001009
+</td>
+<td style="text-align:center;">
+0.0005201
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+NONE
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+BAZ1B
+</td>
+<td style="text-align:center;">
+0.0000602
+</td>
+<td style="text-align:center;">
+0.0004450
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+UPPER
 </td>
 </tr>
 </tbody>
