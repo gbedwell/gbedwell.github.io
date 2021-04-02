@@ -66,7 +66,7 @@ sample.df <- int_file_import(files=files, sample.ids=sample.ids, collapsed = TRU
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(head(sample.df[1:10, c(1:10)]))
+knitr::kable(head(sample.df[1:10, c(1:10)]), align = "cccccccccc")
 ```
 
 ### Calculate the random model parameters according to the matched fragmentation method.
@@ -105,8 +105,7 @@ rm(dat1, dat2, dat3)
 #              options = list(scrollX = TRUE, scrollY = "200px",
 #                             scrollCollapse = TRUE, autoWidth = FALSE))
 
-knitr::kable(head(models.trim[1:10, c(1,11:14)])) %>%
-   kableExtra::kable_styling(full_width = F)
+knitr::kable(head(models.trim[1:10, c(1,11:14)]), align="ccccc")
 ```
 
 ### Output model plots
@@ -124,7 +123,7 @@ The <code>model_plot()</code> function in rigrag is intended to quickly output a
 model_plot(df=models.df,
            output.type="combo", 
            num.col=2, 
-           labels="AUTO", 
+           labels="", 
            label.size=17,
            write.out = "no")
 ```
