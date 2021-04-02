@@ -1,0 +1,102 @@
+---
+#title: "rigrag"
+#author: "Greg Bedwell"
+#date: "`r format(Sys.time(), '%d %B, %Y')`"
+permalink: /tools/fragment-generation
+output:
+  html_document
+#  md_document:
+#    variant: gfm
+#    preserve_yaml: true
+tags:
+  - genome fragmentation
+  - python
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#knitr::opts_knit$set(base.dir = "/Users/gbedwell/Documents/github/gbedwell.github.io", base.url = "/")
+#knitr::opts_chunk$set(fig.path = "images/")
+```
+
+### Example files
+Pertinent files provided on [GitHub](https://github.com/gbedwell/random_fragment_generation).
+
+These files include:
+
++ The base_counts.txt files for both hg19 and hg38 genome builds.
+
++ Example scripts for how to obtain the individual chromosome fasta files for hg19 and hg38.
+
++ An interactive script (fragment_generation.py) for generating a single random fragment dataset.
+
++ An interactive script (fragment_generation_iterative.py) for generating iterative random fragment datasets.
+  + This is based on setting a new random seed every N sites (e.g. 100,000)
+  + This is beneficial for generating huge random fragment libraries.
+\
+\
+  
++ An example bash script for cleaning and trimming the generated fragment files.
+
+### Authorship information
+The basis of this script was created in 2006 and 2014 by Peter Cherepanov Peter.Cherepanov@crick.ac.uk.
+\
+The code was modified into its current form in 2020 by Greg Bedwell gregoryjbedwell@gmail.com.
+
+
+### An example of running the interactive script
+The following video shows how to run the script and example responses to the prompts given to the user for fragment generation.
+
+The prompts are as follows:
+
+1. The genome build being used.
+
+2. The path to the chromosome fasta files.
+
+3. The number of random fragments to generate.
+
+4. The genome fragmentation of interest <code>MB</code> for MseI/BglII digestion, <code>NASB</code> for NheI/AvrII/SpeI/BamHI digestion, and <code>Random</code> for random fragmentation.
+    + If <code>Random</code>, the user will be subsequently prompted to enter:
+        1. The mean fragment size.
+        2. The standard deviation of the mean fragment size.
+\
+\
+
+5. The maximum allowed distance to the relevant cut site.
+      + I prefer to use a large number here to ensure a faithful sampling of the entire genome. The fragment file can be further trimmed in downstream steps.
+
+<div style="text-align:center;">
+<video class="tab" width="860" height="645" controls>Your browser does not support the &lt;video&gt; tag.
+  <source src="/Users/gbedwell/Documents/github/gbedwell.github.io/files/fragment_generation.m4v"/>
+</video></div>
+
+
+### Example output
+The output of the script is a fasta file containing the sequence information for the fragments generated. This script <i>does not</i> generate a fastq file. For alignment programs like STAR this is not an issue for downstream alignment.
+
+An example of the output is seen below:
+```{bash, echo=FALSE}
+head /Users/gbedwell/Documents/github/gbedwell.github.io/files/random_sites.fa | cut -c -75
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
