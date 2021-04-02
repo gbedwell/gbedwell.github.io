@@ -36,7 +36,7 @@ These files include:
 \
 \
   
-+ An example bash script for cleaning and trimming the generated fragment files.
++ An example bash script for cleaning and size-selecting the generated fragment files.
 
 ### Authorship information
 The basis of this script was created in 2006 and 2014 by Peter Cherepanov Peter.Cherepanov@crick.ac.uk.
@@ -63,7 +63,7 @@ The prompts are as follows:
 \
 
 5. The maximum allowed distance to the relevant cut site.
-      + I prefer to use a large number here to ensure a faithful sampling of the entire genome. The fragment file can be further trimmed in downstream steps.
+      + I prefer to use a large number here to ensure a faithful sampling of the entire genome. The fragment file can be "size-selected" in downstream steps.
 
 <div style="text-align:center;">
 <video class="tab" width="860" height="645" controls>Your browser does not support the &lt;video&gt; tag.
