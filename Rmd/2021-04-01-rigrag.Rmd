@@ -120,7 +120,7 @@ The <code>model_plot()</code> function in rigrag is intended to quickly output a
 
 4. Non-outliers. These are depicted as gray data points. These represent genes integrated into at frequencies indistinguishable from random. 
 
-```{r, fig.align = "center", fig.width=12, fig.height=5.5, fig.retina=2, warning=FALSE}
+```{r, fig.align = "center", fig.width=8, fig.height=3.7, fig.retina=2, warning=FALSE}
 model_plot(df=models.df,
            output.type="combo", 
            num.col=2, 
