@@ -9,7 +9,8 @@ output:
 #    variant: gfm
 #    preserve_yaml: true
 tags:
-  - standardization
+  - parameter estimation
+  - standard curves
   - R
 ---
 
