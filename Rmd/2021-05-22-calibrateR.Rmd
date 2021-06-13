@@ -1,0 +1,197 @@
+---
+#title: "calibrateR"
+#author: "Greg Bedwell"
+#date: "`r format(Sys.time(), '%d %B, %Y')`"
+permalink: /tools/calibrateR/
+output:
+  html_document
+#  md_document:
+#    variant: gfm
+#    preserve_yaml: true
+tags:
+  - standardization
+  - R
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#knitr::opts_knit$set(base.dir = "/Users/gbedwell/Documents/github/gbedwell.github.io", base.url = "/")
+#knitr::opts_chunk$set(fig.path = "images/")
+```
+
+### Description
+calibrateR is a package written to streamline common laboratory calculations. At the moment, this includes SEC calibration, BCA calibration, protein and nucleic acid concentration determination using UV/Vis spectroscopy, and the estimation of protein parameters given just a primary amino acid sequence.
+
+### Example files
+More in-depth example usage of calibrateR that goes through more of the function options is provided on [GitHub](https://github.com/gbedwell/example_files).
+
+### Installation
+```{r, eval=FALSE}
+devtools::install_github("gbedwell/calibrateR")
+```
+
+```{r, include=FALSE}
+require(calibrateR)
+```
+
+### SEC calibration
+There are two primary outputs for the <code>sec()</code> function: 
+
+1. A calibration output that calculates a standard curve given the necessary calibrant information.
+
+2. An analytical output that estimates the molecular weight and hydrodynamic radius of a given analyte.
+
+Both outputs can be generated in either tabular or graphical forms.
+
+
+
+#### Generating a calibration curve
+At least 3 different pieces of information are required for calibrateR to generate a calibration curve for a size-exclusion column:
+
+1. The position of the column void volume. This is defined as <code>void</code> in the <code>sec</code> function. This can be empirically defined by running the polymer blue dextran over the column.
+
+2. The column volume. This is defined as <code>cv</code> in the <code>sec</code> function. This can be empirically defined by running something like 0.2% (v/v) acetone over the column.
+
+3. The masses (<code>masses</code>) and elution volumes (<code>stds</code>) of a series of standard proteins. If using the commonly used BioRad gel filtration standards, the <code>masses</code> flag can be left <code>NULL</code>.
+
+Toggle between tabular and graphical outputs with the <code>plot</code> flag. Setting <code>plot = "yes"</code> will generate graphical output. <code>plot = "no"</code> generates tabular output. Tabular output includes linear regression information.
+
+To generate the calibration curve, set <code>type = "cal"</code>.
+
+The hydrodynamic radii of the standard proteins are estimated based on their masses using the relationship described by Uversky (Biochemistry. 1993. 32. 13288-13298).
+
+
+```{r, eval=FALSE}
+sec(masses = c(669000, 158000, 44000, 17000, 1350), 
+    void = 1.87, 
+    cv = 4.29, 
+    stds = c(2.08,2.58,2.98,3.30,4.06), 
+    unk = NULL, 
+    plot = "no",
+    type = "cal")
+```
+
+```{r, echo=FALSE}
+knitr::kable(sec(masses = c(669000, 158000, 44000, 17000, 1350),
+                 void = 1.87, 
+                 cv = 4.29, 
+                 stds = c(2.08,2.58,2.98,3.30,4.06), 
+                 unk = NULL, 
+                 plot = "no",
+                 type = "cal"), 
+             align = "cccccccccc", format='html', escape=TRUE) %>%
+   kableExtra::kable_styling(full_width=FALSE, position="center", font_size = 14) %>% 
+   kableExtra::row_spec(0 , align="c")
+```
+
+
+
+#### Estimating analyte properties
+Setting <code>type = "pred"</code> will predict the molecular weights and hydrodynamic radii of unknown samples. This is based on the calculated standard curve and analyte elution volumes.
+
+Define the analyte elution volumes as <code>unk</code> in the function.
+
+In the graphical output, analyte parameters are reported in labels on the plot itself.
+
+```{r, fig.height=5, fig.width=6, fig.align='center'}
+sec(masses = c(669000, 158000, 44000, 17000, 1350), 
+    void = 1.87, 
+    cv = 4.29, 
+    stds = c(2.08,2.58,2.98,3.30,4.06), 
+    unk = c(2.11, 2.49, 3.28, 3.87), 
+    plot = "yes",
+    type = "pred")
+```
+
+
+### BCA calibration
+The function for BCA calibration (<code>bca</code>) is generally similar the <code>sec</code> function.
+
+The function minimally requires:
+
+1. The known concentrations and corresponding absorbance values for a standard dilution series (<code>prot.conc</code> and <code>std.abs</code>).
+
+2. The absorbance value of the buffer-only control (<code>blank.abs</code>).
+
+```{r, eval=FALSE}
+bca(prot.conc = c(2, 1.5, 1, 0.75, 0.5, 0.25, 0.125, 0.025),
+    blank.abs = 0.1813,
+    std.abs = c(2.4644, 1.989, 1.4295, 1.1075, 0.8124, 0.499, 0.3655, 0.2315),
+    abs = NULL,
+    dil.fac = NULL,
+    plot = "no",
+    type = "cal")
+```
+
+```{r, echo=FALSE}
+knitr::kable(bca(prot.conc = c(2, 1.5, 1, 0.75, 0.5, 0.25, 0.125, 0.025),
+                 blank.abs = 0.1813,
+                 std.abs = c(2.4644, 1.989, 1.4295, 1.1075, 0.8124, 0.499, 0.3655, 0.2315),
+                 abs = NULL,
+                 dil.fac = NULL,
+                 plot = "no",
+                 type = "cal"), 
+             align = "cccccccccc", format='html', escape=TRUE) %>%
+   kableExtra::kable_styling(full_width=FALSE, position="center", font_size = 14) %>% 
+   kableExtra::row_spec(0 , align="c")
+```
+
+To estimate the protein concentration in unknown samples, the absorbance values and dilution factor the sample(s) must also be defined (<code>abs</code> and <code>dil.fac</code>).
+
+The <code>plot</code> and <code>type</code> flags operated identically to the <code>sec</code> function.
+
+```{r, fig.height=4.5, fig.width=5.5, fig.align='center'}
+bca(prot.conc = c(2, 1.5, 1, 0.75, 0.5, 0.25, 0.125, 0.025),
+    blank.abs = 0.1813,
+    std.abs = c(2.4644, 1.989, 1.4295, 1.1075, 0.8124, 0.499, 0.3655, 0.2315),
+    abs = c(2.0184, 1.1641, 0.5831),
+    dil.fac = c(5, 10, 20),
+    plot = "yes",
+    type = "pred")
+```
+
+
+### Protein parameter estimation
+Protein parameter estimation from the primary amino acid sequence is a useful tool for any protein chemist. There are numerous webtools that estimate various parameters in this way. The <code>prot.param()</code> function in calibrateR calculates many standard parameters as well as some less common parameters that are useful for hydrodynamic analyses.
+
+To estimate these parameters, first define the primary amino acid sequence of the protein-of-interest.
+
+Next, define the temperature at which the experiments are being performed. This is important for the estimation of the protein's partial specific volume (vbar) and associated parameters (e.g. the radius of a sphere with equal mass and density).
+
+```{r, eval=FALSE}
+protein <- c("MSKGEELFTGVVPILVELDGDVNGHKFSVRGEGEGDATNGKLTLKFICTTGKLPVPWPTL
+VTTLTYGVQCFSRYPDHMKRHDFFKSAMPEGYVQERTISFKDDGTYKTRAEVKFEGDTLV
+NRIELKGIDFKEDGNILGHKLEYNFNSHNVYITADKQKNGIKANFKIRHNVEDGSVQLAD
+HYQQNTPIGDGPVLLPDNHYLSTQSVLSKDPNEKRDHMVLLEFVTAAGITHGMDELYK")
+
+calibrateR::prot.param(protein, temp=25)
+```
+
+```{r, echo=FALSE}
+protein <- c("MSKGEELFTGVVPILVELDGDVNGHKFSVRGEGEGDATNGKLTLKFICTTGKLPVPWPTL
+VTTLTYGVQCFSRYPDHMKRHDFFKSAMPEGYVQERTISFKDDGTYKTRAEVKFEGDTLV
+NRIELKGIDFKEDGNILGHKLEYNFNSHNVYITADKQKNGIKANFKIRHNVEDGSVQLAD
+HYQQNTPIGDGPVLLPDNHYLSTQSVLSKDPNEKRDHMVLLEFVTAAGITHGMDELYK")
+
+knitr::kable(calibrateR::prot.param(protein, temp=25), align = "cccccccccc", format='html', escape=TRUE) %>%
+   kableExtra::kable_styling(full_width=FALSE, position="center", font_size = 14) %>% 
+   kableExtra::row_spec(0 , align="c")
+```
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

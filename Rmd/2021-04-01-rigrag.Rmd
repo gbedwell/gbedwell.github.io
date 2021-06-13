@@ -134,9 +134,6 @@ model_plot(df=models.df,
            write.out = "no")
 ```
 
-### Additional information
-The functions described above represent the core of rigrag. The package does, however, contain other functions that facilitate the easy comparison of RIGs/RAGs called between samples. For information on these functions or for comments/questions about rigrag in general please feel free to contact me directly.
-
 
 
 

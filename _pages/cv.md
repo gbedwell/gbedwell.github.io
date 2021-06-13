@@ -25,7 +25,7 @@ Experience
   * Dana-Farber Cancer Institute/Harvard Medical School
   * Areas of interest: protein expression systems, HIV-1 integration, next-generation sequencing, data analysis and visualization, computational biology
   * Supervisor: Alan Engelman
-  
+
 Skills
 ----
 * recombinant expression systems
@@ -48,15 +48,18 @@ Skills
     * sequence alignment
     * integration site mapping
     * expression analysis
+    * utilizing public databases
+* AWK
 * R
+    * data visualization
     * tidyverse
     * parametric and non-parametric statistics
-    * mathematical modelling 
+    * mathematical modelling
 
 Publications
 ----
 A complete list of publications is available on [PubMed](https://pubmed.ncbi.nlm.nih.gov/?term=Bedwell+GJ+NOT+South+Africa&sort=date)
-  
+
 Formal CVs
 ----
  [Personal Resumé](http://gbedwell.github.io/files/personal_resume_2021.pdf)
