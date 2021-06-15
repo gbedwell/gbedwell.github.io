@@ -51,7 +51,7 @@ At least 3 different pieces of information are required for calibrateR to genera
 
 1. The position of the column void volume. This is defined as <code>void</code> in the <code>sec</code> function. This can be empirically defined by running the polymer blue dextran over the column.
 
-2. The column volume. This is defined as <code>cv</code> in the <code>sec</code> function. This can be empirically defined by running something like 0.2% (v/v) acetone over the column.
+2. The column volume. This is defined as <code>cv</code> in the <code>sec()</code> function. This can be empirically defined by running something like 0.2% (v/v) acetone over the column.
 
 3. The masses (<code>masses</code>) and elution volumes (<code>stds</code>) of a series of standard proteins. If using the commonly used BioRad gel filtration standards, the <code>masses</code> flag can be left <code>NULL</code>.
 
@@ -106,7 +106,7 @@ sec(masses = c(669000, 158000, 44000, 17000, 1350),
 
 
 ### BCA calibration
-The function for BCA calibration (<code>bca</code>) is generally similar the <code>sec</code> function.
+The function for BCA calibration (<code>bca()</code>) is generally similar to the <code>sec()</code> function.
 
 The function minimally requires:
 

@@ -49,6 +49,7 @@ Skills
     * integration site mapping
     * expression analysis
     * utilizing public databases
+* UNIX
 * AWK
 * R
     * data visualization
