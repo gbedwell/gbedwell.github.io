@@ -10,4 +10,4 @@ HIV-1 preferrentially integrates within the bodies of highly expressed genes in 
 
 [Download paper here](http://gbedwell.github.io/files/genic-integration-landscape.pdf)
 
-Recommended citation: Bedwell GJ, Jang S, Li W, Singh PK, and Engelman AN. (2021). &quot;rigrag: high-resolution mapping of genic targeting preferences during HIV-1 integration in vitro and in vivo.&quot; <i>Nucleic Acids Res</i>. Edition.
+Recommended citation: Bedwell GJ, Jang S, Li W, Singh PK, and Engelman AN. (2021). &quot;rigrag: high-resolution mapping of genic targeting preferences during HIV-1 integration in vitro and in vivo.&quot; <i>Nucleic Acids Res</i>. 1.
