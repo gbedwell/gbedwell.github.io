@@ -23,7 +23,7 @@ Experience
 
 * Fall 2016-Present: Post-doctoral Research Fellow
   * Dana-Farber Cancer Institute/Harvard Medical School
-  * Areas of interest: protein expression systems, HIV-1 integration, next-generation sequencing, data analysis and visualization, computational biology
+  * Areas of interest: protein expression systems, HIV-1 integration, next-generation sequencing, data analysis and visualization, computational biology, systems biology
   * Supervisor: Alan Engelman
 
 Skills
@@ -51,6 +51,8 @@ Skills
     * utilizing public databases
 * UNIX
 * AWK
+* Bash
+* HPC clusters: Slurm and Univa Grid Engine
 * R
     * data visualization
     * tidyverse
