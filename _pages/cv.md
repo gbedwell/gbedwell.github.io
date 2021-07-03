@@ -47,7 +47,7 @@ Skills
 * bioinformatics
     * sequence alignment
     * integration site mapping
-    * expression analysis
+    * gene expression analysis
     * utilizing public databases
 * UNIX
 * AWK
