@@ -40,7 +40,7 @@ As a graduate student, I was interested in understanding and exploiting the arch
 
 ## <i class="fas fa-chart-bar"></i> Programming and statistics
 
-**Languages**: Proficiency in R. Compentency with Python, AWK, sed. Exposure to Julia.
+**Languages**: Proficiency in R. Competency with Python, AWK, sed. Exposure to Julia.
 
 **Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, jq, knitr/Rmarkdown/quarto, HPC clusters (SLURM and Grid Engine).
 
