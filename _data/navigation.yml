@@ -1,0 +1,10 @@
+main:
+
+  - title: Posts
+    url: /year-archive/
+
+  - title: "About Me"
+    url: /about.html
+
+  - title: CV
+    url: /cv.html

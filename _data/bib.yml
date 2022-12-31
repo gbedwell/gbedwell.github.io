@@ -1,0 +1,285 @@
+abbreviations:
+  - &gjb Bedwell, G.J.
+  - &sj Jang, S.
+  - &wl Li, W.
+  - &pks Singh, P.K.
+  - &ane Engelman, A.N.
+  - &pep Prevelige, P.E. Jr.
+  - &zz Zhou, Z. 
+  - &mu Uchida, M.
+  - &td Douglas, T.
+  - &ag Gupta, A.
+  - &gas Sowd, G.A.
+  - &va Achuthan, V.
+  - &avo Oleru, A.V.
+  - &dw Wong, D.
+  - &hjf Fadel, H.J.
+  - &kl Lee, K.
+  - &vnk KewalRamani, V.N.
+  - &emp Poeschla, E.M.
+  - &ah Herschhorn, A.
+  - &dwz Zhang, D.-W.
+  - &rhl Luo, R.-H.
+  - &lx Xu, L.
+  - &lmy Yang, L.-M.
+  - &xsx Xu, X.-S.
+  - &ytz Zheng, Y.-T.
+  - &sc Chang, S.
+  - &njc Cook, N.J.
+  - &vep Pye, V.E.
+  - &amd Dudek, A.M.
+  - &pc Cherepanov, P.
+  - &jl Lucon, J.
+  - &sq Qazi, S.
+  - &bl LaFrance, B.
+  - &dlb Bush, D.L.
+  - &ebm Monroe, E.B.
+  - &jmp Phillips, J.M.
+  - &vmv Vogt, V.M.
+  - &jec Cherwa, J.E. Jr.
+  - &jt Tyson, J.
+  - &db Brooke, D.
+  - &age Edwards, A.G.
+  - &td Dokland, T.
+  - &baf Fane, B.F.
+  - &rl Li, R.
+  - &sp Palchoudhury, S.
+  - &where_nar Nucleic Acids Research
+  - &where_virol Virology
+  - &where_biomac Biomacromolecules
+  - &where_elife eLife
+  - &where_mbio mBio
+  - &where_avr Antiviral Research
+  - &where_natchem Nature Chemistry
+  - &where_jvirol Journal of Virology
+  - &where_langmuir  Langmuir
+
+
+publications:
+
+  -
+    authors:
+      - *gjb
+      - *sj
+      - *wl
+      - *pks
+      - *ane
+    when:
+      year: 2021
+    title: >
+      rigrag: high-resolution mapping of genic targeting preferences during HIV-1 integration in vitro and in vivo
+    where:
+      journal: *where_nar
+      volume: 49
+      pages: 7330--7346
+    doi: 10.1093/nar/gkab514
+    bonus:
+      text:  >
+        &#128275;&nbsp;Open Access.
+
+  -
+    authors:
+      - *gjb
+      - *ane
+    when:
+      year: 2021
+    title: >
+      Factors that mold the nuclear landscape of HIV-1 integration
+    where:
+      journal: *where_nar
+      volume: 49
+      pages: 621--635
+    doi: 10.1093/nar/gkaa1207
+    bonus:
+      text: >
+        &#128275;&nbsp;Open Access.
+
+  -
+    authors:
+      - *wl
+      - *pks
+      - *gas
+      - *gjb
+      - *sj
+      - *va
+      - *avo
+      - *dw
+      - *hjf
+      - *kl
+      - *vnk
+      - *emp
+      - *ah
+      - *ane
+    when:
+      year: 2020
+    title: CPSF6-Dependent Targeting of Speckle-Associated Domains Distinguishes Primate from Nonprimate Lentiviral Integration 
+    where:
+      journal: *where_mbio
+      volume: 11
+      pages: e02254-20
+    doi: 10.1128/mBio.02254-20
+    bonus:
+      text: >
+        &#128275;&nbsp;Open Access.       
+
+  -
+    authors:
+      - *dwz
+      - *rhl
+      - *lx
+      - *lmy
+      - *xsx
+      - *gjb
+      - *ane
+      - *ytz
+      - *sc
+    when:
+      year: 2019
+    title: A HTRF based competitive binding assay for screening specific inhibitors of HIV-1 capsid assembly targeting the C-Terminal domain of capsid
+    where:
+      journal: *where_avr
+      volume: 169
+      pages: 104544
+    doi: 10.1016/j.antiviral.2019.104544
+
+  -
+    authors:
+      - *sj
+      - *njc
+      - *vep
+      - *gjb
+      - *amd
+      - *pks
+      - *pc
+      - *ane
+    when:
+      year: 2019
+    title: >
+      Differential role for phosphorylation in alternative polyadenylation function versus nuclear import of SR-like protein CPSF6
+    where:
+      journal: *where_nar
+      volume: 47
+      pages: 4663--4683
+    doi: 10.1093/nar/gkz206
+    bonus:
+      text: >
+        &#128275;&nbsp;Open Access.
+
+  -
+    authors:
+      - *zz
+      - *gjb
+      - *rl
+      - *sp
+      - *pep
+      - *ag
+    when:
+      year: 2017
+    title: >
+      Pathways for Gold Nucleation and Growth over Protein Cages
+    where:
+      journal: *where_langmuir
+      volume: 33
+      pages: 5925--5931
+    doi: 10.1021/acs.langmuir.7b01298
+  
+  -
+    authors:
+      - *gjb
+      - *pep
+    when:
+      year: 2017
+    title: >
+      Targeted mutagenesis of the P22 portal protein reveals the mechanism of signal transmission during DNA packaging
+    where:
+      journal: *where_virol
+      volume: 505
+      pages: 127--138
+    doi: 10.1016/j.virol.2017.02.019
+    bonus:
+      text: >
+        &#128275;&nbsp;Open Access.
+        
+  -
+    authors:
+      - *jec
+      - *jt
+      - *gjb
+      - *db
+      - *age
+      - *td
+      - *pep
+      - *baf
+    when:
+      year: 2017
+    title: >
+      ϕX174 Procapsid Assembly: Effects of an Inhibitory External Scaffolding Protein and Resistant Coat Proteins In Vitro
+    where:
+      journal: *where_jvirol
+      volume: 91
+      pages: e01878-16
+    doi: 10.1128/JVI.01878-16
+    bonus:
+      text: >
+        &#128275;&nbsp;Open Access.
+     
+  -
+    authors:
+      - *gjb
+      - *zz
+      - *mu
+      - *td
+      - *ag
+      - *pep
+    when:
+      year: 2015
+    title: Selective biotemplated synthesis of TiO2 inside a protein cage
+    where:
+      journal: *where_biomac
+      volume: 16
+      pages: 214--218
+    doi: 10.1021/bm501443e
+
+  -
+    authors:
+      - *dlb
+      - *ebm
+      - *gjb
+      - *pep
+      - *jmp
+      - *vmv
+    when:
+      year: 2014
+    title: >
+      Higher-order structure of the Rous sarcoma virus SP assembly domain
+    where:
+      journal: *where_jvirol
+      volume: 88
+      pages: 5617--5629
+    doi: 10.1128/JVI.02659-13
+    bonus:
+      text:  >
+        &#128275;&nbsp;Open Access.    
+
+  -
+    authors:
+      - *jl
+      - *sq
+      - *mu
+      - *gjb
+      - *bl
+      - *pep
+      - *td
+    when:
+      year: 2012
+    title: Use of the interior cavity of the P22 capsid for site-specific initiation of atom-transfer radical polymerization with high-density cargo loading
+    where:
+      journal: *where_natchem
+      volume: 4
+      pages: 781--788
+    doi: 10.1038/nchem.1442
+    bonus:
+      text: Cover story.
+
+
+

@@ -1,0 +1,684 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Generating random genome fragments in R - Musings of a Philomath</title>
+<meta name="description" content="Quickly and easily generating simulated random fragments of a chosen genome.">
+
+
+  <meta name="author" content="Greg Bedwell">
+  
+  <meta property="article:author" content="Greg Bedwell">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Musings of a Philomath">
+<meta property="og:title" content="Generating random genome fragments in R">
+<meta property="og:url" content="http://localhost:4000/random-genome-fragments/">
+
+
+  <meta property="og:description" content="Quickly and easily generating simulated random fragments of a chosen genome.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-12-27T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/random-genome-fragments/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Greg Bedwell",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Musings of a Philomath Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Musings of a Philomath
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about.html">About Me</a>
+            </li><li class="masthead__menu-item">
+              <a href="/cv.html">CV</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image001.png" alt="Greg Bedwell" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Greg Bedwell</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>protein chemist <code class="language-plaintext highlighter-rouge">|</code> computational biologist</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Boston, MA</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:gregoryjbedwell@gmail.com" rel="me" class="u-email">
+            <meta itemprop="email" content="gregoryjbedwell@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/gregory-bedwell" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+            <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/gbedwell" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Generating random genome fragments in R">
+    <meta itemprop="description" content="Quickly and easily generating simulated random fragments of a chosen genome.">
+    <meta itemprop="datePublished" content="2022-12-27T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/random-genome-fragments/" class="u-url" itemprop="url">Generating random genome fragments in R
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>In the analysis of genomic integration site data, a theoretical random
+integration site distribution is often used as a lower boundary for
+feature enrichment. That is, whether or not a given feature (e.g. a
+particular gene) harbors more integration sites than would be expected
+given a true random distribution. In principle, the derivation of an
+expected random distribution is not too difficult. Given the genome
+size, $L_G$, the binomial probability of integration into a particular
+region $i$ is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$.
+Therefore, the expected number of integration sites in $i$ can be
+expressed as $I \sim Bin(n, p_i)$.</p>
+
+<p>In reality, however, the entire genome is rarely accessible by common
+next-generation sequencing technologies. While long-read sequencing is
+growing in both accessibility and throughput, it is still common for
+integration site mapping to be done using e.g. 150 bp paired-end
+sequencing. Because of this, certain regions of the genome, such has
+highly repetitive regions, are effectively “invisible” due to the
+inability to confidently align short reads to them. In addition,
+different genome fragmentation strategies may influence the mappable
+regions of a genome in a given experiment. For example, when using a
+restriction enzyme (or a cocktail of restriction enzymes) to fragment
+the genome, certain regions deficient in the target recognition
+sequence(s) will have comparatively fewer mapped reads than other
+regions.</p>
+
+<p>To accurately calculate $p_i$ for a given set of sequencing conditions,
+one really needs to know the <i>effective</i> genome length,
+$L_{G_{eff}}$. Because mappable regions of the genome can depend on
+things like fragmentation strategy, it is convenient to be able to
+easily estimate the mappable genome using simulated genomic fragments
+that match both the genome fragmentation method used and the sequencing
+approach.</p>
+
+<p>This idea is not new. People doing integration site analyses have been
+using simulated random datasets for many years in one way or another.
+However, many of the scripts in use (at least that I have seen), are
+rather slow, somewhat inflexible, and are provided as stand alone
+software. After spending a substantial amount of time adapting and
+eventually wholly rewriting some existing Python scripts for random
+fragment generation, I decided to develop an R approach that would slot
+seamlessly into the Bioconductor framework. I’ve wrapped those functions
+up in the xInt package that is still under development (as of 12/2022).
+This aspect of the package, however, is functional. I’ll briefly explain
+the workflow below.</p>
+
+<h3 id="generating-random-fragments-with-xint">Generating random fragments with xInt</h3>
+
+<p>To get started, install xInt if it isn’t already.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">devtools</span><span class="o">::</span><span class="n">install_github</span><span class="p">(</span><span class="n">repo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gbedwell/xInt"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Next, load xInt and the <a href="https://bioconductor.org/packages/release/bioc/html/BSgenome.html">BSgenome
+object</a>
+that corresponds to the genome of interest. In this example, I’ll be
+using the new <a href="https://bioconductor.org/packages/release/data/annotation/html/BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0.html">CHM13v2
+T2T</a>
+human genome build.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">xInt</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="restriction-enzyme-cut-positions">Restriction enzyme cut positions</h4>
+
+<p>If fragmenting the genome by restriction digestion, the first step in
+generating random genome fragments is to extract the sequences of each
+chromosome.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chr.seqs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">get_chromosome_seqs</span><span class="p">(</span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The output of <code>get_chromosome_seqs()</code> is a list of DNAString
+objects corresponding to each of the chromosomes in the target genome.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$`1`
+248387328-letter DNAString object
+seq: CACCCTAAACCCTAACCCCTAACCCTAACCCTAACC...AGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTT
+
+$`2`
+242696752-letter DNAString object
+seq: TAACCCTAACCCTAACCCTAACCCTAACCCTAACCC...TAGGGTTAGGGTTTAGGGGTTTAGGGTTAGGGTTAG
+</code></pre></div></div>
+
+<p>Next, you can use the <code>digest()</code> function to identify all of
+the possible fragmentation positions on both forward and reverse strands
+of each chromosome. You must supply the recognition sequences of the
+enzymes being used as a character vector.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re.cuts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">digest</span><span class="p">(</span><span class="n">string.list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chr.seqs</span><span class="p">,</span><span class="w"> 
+                        </span><span class="n">re.sites</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"TTAA"</span><span class="p">,</span><span class="s2">"AGATCT"</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="random-integration-site-positions">Random integration site positions</h4>
+
+<p>Now you want to generate random integration sites throughout the genome.
+This step is the same regardless of the fragmentation method used.
+First, define the number of sites that you want to generate. For good
+estimation of the mappable genome, this number should be rather high
+(e.g. $10^7-10^8$ sites). If you just want a representative random
+dataset, however, this number can be much smaller (e.g. $10^4-10^5$
+sites). For example purposes, I’ll generate $10^5$ sites.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rand.sites</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">random_sites</span><span class="p">(</span><span class="n">n.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1E5</span><span class="p">,</span><span class="w"> 
+                                 </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="generating-genomic-fragments">Generating genomic fragments</h4>
+
+<p>You now want to make genomic fragments that mimic the genomic fragments
+obtained in your experiment. For restriction digestion, you want to use
+the random sites and the restriction enzyme cut positions generated with
+the <code>digest()</code> function to generate the fragments. Be sure to
+set <code>random = FALSE</code> in <code>make_fragments()</code>.
+Fragment coordinates are defined from the simulated random integration
+site to the nearest restriction enzyme cut position <i>downstream</i> of
+the integration site. This is analogous to sequencing off of the viral
+3’ LTR. I have not yet incorporated a way to simulate fragments
+generated from the viral 5’ LTR.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re.fragments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">make_fragments</span><span class="p">(</span><span class="n">int.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.sites</span><span class="p">,</span><span class="w"> 
+                                     </span><span class="n">frag.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re.cuts</span><span class="p">,</span><span class="w">
+                                     </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
+                                     </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>For random fragmentation, you want to set <code>frag.sites = NULL</code>
+and <code>random = TRUE</code> in <code>make_fragments()</code>. You
+also want to set the mean ± sd fragment lengths (default values of 500
+bp and 250 bp, respectively). Fragments lengths are randomly sampled
+from a log-normal distribution with the defined parameters and fragment
+end positions are calculated relative to each simulated random
+integration site.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rand.fragments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">make_fragments</span><span class="p">(</span><span class="n">int.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.sites</span><span class="p">,</span><span class="w"> 
+                                       </span><span class="n">frag.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NULL</span><span class="p">,</span><span class="w"> 
+                                       </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> 
+                                       </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> 
+                                       </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">250</span><span class="p">,</span><span class="w">
+                                       </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="extracting-and-trimming-fragment-sequences">Extracting and trimming fragment sequences</h4>
+
+<p>I rely on <code>BSgenome::getSeq()</code> to extract the sequences
+corresponding to the fragment positions. These sequences are intended to
+mimic the genomic fragments sequenced in the sequencing reaction.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">frag.seqs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">BSgenome</span><span class="o">::</span><span class="n">getSeq</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">,</span><span class="w">
+                              </span><span class="n">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.fragments</span><span class="p">,</span><span class="w">
+                              </span><span class="n">as.character</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DNAStringSet object of length 100000:
+         width seq
+     [1]   586 CCCCACCCAATGTAGTGCTTTCCTCTGTCCT...GGGACAGTAGCAATTTGAAGGCTCTGCCAGA
+     [2]   290 AGAATCTAGGAAGCAGAGAACCTGAGTGTTG...CTTGGAGGTCATGTTCAATATGAATACCTCA
+     [3]   634 TACCTCCTTTGTTCCTAATTTCCTCAATTAT...TCTTTCTTTCTTTCTTTTTCTTTCTTTCTTT
+     [4]   243 CCAGTAAAGATAACTACATAGGTAAATATAA...CTGAAGTTGTTTCAATTTACTCTAAATTGTT
+     [5]   453 GAAATATAGAAAAGCTTACATATTATCCTGT...CTGTTGTGGGGTGGGGGGAGAGGGGAGGGAT
+     ...   ... ...
+ [99996]   784 CCTTGACACATACACCCTCCCAAGACTAAAC...ATAAAGGGTATTCAATTATGAAAAGAGGAAA
+ [99997]   582 TGAGAAACAATCATAGGCAAGAAGAGCCTGA...AACTTATTAATCATATTTTTTACTTGTGGTG
+ [99998]   620 TGCATGTTCTCTTAACCCATGCACCCAGCGC...TTCTCCTTACCCATGTCTTCTTGCAAGACAG
+ [99999]   495 TCAATTCCACCTAACTCTCAGGGAGTGCCTG...CACATTTTGGCATTTCTGTGAACTCCACCTG
+[100000]   244 TACAGGCACGTGCCGCCATGCCCAGCTAATT...TCAGTCGTAATTTCCAAAATCCACAGCCTGG
+</code></pre></div></div>
+
+<p>To mimic the sequencing output, however, the genomic fragments must be
+trimmed. The function <code>trim_seqs()</code> will trim the ends of
+each fragment to the maximum desired length and return the paired reads
+as matched entries in one of two list elements. The first list element
+corresponds to forward reads and the second list element corresponds to
+reverse reads. The reverse reads are returned in 5’ to 3’ orientation.</p>
+
+<p>In addition to defining the maximum read length,
+<code>trim_seqs()</code> has options to define the minimum fragment
+width (default 14 bp) and the maximum inner distance between pairs
+(default 1000 bp). These filtering parameters will decrease the number
+of output read pairs, so don’t be alarmed if the lengths of the
+<code>trim_seqs()</code> list elements is less than the number of
+generated sites.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">frag.trim</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">trim_seqs</span><span class="p">(</span><span class="n">fragments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frag.seqs</span><span class="p">,</span><span class="w"> 
+                             </span><span class="n">min.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">,</span><span class="w"> 
+                             </span><span class="n">max.distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> 
+                             </span><span class="n">max.bp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">150</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[1]]
+DNAStringSet object of length 98757:
+        width seq                                           names               
+    [1]   150 CCCCACCCAATGTAGTGCTTT...GCTGTCAGGCTACTGGCAGCC sequence_1
+    [2]   150 AGAATCTAGGAAGCAGAGAAC...TCCAACAGAGCGACTCAGATG sequence_2
+    [3]   150 TACCTCCTTTGTTCCTAATTT...ACCATGGGGATTTACAATTAA sequence_3
+    [4]   150 CCAGTAAAGATAACTACATAG...GATGTATAAAGATGTGGTTTG sequence_4
+    [5]   150 GAAATATAGAAAAGCTTACAT...GTTAATTTTACTGTCACGCAC sequence_5
+    ...   ... ...
+[98753]   150 CCTTGACACATACACCCTCCC...ATTCACAGCCGAATTCTACCA sequence_98753
+[98754]   150 TGAGAAACAATCATAGGCAAG...TAACATATTAATATCTGGTCA sequence_98754
+[98755]   150 TGCATGTTCTCTTAACCCATG...AAGTGGTTTATTTGGTCGGGA sequence_98755
+[98756]   150 TCAATTCCACCTAACTCTCAG...ATAGGAAGGGCCTGTATGCAC sequence_98756
+[98757]   150 TACAGGCACGTGCCGCCATGC...TGGGATTACAGGCATGAACTG sequence_98757
+
+[[2]]
+DNAStringSet object of length 98757:
+        width seq                                           names               
+    [1]   150 TCTGGCAGAGCCTTCAAATTG...ACCTCTTTTCACTGCTGTCAT sequence_1
+    [2]   150 TGAGGTATTCATATTGAACAT...AAGTTTTATAGCATCTGAGTC sequence_2
+    [3]   150 AAAGAAAGAAAGAAAAAGAAA...AGGCTGTACTTCAAGATACAC sequence_3
+    [4]   150 AACAATTTAGAGTAAATTGAA...AGATTTATAGTCATTATTTTA sequence_4
+    [5]   150 ATCCCTCCCCTCTCCCCCCAC...GAGATAGATGATGCTTTAAAT sequence_5
+    ...   ... ...
+[98753]   150 TTTCCTCTTTTCATAATTGAA...GGAATGCTTCCGGTTTTTGCC sequence_98753
+[98754]   150 CACCACAAGTAAAAAATATGA...TCTTATTTTTTAAATGTAGGA sequence_98754
+[98755]   150 CTGTCTTGCAAGAAGACATGG...TCAAAAGAAAGAAGAAGTAAA sequence_98755
+[98756]   150 CAGGTGGAGTTCACAGAAATG...CTTCTCTGAGATCTTATTCCT sequence_98756
+[98757]   150 CCAGGCTGTGGATTTTGGAAA...TGAGGCGGGCGGATTACTTCA sequence_98757
+</code></pre></div></div>
+
+<h4 id="generating-fasta-files">Generating fasta files</h4>
+
+<p>Finally, now that your pairs have been generated, you can save the pairs
+as R1 and R2 fasta files for genome alignment. The <code>compress</code>
+option in <code>save_fasta()</code> will compress the fasta files to
+save space. Given the input parameters below, the files will be saved as
+<code>path/to/directory/prefix_R1.fa(.gz)</code> and
+<code>path/to/directory/prefix_R2.fa(.gz)</code>, respectively.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xInt</span><span class="o">::</span><span class="n">save_fasta</span><span class="p">(</span><span class="n">trimmed.seqs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frag.trim</span><span class="p">,</span><span class="w"> 
+                 </span><span class="n">directory.path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"path/to/directory"</span><span class="p">,</span><span class="w">
+                 </span><span class="n">file.prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"prefix"</span><span class="p">,</span><span class="w">
+                 </span><span class="n">compress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="conclusions">Conclusions</h4>
+
+<p>On my 2 GHz quad-core laptop with 16 GB RAM, this entire process ran in
+just over 2 minutes. Obviously, as you increase the number of random
+sites generated, this run time will increase. For generating extremely
+large datasets, I would recommend moving this to an HPC cluster.
+Regardless of where you run this, I hope I’ve demonstrated how easy it
+can be to generate random genome fragments in a way that should
+integrate (lol, get it?!) seamlessly with your other Bioconductor
+workflows!</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-12-27T00:00:00-05:00">December 27, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Generating+random+genome+fragments+in+R%20http%3A%2F%2Flocalhost%3A4000%2Frandom-genome-fragments%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Frandom-genome-fragments%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Frandom-genome-fragments%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You may also enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+            
+      </div>
+    </div>
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Greg Bedwell. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" async
+	src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+     extensions: ["tex2jax.js"],
+     jax: ["input/TeX", "output/HTML-CSS"],
+     tex2jax: {
+       inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+       displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+       processEscapes: true
+     },
+     "HTML-CSS": { availableFonts: ["TeX"] }
+   });
+</script>
+
+
+  </body>
+</html>
