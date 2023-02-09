@@ -2,11 +2,41 @@
 title: Generating random genome fragments in R
 excerpt: Quickly and easily generating simulated random fragments of a chosen genome.
 classes: wide
-format: gfm
-output-file: ../_posts/2022-12-27-random-genome-fragments.md
-editor: source
-keep-yaml: true
+output:
+  md_document:
+    variant: gfm
+    preserve_yaml: true
+knit: (function(input, ...) {
+    rmarkdown::render(
+      input,
+      output_file = paste0(
+        '/Users/gbedwell/Documents/github/gbedwell.github.io/_posts/', '2022-12-27', '-', 'random-genome-fragments','.md'
+      ),
+      envir = globalenv()
+    )
+  })
 ---
+
+```{r, include=FALSE}
+base.dir <- "/Users/gbedwell/Documents/github/gbedwell.github.io/"
+base.url <- "/"
+fig.path <- "figures/"
+
+knitr::opts_chunk$set(
+  fig.asp = 0.618,
+  fig.width = 6,
+  dpi = 300,
+  fig.align = "center",
+  out.width = "80%",
+  fig.cap = "center",
+  comment = "#>",
+  collapse = TRUE,
+  dev = "png",
+  base.dir = base.dir, 
+  base.url = base.url,
+  fig.path = fig.path
+  )
+```
 
 In the analysis of genomic integration site data, a theoretical random integration site distribution is often used as a lower boundary for feature enrichment. That is, whether or not a given feature (e.g. a particular gene) harbors more integration sites than would be expected given a true random distribution. In principle, the derivation of an expected random distribution is not too difficult. Given the genome size, $L_G$, the binomial probability of integration into a particular region $i$ is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$. Therefore, the expected number of integration sites in $i$ can be expressed as $I \sim Bin(n, p_i)$.
 
@@ -16,7 +46,7 @@ To accurately calculate $p_i$ for a given set of sequencing conditions, one real
 
 This idea is not new. People doing integration site analyses have been using simulated random datasets for many years in one way or another. However, many of the scripts in use (at least that I have seen), are rather slow, somewhat inflexible, and are provided as stand alone software. After spending a substantial amount of time adapting and eventually wholly rewriting some existing Python scripts for random fragment generation, I decided to develop an R approach that would slot seamlessly into the Bioconductor framework. I've wrapped those functions up in the xInt package that is still under development (as of 12/2022). This aspect of the package, however, is functional. I'll briefly explain the workflow below.
 
-### Generating random fragments with xInt
+### Load packages
 
 To get started, install xInt if it isn't already.
 
@@ -31,7 +61,7 @@ library(xInt)
 library(BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
 ```
 
-#### Restriction enzyme cut positions
+### Restriction enzyme cut positions
 
 If fragmenting the genome by restriction digestion, the first step in generating random genome fragments is to extract the sequences of each chromosome.
 
@@ -51,7 +81,7 @@ re.cuts <- xInt::digest(string.list = chr.seqs,
                         re.sites=c("TTAA","AGATCT"))
 ```
 
-#### Random integration site positions
+### Random integration site positions
 
 Now you want to generate random integration sites throughout the genome. This step is the same regardless of the fragmentation method used. First, define the number of sites that you want to generate. For good estimation of the mappable genome, this number should be rather high (e.g. $10^7-10^8$ sites). If you just want a representative random dataset, however, this number can be much smaller (e.g. $10^4-10^5$ sites). For example purposes, I'll generate $10^5$ sites.
 
@@ -60,7 +90,7 @@ rand.sites <- xInt::random_sites(n.sites = 1E5,
                                  genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
 ```
 
-#### Generating genomic fragments
+### Generating genomic fragments
 
 You now want to make genomic fragments that mimic the genomic fragments obtained in your experiment. For restriction digestion, you want to use the random sites and the restriction enzyme cut positions generated with the <code>digest()</code> function to generate the fragments. Be sure to set <code>random = FALSE</code> in <code>make_fragments()</code>. Fragment coordinates are defined from the simulated random integration site to the nearest restriction enzyme cut position <i>downstream</i> of the integration site. This is analogous to sequencing off of the viral 3' LTR. I have not yet incorporated a way to simulate fragments generated from the viral 5' LTR.
 
@@ -82,7 +112,7 @@ rand.fragments <- xInt::make_fragments(int.sites = rand.sites,
                                        genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
 ```
 
-#### Extracting and trimming fragment sequences
+### Extracting and trimming fragment sequences
 
 I rely on <code>BSgenome::getSeq()</code> to extract the sequences corresponding to the fragment positions. These sequences are intended to mimic the genomic fragments sequenced in the sequencing reaction.
 
@@ -111,7 +141,7 @@ frag.trim <- xInt::trim_seqs(fragments = frag.seqs,
 frag.trim
 ```
 
-#### Generating fasta files
+### Generating fasta files
 
 Finally, now that your pairs have been generated, you can save the pairs as R1 and R2 fasta files for genome alignment. The <code>compress</code> option in <code>save_fasta()</code> will compress the fasta files to save space. Given the input parameters below, the files will be saved as <code>path/to/directory/prefix_R1.fa(.gz)</code> and <code>path/to/directory/prefix_R2.fa(.gz)</code>, respectively.
 
@@ -122,19 +152,6 @@ xInt::save_fasta(trimmed.seqs = frag.trim,
                  compress = TRUE)
 ```
 
-#### Conclusions
+### Conclusions
 
 On my 2 GHz quad-core laptop with 16 GB RAM, this entire process ran in just over 2 minutes. Obviously, as you increase the number of random sites generated, this run time will increase. For generating extremely large datasets, I would recommend moving this to an HPC cluster. Regardless of where you run this, I hope I've demonstrated how easy it can be to generate random genome fragments in a way that should integrate (lol, get it?!) seamlessly with your other Bioconductor workflows!
-
-
-
-
-
-
-
-
-
-
-
-
-

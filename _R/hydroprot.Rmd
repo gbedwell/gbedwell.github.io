@@ -1,0 +1,75 @@
+---
+title: Estimating protein hydrodynamic parameters
+excerpt: Solution properties of proteins from primary sequence and structural coordinates.
+classes: wide
+output:
+  md_document:
+    variant: gfm
+    preserve_yaml: true
+knit: (function(input, ...) {
+    rmarkdown::render(
+      input,
+      output_file = paste0(
+        '/Users/gbedwell/Documents/github/gbedwell.github.io/_posts/', '2023-01-15', '-', 'hydroprot','.md'
+      ),
+      envir = globalenv()
+    )
+  })
+---
+
+```{r, include=FALSE}
+base.dir <- "/Users/gbedwell/Documents/github/gbedwell.github.io/"
+base.url <- "/"
+fig.path <- "figures/"
+
+knitr::opts_chunk$set(
+  fig.asp = 0.618,
+  fig.width = 6,
+  dpi = 300,
+  fig.align = "center",
+  out.width = "80%",
+  fig.cap = "center",
+  comment = "#>",
+  collapse = TRUE,
+  dev = "png",
+  base.dir = base.dir, 
+  base.url = base.url,
+  fig.path = fig.path
+  )
+```
+
+To use <code>gget</code> in R, you'll need to install both <code>gget</code> and the R package <code>reticulate</code>. <code>gget</code> is described in more detail [here](https://github.com/pachterlab/gget). If you use <code>gget</code>, please cite the appropriate [manuscript](https://academic.oup.com/bioinformatics/article/39/1/btac836/6971843).
+
+```{r, eval=FALSE}
+system("pip install gget")
+install.packages("reticulate")
+```
+
+```{r}
+library(reticulate)
+gget <- import("gget")
+```
+
+```{r}
+gene.info <- gget$search("CPSF6", "homo_sapiens")
+gene.info
+```
+
+```{r}
+target.ensembl <- gene.info$ensembl_id[1]
+uniprot.id <- gget$info(target.ensembl)$uniprot_id
+seq <- gget$seq(target.ensembl, translate=TRUE)[2]
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -19,7 +19,7 @@ permalink: /cv.html
 
 **Instructor in Medicine** - Dana-Farber Cancer Institute/Harvard Medical School.
 
-These days, my principal scientific interests are in computational and systems biology. I am particularly interested in developing ways to better understand retroviral integration targeting biases and how those biases relate to provirus expression and/or latency. To this end, I am developing a statistical method, xInt, to define the "expected" levels of integration into each genomic feature (e.g. a single gene) within a pre-defined feature-set (e.g. all genes). Conceptually, this is a formalization and an expansion of the rigrag methodology that I worked on previously (see below), but with improved statistical rigor and the introduction of expected integration levels for wild-type integration. I am also involved in collaborations looking at integration sites in patients harboring certain interesting clinical phenotypes.
+These days, my principal scientific interests are in computational and systems biology. I am particularly interested in developing ways to better understand retroviral integration targeting biases and how those biases relate to provirus expression and/or latency. To this end, I am developing a statistical method, xInt, to define the "expected" levels of integration into each genomic feature (e.g. a single gene) within a pre-defined feature-set (e.g. all genes). Conceptually, this is a formalization and an expansion of the rigrag methodology that I worked on previously (see below), but with improved statistical rigor and the introduction of expected integration levels for wild-type integration. I am additionally involved in collaborations looking at integration site locations in patients harboring certain clinical phenotypes and I am actively involved in designing, performing, and analyzing biophysical experiments related to protein phase separation.
 
 
 **Consulting** - Freelance.
@@ -40,19 +40,19 @@ As a graduate student, I was interested in understanding and exploiting the arch
 
 ## <i class="fas fa-chart-bar"></i> Programming and statistics
 
-**Languages**: Proficiency in R. Competency with Python, AWK, sed. Exposure to Julia.
+**Languages**: Proficiency in R. Competency with Python, AWK, sed, etc. Exposure to Julia.
 
-**Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, jq, knitr/Rmarkdown/quarto, HPC clusters (SLURM and Grid Engine).
+**Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, jq, knitr/Rmarkdown/quarto/xaringan, HPC clusters (SLURM and Grid Engine).
 
 **Bioinformatic tools**: 
   - <u>Bioconductor</u>: GenomicRanges, BSgenome, Biostrings, DESeq2, Rsamtools, biomaRt, plyranges, etc. 
   - <u>Miscellaneous software</u>: bedtools, samtools, MACS2. 
   - <u>Sequence (pseudo)aligners</u>: Rsubread, BWA, STAR, kallisto.
-  - <u>Multiple sequence alignment</u>: hh-suite, Clustal Omega.
+  - <u>Multiple sequence alignment</u>: hh-suite, Clustal Omega, MUSCLE.
   - <u>Macromolecular modeling</u>: hullrad, HYDROPRO.
-  - <u>Structure prediction</u>: ColabFold (AlphaFold).
+  - <u>Structure prediction</u>: ColabFold (AlphaFold), OmegaFold, MODELLER.
 
-**Statistics**: linear and nonlinear least squares, generalized linear models, parametric and nonparametric null hypothesis testing, maximum likelihood estimation.
+**Statistics**: linear and nonlinear least squares, generalized linear models, parametric and nonparametric null hypothesis testing, bootstrapping, maximum likelihood estimation.
 
 
 ## <i class="fas fa-code"></i> Software

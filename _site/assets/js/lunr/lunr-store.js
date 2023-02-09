@@ -4,4 +4,10 @@ var store = [{
         "tags": [],
         "url": "/random-genome-fragments/",
         "teaser": null
+      },{
+        "title": "Evaluating the sums of arbitrary negative binomial distributions",
+        "excerpt":"Introduction to the NB distribution The negative binomial (NB) distribution is widely used to model count data whose variance is greater than expected given a standard binomial or Poisson distributions. While the NB distribution has been used across scientific disciplines, the usage that is most relevant to my interests is...","categories": [],
+        "tags": [],
+        "url": "/nb-convolutions/",
+        "teaser": null
       },]

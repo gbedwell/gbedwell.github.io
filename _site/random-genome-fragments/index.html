@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Generating random genome fragments in R - Musings of a Philomath</title>
+<!-- begin _includes/seo.html --><title>Generating random genome fragments in R - Undefined Functions</title>
 <meta name="description" content="Quickly and easily generating simulated random fragments of a chosen genome.">
 
 
@@ -21,7 +21,7 @@
 
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
-<meta property="og:site_name" content="Musings of a Philomath">
+<meta property="og:site_name" content="Undefined Functions">
 <meta property="og:title" content="Generating random genome fragments in R">
 <meta property="og:url" content="http://localhost:4000/random-genome-fragments/">
 
@@ -71,7 +71,7 @@
 
 
 
-  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Musings of a Philomath Feed">
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Undefined Functions Feed">
 
 
 <!-- https://t.co/dKP3o1e -->
@@ -113,7 +113,7 @@
       <nav id="site-nav" class="greedy-nav">
         
         <a class="site-title" href="/">
-          Musings of a Philomath
+          Undefined Functions
           
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
@@ -362,7 +362,7 @@ up in the xInt package that is still under development (as of 12/2022).
 This aspect of the package, however, is functional. I’ll briefly explain
 the workflow below.</p>
 
-<h3 id="generating-random-fragments-with-xint">Generating random fragments with xInt</h3>
+<h3 id="load-packages">Load packages</h3>
 
 <p>To get started, install xInt if it isn’t already.</p>
 
@@ -380,7 +380,7 @@ human genome build.</p>
 </span><span class="n">library</span><span class="p">(</span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<h4 id="restriction-enzyme-cut-positions">Restriction enzyme cut positions</h4>
+<h3 id="restriction-enzyme-cut-positions">Restriction enzyme cut positions</h3>
 
 <p>If fragmenting the genome by restriction digestion, the first step in
 generating random genome fragments is to extract the sequences of each
@@ -392,13 +392,13 @@ chromosome.</p>
 <p>The output of <code>get_chromosome_seqs()</code> is a list of DNAString
 objects corresponding to each of the chromosomes in the target genome.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$`1`
-248387328-letter DNAString object
-seq: CACCCTAAACCCTAACCCCTAACCCTAACCCTAACC...AGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTT
-
-$`2`
-242696752-letter DNAString object
-seq: TAACCCTAACCCTAACCCTAACCCTAACCCTAACCC...TAGGGTTAGGGTTTAGGGGTTTAGGGTTAGGGTTAG
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; $`1`
+#&gt; 248387328-letter DNAString object
+#&gt; seq: CACCCTAAACCCTAACCCCTAACCCTAACCCTAACC...AGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTT
+#&gt; 
+#&gt; $`2`
+#&gt; 242696752-letter DNAString object
+#&gt; seq: TAACCCTAACCCTAACCCTAACCCTAACCCTAACCC...TAGGGTTAGGGTTTAGGGGTTTAGGGTTAGGGTTAG
 </code></pre></div></div>
 
 <p>Next, you can use the <code>digest()</code> function to identify all of
@@ -410,7 +410,7 @@ enzymes being used as a character vector.</p>
                         </span><span class="n">re.sites</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"TTAA"</span><span class="p">,</span><span class="s2">"AGATCT"</span><span class="p">))</span><span class="w">
 </span></code></pre></div></div>
 
-<h4 id="random-integration-site-positions">Random integration site positions</h4>
+<h3 id="random-integration-site-positions">Random integration site positions</h3>
 
 <p>Now you want to generate random integration sites throughout the genome.
 This step is the same regardless of the fragmentation method used.
@@ -424,7 +424,7 @@ sites). For example purposes, I’ll generate $10^5$ sites.</p>
                                  </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<h4 id="generating-genomic-fragments">Generating genomic fragments</h4>
+<h3 id="generating-genomic-fragments">Generating genomic fragments</h3>
 
 <p>You now want to make genomic fragments that mimic the genomic fragments
 obtained in your experiment. For restriction digestion, you want to use
@@ -459,7 +459,7 @@ integration site.</p>
                                        </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<h4 id="extracting-and-trimming-fragment-sequences">Extracting and trimming fragment sequences</h4>
+<h3 id="extracting-and-trimming-fragment-sequences">Extracting and trimming fragment sequences</h3>
 
 <p>I rely on <code>BSgenome::getSeq()</code> to extract the sequences
 corresponding to the fragment positions. These sequences are intended to
@@ -470,19 +470,19 @@ mimic the genomic fragments sequenced in the sequencing reaction.</p>
                               </span><span class="n">as.character</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DNAStringSet object of length 100000:
-         width seq
-     [1]   586 CCCCACCCAATGTAGTGCTTTCCTCTGTCCT...GGGACAGTAGCAATTTGAAGGCTCTGCCAGA
-     [2]   290 AGAATCTAGGAAGCAGAGAACCTGAGTGTTG...CTTGGAGGTCATGTTCAATATGAATACCTCA
-     [3]   634 TACCTCCTTTGTTCCTAATTTCCTCAATTAT...TCTTTCTTTCTTTCTTTTTCTTTCTTTCTTT
-     [4]   243 CCAGTAAAGATAACTACATAGGTAAATATAA...CTGAAGTTGTTTCAATTTACTCTAAATTGTT
-     [5]   453 GAAATATAGAAAAGCTTACATATTATCCTGT...CTGTTGTGGGGTGGGGGGAGAGGGGAGGGAT
-     ...   ... ...
- [99996]   784 CCTTGACACATACACCCTCCCAAGACTAAAC...ATAAAGGGTATTCAATTATGAAAAGAGGAAA
- [99997]   582 TGAGAAACAATCATAGGCAAGAAGAGCCTGA...AACTTATTAATCATATTTTTTACTTGTGGTG
- [99998]   620 TGCATGTTCTCTTAACCCATGCACCCAGCGC...TTCTCCTTACCCATGTCTTCTTGCAAGACAG
- [99999]   495 TCAATTCCACCTAACTCTCAGGGAGTGCCTG...CACATTTTGGCATTTCTGTGAACTCCACCTG
-[100000]   244 TACAGGCACGTGCCGCCATGCCCAGCTAATT...TCAGTCGTAATTTCCAAAATCCACAGCCTGG
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; DNAStringSet object of length 100000:
+#&gt;          width seq
+#&gt;      [1]   808 TTAATGGAAAGAGGAGGAGGAGGACGGGGGT...CAATGCAAAAAGCATACTGCCTTCTCTTCTG
+#&gt;      [2]   693 AAAATGAAAGAACAGTTAAATAAATCATGGC...GCAGACTGGCTCCTTCAGTGGGTAGGCCAGC
+#&gt;      [3]   360 GCTAGGTCAAGGTGAACACCAGTGTTGAGTT...TAGGCGACTTTACACAATAAAATAGGCAATG
+#&gt;      [4]   797 TTTATAGTCTTTAAAAAGCAGGAACTACAAA...TGGGTGTGTAGGAGTGTGAATACGAACACGT
+#&gt;      [5]   124 CCAACAGTAAAAACACCAAATAATCCAGTTA...TTCCATCAGCCACCAGGGAGATGCAAATTAC
+#&gt;      ...   ... ...
+#&gt;  [99996]   524 TAGAGGATTTTTGTGAGATTATGTATATAAA...AAGAGATTGGCTATATTTAGTACTGGGTAGG
+#&gt;  [99997]   359 GTGTGAAGGAGCTGTTGGTAAAATGTGTTAT...ATGTCACCATTTTGGGAGCAAGACAGCTAAT
+#&gt;  [99998]   197 TATGGTGAAAAGAAAAGGCTTAACACTACTG...AAGACACCTGTACTTGTATGTTTATCACAGC
+#&gt;  [99999]   718 TAAAACTAACTCTGAGATTAAAGAAAAAAGC...GTCAGCATAGGGTTAAGTTTAGGGGTTAGGG
+#&gt; [100000]   487 TGTCAAGTTGAGGGGAGGAGGGAATGGAGAG...AGTGTAAGCATGCTGGATCCATACAAATGTA
 </code></pre></div></div>
 
 <p>To mimic the sequencing output, however, the genomic fragments must be
@@ -506,38 +506,38 @@ generated sites.</p>
                              </span><span class="n">max.bp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">150</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[1]]
-DNAStringSet object of length 98757:
-        width seq                                           names               
-    [1]   150 CCCCACCCAATGTAGTGCTTT...GCTGTCAGGCTACTGGCAGCC sequence_1
-    [2]   150 AGAATCTAGGAAGCAGAGAAC...TCCAACAGAGCGACTCAGATG sequence_2
-    [3]   150 TACCTCCTTTGTTCCTAATTT...ACCATGGGGATTTACAATTAA sequence_3
-    [4]   150 CCAGTAAAGATAACTACATAG...GATGTATAAAGATGTGGTTTG sequence_4
-    [5]   150 GAAATATAGAAAAGCTTACAT...GTTAATTTTACTGTCACGCAC sequence_5
-    ...   ... ...
-[98753]   150 CCTTGACACATACACCCTCCC...ATTCACAGCCGAATTCTACCA sequence_98753
-[98754]   150 TGAGAAACAATCATAGGCAAG...TAACATATTAATATCTGGTCA sequence_98754
-[98755]   150 TGCATGTTCTCTTAACCCATG...AAGTGGTTTATTTGGTCGGGA sequence_98755
-[98756]   150 TCAATTCCACCTAACTCTCAG...ATAGGAAGGGCCTGTATGCAC sequence_98756
-[98757]   150 TACAGGCACGTGCCGCCATGC...TGGGATTACAGGCATGAACTG sequence_98757
-
-[[2]]
-DNAStringSet object of length 98757:
-        width seq                                           names               
-    [1]   150 TCTGGCAGAGCCTTCAAATTG...ACCTCTTTTCACTGCTGTCAT sequence_1
-    [2]   150 TGAGGTATTCATATTGAACAT...AAGTTTTATAGCATCTGAGTC sequence_2
-    [3]   150 AAAGAAAGAAAGAAAAAGAAA...AGGCTGTACTTCAAGATACAC sequence_3
-    [4]   150 AACAATTTAGAGTAAATTGAA...AGATTTATAGTCATTATTTTA sequence_4
-    [5]   150 ATCCCTCCCCTCTCCCCCCAC...GAGATAGATGATGCTTTAAAT sequence_5
-    ...   ... ...
-[98753]   150 TTTCCTCTTTTCATAATTGAA...GGAATGCTTCCGGTTTTTGCC sequence_98753
-[98754]   150 CACCACAAGTAAAAAATATGA...TCTTATTTTTTAAATGTAGGA sequence_98754
-[98755]   150 CTGTCTTGCAAGAAGACATGG...TCAAAAGAAAGAAGAAGTAAA sequence_98755
-[98756]   150 CAGGTGGAGTTCACAGAAATG...CTTCTCTGAGATCTTATTCCT sequence_98756
-[98757]   150 CCAGGCTGTGGATTTTGGAAA...TGAGGCGGGCGGATTACTTCA sequence_98757
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; [[1]]
+#&gt; DNAStringSet object of length 98821:
+#&gt;         width seq                                           names               
+#&gt;     [1]   150 TTAATGGAAAGAGGAGGAGGA...TGCTTTTATTAGTTGATGTCT sequence_1
+#&gt;     [2]   150 AAAATGAAAGAACAGTTAAAT...CAGGTGGGGGCCAAGCGAGAT sequence_2
+#&gt;     [3]   150 GCTAGGTCAAGGTGAACACCA...GTCCCATGCCGCAAAGATGGG sequence_3
+#&gt;     [4]   150 TTTATAGTCTTTAAAAAGCAG...GGATTATATGTGTGACAGTGT sequence_4
+#&gt;     [5]   124 CCAACAGTAAAAACACCAAAT...CACCAGGGAGATGCAAATTAC sequence_5
+#&gt;     ...   ... ...
+#&gt; [98817]   150 TAGAGGATTTTTGTGAGATTA...TGGGAAGATTTTAAAATAAGC sequence_98817
+#&gt; [98818]   150 GTGTGAAGGAGCTGTTGGTAA...AAGCTCCAAAAATAGTCTCAG sequence_98818
+#&gt; [98819]   150 TATGGTGAAAAGAAAAGGCTT...TGGGTATCTACTCAAAGGGAA sequence_98819
+#&gt; [98820]   150 TAAAACTAACTCTGAGATTAA...GCCCAGATGTCTGAAGTTGTT sequence_98820
+#&gt; [98821]   150 TGTCAAGTTGAGGGGAGGAGG...ATGTTAATATCACTGAACTGT sequence_98821
+#&gt; 
+#&gt; [[2]]
+#&gt; DNAStringSet object of length 98821:
+#&gt;         width seq                                           names               
+#&gt;     [1]   150 CAGAAGAGAAGGCAGTATGCT...CCCAGCCAGAAAAACACTTTA sequence_1
+#&gt;     [2]   150 GCTGGCCTACCCACTGAAGGA...AAAGAGAGCTCCTAGGGGTCC sequence_2
+#&gt;     [3]   150 CATTGCCTATTTTATTGTGTA...GGATTTTGATCTTTGGGATTT sequence_3
+#&gt;     [4]   150 ACGTGTTCGTATTCACACTCC...CTCACTCATACACACCGATTG sequence_4
+#&gt;     [5]   124 GTAATTTGCATCTCCCTGGTG...ATTTGGTGTTTTTACTGTTGG sequence_5
+#&gt;     ...   ... ...
+#&gt; [98817]   150 CCTACCCAGTACTAAATATAG...TCTTGTTATACTTTCTCTCCC sequence_98817
+#&gt; [98818]   150 ATTAGCTGTCTTGCTCCCAAA...GCCAAAGAGGGTAAGCGTTTA sequence_98818
+#&gt; [98819]   150 GCTGTGATAAACATACAAGTA...TGTTTTCCATAGAGGTTGTAC sequence_98819
+#&gt; [98820]   150 CCCTAACCCCTAAACTTAACC...GACCCAATCTCTGACCCCTAA sequence_98820
+#&gt; [98821]   150 TACATTTGTATGGATCCAGCA...CTCAGCCTCCTGAATAGCTGG sequence_98821
 </code></pre></div></div>
 
-<h4 id="generating-fasta-files">Generating fasta files</h4>
+<h3 id="generating-fasta-files">Generating fasta files</h3>
 
 <p>Finally, now that your pairs have been generated, you can save the pairs
 as R1 and R2 fasta files for genome alignment. The <code>compress</code>
@@ -552,7 +552,7 @@ save space. Given the input parameters below, the files will be saved as
                  </span><span class="n">compress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<h4 id="conclusions">Conclusions</h4>
+<h3 id="conclusions">Conclusions</h3>
 
 <p>On my 2 GHz quad-core laptop with 16 GB RAM, this entire process ran in
 just over 2 minutes. Obviously, as you increase the number of random
@@ -591,6 +591,16 @@ workflows!</p>
 
 
       
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="/nb-convolutions/" class="pagination--pager" title="Evaluating the sums of arbitrary negative binomial distributions
+">Next</a>
+    
+  </nav>
+
     </div>
 
     
@@ -603,9 +613,48 @@ workflows!</p>
       <div class="grid__wrapper">
         
           
-            
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/nb-convolutions/" rel="permalink">Evaluating the sums of arbitrary negative binomial distributions
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          15 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Implementing an exact expression and alternative options
+</p>
+  </article>
+</div>
+
+        
       </div>
     </div>
+  
   
 </div>
 
@@ -646,7 +695,7 @@ workflows!</p>
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2022 Greg Bedwell. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2023 Greg Bedwell. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
