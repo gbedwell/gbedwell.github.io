@@ -698,7 +698,7 @@ this runtime penalty worth it? Comparison of the calculated densities to
 the empirical distribution might help answer this question.
 
 <img src="../figures/2023-02-01/distributions2-1.png" width="80%" style="display: block; margin: auto;" />
-The exact method is the only evaluation method that describes the
+<br> The exact method is the only evaluation method that describes the
 empirical distribution well. The saddlepoint approximation is closer to
 the empirical distribution than the method of moments approximation, but
 it still shows systematic errors. The method of moments approximation is

@@ -619,6 +619,7 @@ methods.dist.plot2 <- ggplot(data = methods.df2,
 
 methods.dist.plot2
 ```
+<br>
 The exact method is the only evaluation method that describes the empirical distribution well. The saddlepoint approximation is closer to the empirical distribution than the method of moments approximation, but it still shows systematic errors. The method of moments approximation is wildly inaccurate in this extreme example. Therefore, in the case of highly tailed distributions, the exact method is the most reliable of the three methods, despite its relatively high computational cost.
 
 ### Conclusions
