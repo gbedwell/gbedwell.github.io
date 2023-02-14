@@ -505,7 +505,7 @@ methods.dist.plot1 <- ggplot(data = methods.df1,
         legend.position = "none") +
   scale_x_continuous(limits = c(0, n.counts1)) +
   scale_y_continuous(limits = c(-30, -5)) +
-  labs(x = Counts~(x~10^5), y = "log(Probability)")
+  labs(x = "Counts", y = "log(Probability)")
 
 methods.dist.plot1
 ```

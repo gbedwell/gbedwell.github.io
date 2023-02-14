@@ -1,5 +1,5 @@
 ---
-title: Estimating protein hydrodynamic parameters
+title: Estimating protein hydrodynamic parameters and solution properties
 excerpt: Solution properties of proteins from primary sequence and structural coordinates.
 classes: wide
 output:
@@ -10,7 +10,7 @@ knit: (function(input, ...) {
     rmarkdown::render(
       input,
       output_file = paste0(
-        '/Users/gbedwell/Documents/github/gbedwell.github.io/_posts/', '2023-01-15', '-', 'hydroprot','.md'
+        '/Users/gbedwell/Documents/github/gbedwell.github.io/_posts/', '2023-02-10', '-', 'hydroprot','.md'
       ),
       envir = globalenv()
     )
@@ -18,9 +18,12 @@ knit: (function(input, ...) {
 ---
 
 ```{r, include=FALSE}
+date <- "2023-02-10"
+
 base.dir <- "/Users/gbedwell/Documents/github/gbedwell.github.io/"
 base.url <- "/"
-fig.path <- "figures/"
+dir.create(paste0("../figures/", date))
+fig.path <- paste0("../figures/", date)
 
 knitr::opts_chunk$set(
   fig.asp = 0.618,
@@ -38,7 +41,7 @@ knitr::opts_chunk$set(
   )
 ```
 
-To use <code>gget</code> in R, you'll need to install both <code>gget</code> and the R package <code>reticulate</code>. <code>gget</code> is described in more detail [here](https://github.com/pachterlab/gget). If you use <code>gget</code>, please cite the appropriate [manuscript](https://academic.oup.com/bioinformatics/article/39/1/btac836/6971843).
+To use <code>gget</code> in R, you'll need to install both <code>gget</code> and the R package <code>reticulate</code> (unless you're using [quarto](https://quarto.org/), but I am not in this post). <code>gget</code> is described in more detail [here](https://github.com/pachterlab/gget). If you use <code>gget</code>, please cite the appropriate [manuscript](https://academic.oup.com/bioinformatics/article/39/1/btac836/6971843).
 
 ```{r, eval=FALSE}
 system("pip install gget")
@@ -60,6 +63,18 @@ target.ensembl <- gene.info$ensembl_id[1]
 uniprot.id <- gget$info(target.ensembl)$uniprot_id
 seq <- gget$seq(target.ensembl, translate=TRUE)[2]
 ```
+
+```{r}
+lengths(regmatches(c("ADRNP"), gregexpr("A", c("ADRNPA"))))
+```
+
+
+
+
+
+
+
+
 
 
 
