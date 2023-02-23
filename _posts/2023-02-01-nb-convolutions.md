@@ -212,7 +212,7 @@ $K(t)$ isn’t too difficult. The trickier part is in ensuring the target
 CGF is twice differentiable. Fortunately, the CGF of the NB distribution
 is!
 
-With $K(t)$, $K^\prime(t)$, and $K^{\prime}{\prime}(t)$ in hand, the
+With $K(t)$, $K^\prime(t)$, and $K^{\prime\prime}(t)$ in hand, the
 saddlepoint approximation then requires finding the saddlepoint $s_x$ at
 a given $x$ by solving the equation
 
@@ -267,6 +267,8 @@ and then load the package
 
 ``` r
 library(nbconv)
+#> Loading required package: parallel
+#> Loading required package: matrixStats
 ```
 
 ### Sample data
@@ -531,8 +533,6 @@ methods.time1 <- data.frame(
                                        counts.end = n.counts1))[3]
     )
   )
-#> Loading required package: parallel
-#> Loading required package: matrixStats
 ```
 
 Let’s visualize the runtimes…

@@ -192,7 +192,7 @@ The saddlepoint approximation is slightly more complicated. I don't want to go i
 
 The saddlepoint approximation requires knowing the cumulant generating function $K(t)$ of a target distribution, as well as $K(t)$'s first and second derivatives, $K^\prime(t)$ and $K^{\prime\prime}(t)$, respectively. By definition, $K(t)$ is just the log of the moment generating function, or $ K(t) = log \\,\\mathbb{E}[e^{tX}] $. MGFs for most well-known distributions are easily found online, so obtaining $K(t)$ isn't too difficult. The trickier part is in ensuring the target CGF is twice differentiable. Fortunately, the CGF of the NB distribution is! 
 
-With $K(t)$, $K^\prime(t)$, and $K^{\prime}{\prime}(t)$ in hand, the saddlepoint approximation then requires finding the saddlepoint $s_x$ at a given $x$ by solving the equation
+With $K(t)$, $K^\prime(t)$, and $K^{\prime\prime}(t)$ in hand, the saddlepoint approximation then requires finding the saddlepoint $s_x$ at a given $x$ by solving the equation
 
 $$ K^\prime(s_x) = x $$
 

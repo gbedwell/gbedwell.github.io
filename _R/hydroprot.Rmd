@@ -68,7 +68,20 @@ seq <- gget$seq(target.ensembl, translate=TRUE)[2]
 lengths(regmatches(c("ADRNP"), gregexpr("A", c("ADRNPA"))))
 ```
 
+```{r}
+library(BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
 
+genome.obj <- BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0
+target.chr <- "19"
+chr.length <- GenomeInfoDb::seqlengths(genome.obj)[[target.chr]]
+n.sites <- 4e6
+chr.vec <- sample(target.chr, n.sites, replace = TRUE)
+site.pos <- sample(x = 1:chr.length, size = n.sites, replace = TRUE)
+site.strand <- sample(x=c("+","-"), size=n.sites, replace=TRUE)
+sites <- GenomicRanges::GRanges(seqnames=chr.vec,
+                                ranges=IRanges::IRanges(start=site.pos, width=1),
+                                strand=site.strand)
+```
 
 
 
