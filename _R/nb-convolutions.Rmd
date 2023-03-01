@@ -42,7 +42,7 @@ knitr::opts_chunk$set(
 
 ### Introduction to the NB distribution
 
-The negative binomial (NB) distribution is widely used to model count data whose variance is greater than expected given a standard binomial or Poisson distributions. While the NB distribution has been used across scientific disciplines, the usage that is most relevant to my interests is its use in describing genomic data. While the need doesn't often arise in genomic applications to calculate the sum of NB distributions, there are some personal areas of interest where doing so may be useful. As such, I sought to better understand the sum of NB random variables with arbitrary parameters. I thought that I would share my findings, as it was easier to find examples of people with similar questions rather than concrete answers to those questions (though eventually I found both).
+The negative binomial (NB) distribution is widely used to model count data whose variance is greater than expected given a standard binomial or Poisson distribution. The NB distribution has been used to model count data across scientific disciplines. The usage that is most relevant to my interests, however, is its use in describing genomic data. While the need doesn't often arise in genomic applications to calculate the sum of NB distributions, there are some personal areas of interest where doing so may be useful. As such, I sought to better understand the sum of NB random variables with arbitrary parameters. I thought that I would share my findings, as it was easier to find examples of people with similar questions rather than concrete answers to those questions (though eventually I found both).
 
 Before I get into the sums of independent NB distributions, however, I should define the parameters of a NB distribution. There are many equivalent parameterizations of NB distributions. Perhaps the most common are: $ Y \\sim NB(\\phi, p) $, $ Y \\sim NB(\\phi, \\mu) $, and $ Y \\sim NB(\\alpha, \\mu) $. In these formulations, $p$ is the probability of success of a single trial, $\mu$ is the distribution mean, and $\phi$ and $\alpha$ are different representations of the dispersion parameter. As the name suggests, the dispersion parameter describes the spread of the distribution and is related to the distribution variance through the equation
 
@@ -82,7 +82,7 @@ $$ q_1 = 1-p_1 $$, and
 
 $$ \phi = \sum \limits_{j=1}^n \phi_j $$.
 
-Furman's PMF is a series representation that depends on $\\delta_k$, a recursive parameter that is computed for each term included in the series. What's more, for every count value at which the PMF is evaluated, the sum is taken over every $k$. This can make for a pretty cumbersome calculation when the number of terms and/or  the vector length of counts is large. In addition, because the number of terms over which the sum is evaluated cannot be infinite, evaluation of Furman's PMF is <i>technically </i> an approximation (but a very, very good one). A more compact exact expression was [published by Vellaisamy](https://www.jstor.org/stable/25662420) a couple of years after Furman's. However, this representation requires enumerating all possible ways that $n$ non-negative integers can sum to $m$, where $m$ is the maximum value of counts for which the PMF is being evaluated. This quickly becomes unwieldy for all but the smallest $n$ and $m$. Below, I'll demonstrate why.
+Furman's PMF is a series representation that depends on $\\delta_k$, a recursive parameter that is computed for each term included in the series. What's more, for every count value at which the PMF is evaluated, the sum is taken over every $k$. This can make for a pretty intensive calculation when the number of terms and/or  the vector length of counts is large. In addition, because the number of terms over which the sum is evaluated cannot be infinite, evaluation of Furman's PMF is <i>technically </i> an approximation (but a very, very good one). A more compact exact expression was [published by Vellaisamy](https://www.jstor.org/stable/25662420) a couple of years after Furman's. However, this representation requires enumerating all possible ways that $n$ non-negative integers can sum to $m$, where $m$ is the maximum value of counts for which the PMF is being evaluated. This quickly becomes unwieldy for all but the smallest $n$ and $m$. Below, I'll demonstrate why.
 
 The number of ways $n$ non-negative integers can sum to to $m$ is 
 
@@ -289,7 +289,7 @@ empirical.dist1 + empirical.dist2 + plot_layout(ncol = 1)
 ```
 <br>
 
-As expected, the first distribution is approximately symmetrical about the mean while the second is highly tailed. Interestingly, despite their wildly different shapes, the distributions have similar means (60296.93 and 60281.21, respectively, denoted by the blue vertical lines). Is this difference real, or is it simple sampling error? I suppose we're likely to find out soon!
+As expected, the first distribution is approximately symmetrical about the mean while the second is highly tailed. Interestingly, despite their wildly different shapes, the distributions have similar means (60296.93 and 60281.21, respectively, denoted by the blue vertical lines).
 
 For the purposes of downstream analysis, I want to define the maximum number of counts at which I want to evaluated the respective distributions. Based on the histogram of the first distribution, evaluating out to 100,000 counts seems sufficient for the probabilities to approach zero. For the second distribution, the slow rightward creep makes it a little more difficult to land on an end point. For computational brevity, I'll say 300,000 is sufficient, though in reality I should probably go out a little farther.
 
@@ -378,7 +378,7 @@ all(
   )
 ```
 
-Evaluation of chunk above to <code>TRUE</code> indicates that there is no material advantage to increasing the number of terms beyond what the function will allow. The function contains built-in checks to ensure that the number of terms is sufficient to give accurate density values. These checks are the same as in [Scott Lundberg's implementation](https://github.com/slundberg/NBConvolution.jl/blob/master/src/furman.jl) in Julia.
+Evaluation of chunk above to <code>TRUE</code> indicates that there is no material advantage to increasing the number of terms beyond what the function will allow. The function contains built-in checks to ensure that the number of terms is sufficient to give accurate density values.
 
 #### Method comparison
 
@@ -407,14 +407,15 @@ methods.time1 <- data.frame(
                                                phis = phis1, 
                                                counts.start = 0, 
                                                counts.end = n.counts1,
-                                               normalize = TRUE))[3],
+                                               normalize = TRUE,
+                                               n.cores = 1))[3],
       system.time(
-        sum.saddlepoint.parallel1 <- nb_sum_saddlepoint_parallel(mus = mus,
-                                                                 phis = phis1, 
-                                                                 counts.start = 0, 
-                                                                 counts.end = n.counts1,
-                                                                 normalize = TRUE, 
-                                                                 n.cores = 4))[3],
+        sum.saddlepoint.parallel1 <- nb_sum_saddlepoint(mus = mus,
+                                                        phis = phis1, 
+                                                        counts.start = 0, 
+                                                        counts.end = n.counts1,
+                                                        normalize = TRUE, 
+                                                        n.cores = 4))[3],
       system.time(
         sum.moments1 <- nb_sum_moments(mus = mus, 
                                        phis = phis1, 
@@ -538,14 +539,15 @@ methods.time2 <- data.frame(
                                                phis = phis2, 
                                                counts.start = 0, 
                                                counts.end = n.counts2,
-                                               normalize = TRUE))[3],
+                                               normalize = TRUE,
+                                               n.cores = 1))[3],
       system.time(
-        sum.saddlepoint.parallel2 <- nb_sum_saddlepoint_parallel(mus = mus,
-                                                                 phis = phis2, 
-                                                                 counts.start = 0, 
-                                                                 counts.end = n.counts2,
-                                                                 normalize = TRUE, 
-                                                                 n.cores = 4))[3],
+        sum.saddlepoint.parallel2 <- nb_sum_saddlepoint(mus = mus,
+                                                        phis = phis2, 
+                                                        counts.start = 0, 
+                                                        counts.end = n.counts2,
+                                                        normalize = TRUE, 
+                                                        n.cores = 4))[3],
       system.time(
         sum.moments2 <- nb_sum_moments(mus = mus, 
                                        phis = phis2, 
