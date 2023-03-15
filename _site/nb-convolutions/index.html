@@ -321,16 +321,16 @@
 
 <p>The negative binomial (NB) distribution is widely used to model count
 data whose variance is greater than expected given a standard binomial
-or Poisson distributions. While the NB distribution has been used across
-scientific disciplines, the usage that is most relevant to my interests
-is its use in describing genomic data. While the need doesn’t often
-arise in genomic applications to calculate the sum of NB distributions,
-there are some personal areas of interest where doing so may be useful.
-As such, I sought to better understand the sum of NB random variables
-with arbitrary parameters. I thought that I would share my findings, as
-it was easier to find examples of people with similar questions rather
-than concrete answers to those questions (though eventually I found
-both).</p>
+or Poisson distribution. The NB distribution has been used to model
+count data across scientific disciplines. The usage that is most
+relevant to my interests, however, is its use in describing genomic
+data. While the need doesn’t often arise in genomic applications to
+calculate the sum of NB distributions, there are some personal areas of
+interest where doing so may be useful. As such, I sought to better
+understand the sum of NB random variables with arbitrary parameters. I
+thought that I would share my findings, as it was easier to find
+examples of people with similar questions rather than concrete answers
+to those questions (though eventually I found both).</p>
 
 <p>Before I get into the sums of independent NB distributions, however, I
 should define the parameters of a NB distribution. There are many
@@ -397,7 +397,7 @@ where $k = 0,1,2,…$ and $\delta_0=1$,</p>
 recursive parameter that is computed for each term included in the
 series. What’s more, for every count value at which the PMF is
 evaluated, the sum is taken over every $k$. This can make for a pretty
-cumbersome calculation when the number of terms and/or the vector length
+intensive calculation when the number of terms and/or the vector length
 of counts is large. In addition, because the number of terms over which
 the sum is evaluated cannot be infinite, evaluation of Furman’s PMF is
 <i>technically </i> an approximation (but a very, very good one). A more
@@ -510,7 +510,7 @@ $K(t)$ isn’t too difficult. The trickier part is in ensuring the target
 CGF is twice differentiable. Fortunately, the CGF of the NB distribution
 is!</p>
 
-<p>With $K(t)$, $K^\prime(t)$, and $K^{\prime}{\prime}(t)$ in hand, the
+<p>With $K(t)$, $K^\prime(t)$, and $K^{\prime\prime}(t)$ in hand, the
 saddlepoint approximation then requires finding the saddlepoint $s_x$ at
 a given $x$ by solving the equation</p>
 
@@ -563,6 +563,8 @@ the future.</p>
 <p>and then load the package</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">nbconv</span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt; Loading required package: parallel</span><span class="w">
+</span><span class="c1">#&gt; Loading required package: matrixStats</span><span class="w">
 </span></code></pre></div></div>
 
 <h3 id="sample-data">Sample data</h3>
@@ -650,9 +652,7 @@ each distribution.</p>
 <p>As expected, the first distribution is approximately symmetrical about
 the mean while the second is highly tailed. Interestingly, despite their
 wildly different shapes, the distributions have similar means (60296.93
-and 60281.21, respectively, denoted by the blue vertical lines). Is this
-difference real, or is it simple sampling error? I suppose we’re likely
-to find out soon!</p>
+and 60281.21, respectively, denoted by the blue vertical lines).</p>
 
 <p>For the purposes of downstream analysis, I want to define the maximum
 number of counts at which I want to evaluated the respective
@@ -763,10 +763,7 @@ numbers of terms?</p>
 <p>Evaluation of chunk above to <code>TRUE</code> indicates that there is
 no material advantage to increasing the number of terms beyond what the
 function will allow. The function contains built-in checks to ensure
-that the number of terms is sufficient to give accurate density values.
-These checks are the same as in <a href="https://github.com/slundberg/NBConvolution.jl/blob/master/src/furman.jl">Scott Lundberg’s
-implementation</a>
-in Julia.</p>
+that the number of terms is sufficient to give accurate density values.</p>
 
 <h4 id="method-comparison">Method comparison</h4>
 
@@ -804,14 +801,15 @@ clunky, but it does what I want it to do.</p>
                                                </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w"> 
                                                </span><span class="n">counts.start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> 
                                                </span><span class="n">counts.end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">,</span><span class="w">
-                                               </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))[</span><span class="m">3</span><span class="p">],</span><span class="w">
+                                               </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
+                                               </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">))[</span><span class="m">3</span><span class="p">],</span><span class="w">
       </span><span class="n">system.time</span><span class="p">(</span><span class="w">
-        </span><span class="n">sum.saddlepoint.parallel1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">nb_sum_saddlepoint_parallel</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w">
-                                                                 </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w"> 
-                                                                 </span><span class="n">counts.start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> 
-                                                                 </span><span class="n">counts.end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">,</span><span class="w">
-                                                                 </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> 
-                                                                 </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">))[</span><span class="m">3</span><span class="p">],</span><span class="w">
+        </span><span class="n">sum.saddlepoint.parallel1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">nb_sum_saddlepoint</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w">
+                                                        </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w"> 
+                                                        </span><span class="n">counts.start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> 
+                                                        </span><span class="n">counts.end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">,</span><span class="w">
+                                                        </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> 
+                                                        </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">))[</span><span class="m">3</span><span class="p">],</span><span class="w">
       </span><span class="n">system.time</span><span class="p">(</span><span class="w">
         </span><span class="n">sum.moments1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">nb_sum_moments</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> 
                                        </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w"> 
@@ -819,8 +817,6 @@ clunky, but it does what I want it to do.</p>
                                        </span><span class="n">counts.end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">))[</span><span class="m">3</span><span class="p">]</span><span class="w">
     </span><span class="p">)</span><span class="w">
   </span><span class="p">)</span><span class="w">
-</span><span class="c1">#&gt; Loading required package: parallel</span><span class="w">
-</span><span class="c1">#&gt; Loading required package: matrixStats</span><span class="w">
 </span></code></pre></div></div>
 
 <p>Let’s visualize the runtimes…</p>
@@ -940,7 +936,7 @@ calculated values.</p>
         </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"none"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">scale_x_continuous</span><span class="p">(</span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">scale_y_continuous</span><span class="p">(</span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-30</span><span class="p">,</span><span class="w"> </span><span class="m">-5</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Counts</span><span class="o">~</span><span class="p">(</span><span class="n">x</span><span class="o">~</span><span class="m">10</span><span class="o">^</span><span class="m">5</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"log(Probability)"</span><span class="p">)</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Counts"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"log(Probability)"</span><span class="p">)</span><span class="w">
 
 </span><span class="n">methods.dist.plot1</span><span class="w">
 </span></code></pre></div></div>
@@ -983,7 +979,7 @@ this runtime penalty worth it? Comparison of the calculated densities to
 the empirical distribution might help answer this question.</p>
 
 <p><img src="../figures/2023-02-01/distributions2-1.png" width="80%" style="display: block; margin: auto;" />
-The exact method is the only evaluation method that describes the
+<br /> The exact method is the only evaluation method that describes the
 empirical distribution well. The saddlepoint approximation is closer to
 the empirical distribution than the method of moments approximation, but
 it still shows systematic errors. The method of moments approximation is
