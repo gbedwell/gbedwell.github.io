@@ -451,6 +451,13 @@ popped up beforehand…). Therefore, implementing Vellaisamy’s PMF for the
 sum of even a moderate number of NB distributions is impractical, if not
 effectively impossible.</p>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#&gt; ℹ Please use `linewidth` instead.
+#&gt; This warning is displayed once every 8 hours.
+#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#&gt; generated.
+</code></pre></div></div>
+
 <p><img src="../figures/2023-02-01/nni_combos-1.png" width="80%" style="display: block; margin: auto;" /></p>
 
 <h3 id="alternative-approaches">Alternative approaches</h3>
@@ -726,36 +733,24 @@ digits. How does this limit impact the densities computed with varying
 numbers of terms?</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">all</span><span class="p">(</span><span class="w">
-  </span><span class="n">isTRUE</span><span class="p">(</span><span class="w">
-    </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.100</span><span class="p">,</span><span class="w">
-              </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-              </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">)</span><span class="w">
-    </span><span class="p">),</span><span class="w">  
-  </span><span class="n">isTRUE</span><span class="p">(</span><span class="w">
-    </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.250</span><span class="p">,</span><span class="w">
-              </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-              </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">)</span><span class="w">
-    </span><span class="p">),</span><span class="w">
-  </span><span class="n">isTRUE</span><span class="p">(</span><span class="w">
-    </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.500</span><span class="p">,</span><span class="w">
-              </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-              </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">)</span><span class="w">
-    </span><span class="p">),</span><span class="w">
-  </span><span class="n">isTRUE</span><span class="p">(</span><span class="w">
-    </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.1000</span><span class="p">,</span><span class="w">
-              </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-              </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">)</span><span class="w">
-    </span><span class="p">),</span><span class="w">
-  </span><span class="n">isTRUE</span><span class="p">(</span><span class="w">
-    </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.2500</span><span class="p">,</span><span class="w">
-              </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-              </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">)</span><span class="w">
-    </span><span class="p">),</span><span class="w">
-  </span><span class="n">isTRUE</span><span class="p">(</span><span class="w">
-    </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.5000</span><span class="p">,</span><span class="w">
-              </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-              </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">)</span><span class="w">
-    </span><span class="p">)</span><span class="w">
+  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.100</span><span class="p">,</span><span class="w">
+            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
+            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">),</span><span class="w">  
+  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.250</span><span class="p">,</span><span class="w">
+            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
+            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">),</span><span class="w">
+  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.500</span><span class="p">,</span><span class="w">
+            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
+            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">),</span><span class="w">
+  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.1000</span><span class="p">,</span><span class="w">
+            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
+            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">),</span><span class="w">
+  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.2500</span><span class="p">,</span><span class="w">
+            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
+            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">),</span><span class="w">
+  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.5000</span><span class="p">,</span><span class="w">
+            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
+            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">)</span><span class="w">
   </span><span class="p">)</span><span class="w">
 </span><span class="c1">#&gt; [1] TRUE</span><span class="w">
 </span></code></pre></div></div>
@@ -875,20 +870,15 @@ using the other two methods should sum to 1 by definition. So, as a
 sanity check, I will make sure this is true (to the stated limit).</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">all</span><span class="p">(</span><span class="w">
-  </span><span class="n">isTRUE</span><span class="p">(</span><span class="w">
-    </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">sum.exact1</span><span class="p">),</span><span class="w">
-              </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
-              </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-10</span><span class="p">)</span><span class="w">
-    </span><span class="p">),</span><span class="w">
-  </span><span class="n">isTRUE</span><span class="p">(</span><span class="w">
-    </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">sum.saddlepoint1</span><span class="p">),</span><span class="w">
-              </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
-              </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-10</span><span class="p">)</span><span class="w">
-    </span><span class="p">),</span><span class="w">
-  </span><span class="n">isTRUE</span><span class="p">(</span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">sum.moments1</span><span class="p">),</span><span class="w">
-                   </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
-                   </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-10</span><span class="p">)</span><span class="w">
-  </span><span class="p">)</span><span class="w">
+  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">sum.exact1</span><span class="p">),</span><span class="w">
+            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
+            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-10</span><span class="p">),</span><span class="w">
+  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">sum.saddlepoint1</span><span class="p">),</span><span class="w">
+            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
+            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-10</span><span class="p">),</span><span class="w">
+  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">sum.moments1</span><span class="p">),</span><span class="w">
+            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
+            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-10</span><span class="p">)</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="c1">#&gt; [1] TRUE</span><span class="w">
 </span></code></pre></div></div>
