@@ -153,6 +153,12 @@ popped up beforehand…). Therefore, implementing Vellaisamy’s PMF for the
 sum of even a moderate number of NB distributions is impractical, if not
 effectively impossible.
 
+    #> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    #> ℹ Please use `linewidth` instead.
+    #> This warning is displayed once every 8 hours.
+    #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    #> generated.
+
 <img src="../figures/2023-02-01/nni_combos-1.png" width="80%" style="display: block; margin: auto;" />
 
 ### Alternative approaches
@@ -437,36 +443,24 @@ numbers of terms?
 
 ``` r
 all(
-  isTRUE(
-    all.equal(target = sum.exact.100,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    ),  
-  isTRUE(
-    all.equal(target = sum.exact.250,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    ),
-  isTRUE(
-    all.equal(target = sum.exact.500,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    ),
-  isTRUE(
-    all.equal(target = sum.exact.1000,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    ),
-  isTRUE(
-    all.equal(target = sum.exact.2500,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    ),
-  isTRUE(
-    all.equal(target = sum.exact.5000,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    )
+  all.equal(target = sum.exact.100,
+            current = sum.exact.10000,
+            tolerance = 1e-16),  
+  all.equal(target = sum.exact.250,
+            current = sum.exact.10000,
+            tolerance = 1e-16),
+  all.equal(target = sum.exact.500,
+            current = sum.exact.10000,
+            tolerance = 1e-16),
+  all.equal(target = sum.exact.1000,
+            current = sum.exact.10000,
+            tolerance = 1e-16),
+  all.equal(target = sum.exact.2500,
+            current = sum.exact.10000,
+            tolerance = 1e-16),
+  all.equal(target = sum.exact.5000,
+            current = sum.exact.10000,
+            tolerance = 1e-16)
   )
 #> [1] TRUE
 ```
@@ -589,20 +583,15 @@ sanity check, I will make sure this is true (to the stated limit).
 
 ``` r
 all(
-  isTRUE(
-    all.equal(target = sum(sum.exact1),
-              current = 1,
-              tolerance = 1e-10)
-    ),
-  isTRUE(
-    all.equal(target = sum(sum.saddlepoint1),
-              current = 1,
-              tolerance = 1e-10)
-    ),
-  isTRUE(all.equal(target = sum(sum.moments1),
-                   current = 1,
-                   tolerance = 1e-10)
-  )
+  all.equal(target = sum(sum.exact1),
+            current = 1,
+            tolerance = 1e-10),
+  all.equal(target = sum(sum.saddlepoint1),
+            current = 1,
+            tolerance = 1e-10),
+  all.equal(target = sum(sum.moments1),
+            current = 1,
+            tolerance = 1e-10)
 )
 #> [1] TRUE
 ```

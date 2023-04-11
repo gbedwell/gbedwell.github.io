@@ -345,36 +345,24 @@ In principle, the accuracy of the exact evaluation should improve as the number 
 
 ```{r}
 all(
-  isTRUE(
-    all.equal(target = sum.exact.100,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    ),  
-  isTRUE(
-    all.equal(target = sum.exact.250,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    ),
-  isTRUE(
-    all.equal(target = sum.exact.500,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    ),
-  isTRUE(
-    all.equal(target = sum.exact.1000,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    ),
-  isTRUE(
-    all.equal(target = sum.exact.2500,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    ),
-  isTRUE(
-    all.equal(target = sum.exact.5000,
-              current = sum.exact.10000,
-              tolerance = 1e-16)
-    )
+  all.equal(target = sum.exact.100,
+            current = sum.exact.10000,
+            tolerance = 1e-16),  
+  all.equal(target = sum.exact.250,
+            current = sum.exact.10000,
+            tolerance = 1e-16),
+  all.equal(target = sum.exact.500,
+            current = sum.exact.10000,
+            tolerance = 1e-16),
+  all.equal(target = sum.exact.1000,
+            current = sum.exact.10000,
+            tolerance = 1e-16),
+  all.equal(target = sum.exact.2500,
+            current = sum.exact.10000,
+            tolerance = 1e-16),
+  all.equal(target = sum.exact.5000,
+            current = sum.exact.10000,
+            tolerance = 1e-16)
   )
 ```
 
@@ -452,20 +440,15 @@ Before proceeding too much further, I want to make sure that each of the three f
 
 ```{r}
 all(
-  isTRUE(
-    all.equal(target = sum(sum.exact1),
-              current = 1,
-              tolerance = 1e-10)
-    ),
-  isTRUE(
-    all.equal(target = sum(sum.saddlepoint1),
-              current = 1,
-              tolerance = 1e-10)
-    ),
-  isTRUE(all.equal(target = sum(sum.moments1),
-                   current = 1,
-                   tolerance = 1e-10)
-  )
+  all.equal(target = sum(sum.exact1),
+            current = 1,
+            tolerance = 1e-10),
+  all.equal(target = sum(sum.saddlepoint1),
+            current = 1,
+            tolerance = 1e-10),
+  all.equal(target = sum(sum.moments1),
+            current = 1,
+            tolerance = 1e-10)
 )
 ```
 
