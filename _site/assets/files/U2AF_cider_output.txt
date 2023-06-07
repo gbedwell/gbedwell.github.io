@@ -1,7 +1,0 @@
-Parameter                         Value
------------------------------  --------
-Kappa                          0.189578
-Net Charge per Residue         0.244444
-Fraction of Charged Residues   0.577778
-Fraction of Negative Residues  0.166667
-Fraction of Positive Residues  0.411111

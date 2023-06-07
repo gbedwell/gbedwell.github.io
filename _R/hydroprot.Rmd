@@ -50,6 +50,7 @@ install.packages("reticulate")
 
 ```{r}
 library(reticulate)
+use_condaenv(condaenv = 'python310', required = TRUE)
 gget <- import("gget")
 ```
 

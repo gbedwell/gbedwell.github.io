@@ -1,686 +1,208 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-04-11T10:56:27-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Undefined Functions</title><subtitle></subtitle><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><entry><title type="html">Evaluating the sums of arbitrary negative binomial distributions</title><link href="http://localhost:4000/nb-convolutions/" rel="alternate" type="text/html" title="Evaluating the sums of arbitrary negative binomial distributions" /><published>2023-02-01T00:00:00-05:00</published><updated>2023-02-01T00:00:00-05:00</updated><id>http://localhost:4000/nb-convolutions</id><content type="html" xml:base="http://localhost:4000/nb-convolutions/"><![CDATA[<h3 id="introduction-to-the-nb-distribution">Introduction to the NB distribution</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-06-07T15:10:21-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Undefined Functions</title><subtitle></subtitle><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><entry><title type="html">nbconv</title><link href="http://localhost:4000/nb-convolutions/" rel="alternate" type="text/html" title="nbconv" /><published>2023-02-01T00:00:00-05:00</published><updated>2023-02-01T00:00:00-05:00</updated><id>http://localhost:4000/nb-convolutions</id><content type="html" xml:base="http://localhost:4000/nb-convolutions/"><![CDATA[<h3 id="introduction">Introduction</h3>
 
 <p>The negative binomial (NB) distribution is widely used to model count
-data whose variance is greater than expected given a standard binomial
-or Poisson distribution. The NB distribution has been used to model
-count data across scientific disciplines. The usage that is most
-relevant to my interests, however, is its use in describing genomic
-data. While the need doesn’t often arise in genomic applications to
-calculate the sum of NB distributions, there are some personal areas of
-interest where doing so may be useful. As such, I sought to better
-understand the sum of NB random variables with arbitrary parameters. I
-thought that I would share my findings, as it was easier to find
-examples of people with similar questions rather than concrete answers
-to those questions (though eventually I found both).</p>
+data whose variance is greater than expected given other discrete
+probability distributions. The ability to account for overdispersion in
+observed data using the NB distribution has led to its application
+across a wide range scientific disciplines as an alternative to Poisson
+models. Recently, I was interested in evaluating the sum of independent
+but not identically distributed negative binomial random variables
+(r.v.s). I discovered relatively quickly, however, that a
+straightforward solution to this problem doesn’t really exist. The exact
+solutions that have been published by
+<a href="https://www.researchgate.net/publication/23635822_On_the_convolution_of_the_negative_binomial_random_variables">Furman</a>
+and <a href="https://www.jstor.org/stable/25662420">Vellaisamy</a> both have
+significant computational drawbacks. Approximate methods have also been
+<a href="https://www.martinmodrak.cz/2019/06/20/approximate-densities-for-sums-of-variables-negative-binomials-and-saddlepoint/">described</a>
+for such sums, which largely alleviate the computational burdens of the
+exact methods, but at the potential cost of numeric accuracy. What
+really befuddled me, however, was the fact that I was unable to find any
+widely accessible package/tool/etc. that would let me easily apply
+any/all of these methods to actual data. As such, I wrote the R package
+that I felt was missing: <code>nbconv</code>.</p>
 
-<p>Before I get into the sums of independent NB distributions, however, I
-should define the parameters of a NB distribution. There are many
-equivalent parameterizations of NB distributions. Perhaps the most
-common are: $ Y \sim NB(\phi, p) $, $ Y \sim NB(\phi, \mu) $, and $
-Y \sim NB(\alpha, \mu) $. In these formulations, $p$ is the probability
-of success of a single trial, $\mu$ is the distribution mean, and $\phi$
-and $\alpha$ are different representations of the dispersion parameter.
-As the name suggests, the dispersion parameter describes the spread of
-the distribution and is related to the distribution variance through the
-equation</p>
+<p>The current version of <code>nbconv</code> can be found on
+<a href="https://cran.r-project.org/package=nbconv">CRAN</a> and the developmental
+version can be found on <a href="https://github.com/gbedwell/nbconv">GitHub</a>.</p>
 
-\[Var(Y) = \mu + \frac{\mu^2}{\phi}\]
+<h3 id="package-description">Package description</h3>
 
-<p>$\phi$ can be replaced with $\alpha$ through the relationship</p>
+<p><code>nbconv</code> was written with the same general syntax as other
+distribution functions in R. The package has 5 principal functions:
+<code>dnbconv()</code>, <code>pnbconv()</code>, <code>qnbconv()</code>,
+<code>rnbconv()</code>, and <code>nbconv_params()</code>. The first four
+of these return the mass function (PMF), distribution function (CDF),
+quantile function, and random deviates, respectively, for the
+convolution of NB r.v.s. The function <code>nbconv_params()</code>
+returns summary statistics of a given NB convolution based on its
+moments. The signatures for the 5 principal functions are:</p>
 
-\[\alpha = \frac{1}{\phi}\]
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dnbconv</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"moments"</span><span class="p">,</span><span class="w"> </span><span class="s2">"saddlepoint"</span><span class="p">),</span><span class="w"> 
+</span><span class="n">n.terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-3</span><span class="p">,</span><span class="w"> </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
 
-<p>In addition, $p$ and $\mu$ are related by the equation</p>
+</span><span class="n">pnbconv</span><span class="p">(</span><span class="n">quants</span><span class="p">,</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"moments"</span><span class="p">,</span><span class="w"> </span><span class="s2">"saddlepoint"</span><span class="p">),</span><span class="w">
+</span><span class="n">n.terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-3</span><span class="p">,</span><span class="w"> </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
 
-\[p = \frac{\phi}{\phi + \mu}\]
+</span><span class="n">qnbconv</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span><span class="w"> </span><span class="n">counts</span><span class="p">,</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"moments"</span><span class="p">,</span><span class="w"> </span><span class="s2">"saddlepoint"</span><span class="p">),</span><span class="w">
+</span><span class="n">n.terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-3</span><span class="p">,</span><span class="w"> </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
 
-<p>Conveniently, all three of the parameterizations listed above can be
-readily interconverted. To be consistent with the typical R
-parameterization of the NB distribution, all of the functions that I
-describe below take as input either $\mu$ or $p$ and expect $\phi$ as
-the dispersion parameter.</p>
+</span><span class="n">rnbconv</span><span class="p">(</span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="p">,</span><span class="w"> </span><span class="n">n.samp</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
 
-<h3 id="exact-solutions">Exact solutions</h3>
-
-<p>Convolutions of NB random variables take a closed form only when the
-probabilities of success are the same across the random variables being
-summed. That is, for random variables $Y_i \sim NB(\phi_i,p)$,
-$\sum Y_i \sim NB(\sum \phi_i, p)$. It is easy to imagine
-situations, however, when both $\phi$ <i>and</i> $p$ vary. What, then,
-is the distribution of the sum of these random variables?</p>
-
-<p><a href="https://ssrn.com/abstract=1650365">Furman</a> was the first to derive an
-exact expression for the PMF of the sum of NB random variables with
-arbitrary parameters. As an interesting note, he additionally showed
-that the distribution of the sum is negative binomially distributed,
-<i>but with an additional random term</i>. The PMF derived by Furman is</p>
-
-\[P(X=x) = R \sum \limits_{k=0}^\infty \delta_k \frac{\Gamma(\phi + x + k)}{\Gamma(\phi + k)x!} p_1^{\phi + k} (1-p_1)^x\]
-
-<p>where,</p>
-
-<p>\(R = \prod \limits_{j=1}^n \Bigl ( \frac{q_jp_1}{q_1p_j}\Bigr )^{-\phi_j}\),</p>
-
-<p>\(\delta_{k+1}  = \frac{1}{k+1} \sum \limits_{i=1}^{k+1} i\xi_i\delta_{k+1-i}\),
-where $k = 0,1,2,…$ and $\delta_0=1$,</p>
-
-<p>\(\xi_i = \sum \limits_{j=1}^n \frac{ \phi_j(1-q_1p_j/q_jp_1)^i }{i}\),</p>
-
-<p>\(q_j = 1-p_j\),</p>
-
-<p>\(p_1 = \max(p_j)\),</p>
-
-<p>\(q_1 = 1-p_1\), and</p>
-
-<p>\(\phi = \sum \limits_{j=1}^n \phi_j\).</p>
-
-<p>Furman’s PMF is a series representation that depends on $\delta_k$, a
-recursive parameter that is computed for each term included in the
-series. What’s more, for every count value at which the PMF is
-evaluated, the sum is taken over every $k$. This can make for a pretty
-intensive calculation when the number of terms and/or the vector length
-of counts is large. In addition, because the number of terms over which
-the sum is evaluated cannot be infinite, evaluation of Furman’s PMF is
-<i>technically </i> an approximation (but a very, very good one). A more
-compact exact expression was <a href="https://www.jstor.org/stable/25662420">published by
-Vellaisamy</a> a couple of years
-after Furman’s. However, this representation requires enumerating all
-possible ways that $n$ non-negative integers can sum to $m$, where $m$
-is the maximum value of counts for which the PMF is being evaluated.
-This quickly becomes unwieldy for all but the smallest $n$ and $m$.
-Below, I’ll demonstrate why.</p>
-
-<p>The number of ways $n$ non-negative integers can sum to to $m$ is</p>
-
-\[\frac{(m + n - 1)!}{(n-1)!m!}\]
-
-<p>We can write a simple function to evaluate this equation for a handful
-of $m$ and $n$ values. I’ll use the log scale for this because as $m$
-increases, computing $m!$ is going to run into overflow problems.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nni_combos</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">){</span><span class="w">
-  </span><span class="nf">exp</span><span class="p">(</span><span class="n">lfactorial</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="m">-1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">lfactorial</span><span class="p">(</span><span class="n">n</span><span class="m">-1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">lfactorial</span><span class="p">(</span><span class="n">m</span><span class="p">)))</span><span class="w">
-</span><span class="p">}</span><span class="w">
+</span><span class="n">nbconv_params</span><span class="p">(</span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">ps</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p>Defining vectors of $m$ counts and $n$ non-negative integers to plug
-into the function, we can calculate the number of possible combinations
-at each $m$ for each $n$.</p>
+<p>The parameterization of the NB distribution used in <code>nbconv</code>
+is the same as the parameterization used by
+<code>stats::d/p/q/rnbinom()</code>. All of the <code>nbconv</code>
+functions take as input vectors of either constituent distribution means
+(<code>mus</code>) or probabilities of success (<code>ps</code>) and
+consitutent distribution dispersion parameters (<code>phis</code>,
+referred to as <code>size</code> in <code>stats</code>).</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m.vec</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="m">25</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="m">100</span><span class="p">,</span><span class="w"> </span><span class="m">250</span><span class="p">,</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="m">1000</span><span class="p">)</span><span class="w">
-</span><span class="n">n.vec</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">2</span><span class="o">:</span><span class="m">10</span><span class="w">
-
-</span><span class="n">ways</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w">
-  </span><span class="n">sapply</span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.vec</span><span class="p">,</span><span class="w">
-         </span><span class="n">FUN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-           </span><span class="n">nni_combos</span><span class="p">(</span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m.vec</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w">
-           </span><span class="p">}))</span><span class="w">
-
-</span><span class="n">colnames</span><span class="p">(</span><span class="n">ways</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="s2">"n="</span><span class="p">,</span><span class="w"> </span><span class="n">n.vec</span><span class="p">)</span><span class="w">
-</span><span class="n">rownames</span><span class="p">(</span><span class="n">ways</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="s2">"m="</span><span class="p">,</span><span class="w"> </span><span class="n">m.vec</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<p>The heat map below shows how quickly the number of possible combinations
-increases. For the sum of even a handful of distributions, the number of
-possible combinations exceeds $1 \times 10^9$ as $m$ reaches
-$10^2 - 10^3$ (qualifying values are enumerated in the plot on the
-linear scale). Matrices and other arrays in R have an index limit of
-$2^{31}-1$ per dimension, or ~$2.15 \times 10^9$. Longer vectors are
-possible — up to $2^{52}$ elements (~$4.50 \times 10^{15}$) — but even
-this limit would be reached fairly quickly (assuming no memory issues
-popped up beforehand…). Therefore, implementing Vellaisamy’s PMF for the
-sum of even a moderate number of NB distributions is impractical, if not
-effectively impossible.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-#&gt; ℹ Please use `linewidth` instead.
-#&gt; This warning is displayed once every 8 hours.
-#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#&gt; generated.
-</code></pre></div></div>
-
-<p><img src="../figures/2023-02-01/nni_combos-1.png" width="80%" style="display: block; margin: auto;" /></p>
-
-<h3 id="alternative-approaches">Alternative approaches</h3>
-
-<p>Should evaluation of Furman’s PMF become impractical due to the
-aforementioned computational bottlenecks, what alternatives exist to
-evaluate NB convolutions? Martin Modrák has written a wonderful <a href="https://www.martinmodrak.cz/2019/06/20/approximate-densities-for-sums-of-variables-negative-binomials-and-saddlepoint/">blog
+<p>The PMF, CDF, and quantile functions all require specification of the
+evaluation method. In <code>nbconv</code>, these are: Furman’s exact
+equation (<code>method = “exact”</code>), a method of moments
+approximation (<code>method = “moments”</code>), and the saddlepoint
+approximation (<code>method = “saddlepoint”</code>). I’ll avoid the gory
+mathematical details of the evaluation methods in this post, but a
+detailed description can be found
+<a href="https://gbedwell.github.io/files/nbconv_background.pdf">here</a>. To give
+credit where it is due, Martin Modrák’s <a href="https://www.martinmodrak.cz/2019/06/20/approximate-densities-for-sums-of-variables-negative-binomials-and-saddlepoint/">blog
 post</a>
-describing two approximate methods for evaluating the sums in question:
-saddlepoint approximation and a simpler method of moments approach.</p>
+was my inspiration to include the saddlepoint approximation in
+<code>nbconv</code>.</p>
 
-<h4 id="method-of-moments">Method of moments</h4>
+<p>Other method-specific variables can also be user-defined in these
+functions. The variables <code>n.terms</code> and <code>tolerance</code>
+only pertain to evaluation via Furman’s exact function and define 1) the
+number of terms included in the series and 2) how close the sum of the
+PMF of the mixture r.v. $K$ (see the <a href="https://gbedwell.github.io/files/nbconv_background.pdf">method
+descriptions</a>)
+must be to 1 to be accepted, respectively. The threshold defined via
+<code>tolerance</code> serves as a way to ensure that the number of
+terms included in the series sufficiently describe the possible values
+of $K$. The variable <code>normalize</code> pertains to evaluation via
+the saddlepoint approximation and defines whether or not the saddlepoint
+density should be normalized to sum to 1, since the saddlepoint PMF is
+not guaranteed to do so. Evaluation of the mass, distribution, and
+quantile functions via the exact or the saddlepoint methods, as well as
+generation of random deviates via <code>rnbconv()</code>, can be
+parallelized by setting <code>n.cores</code> to a value greater than 1.
+It should be noted, however, that for the exact function, only
+evaluation of the PMF, and evaluation of the recursive parameters, are
+parallelized. Because of this, CPU time for evaluation of the exact
+function is linearly related to the number of terms included in the
+series. <code>rnbconv()</code> and <code>nbconv_params()</code> work
+independently of the evaluation methods described above. The variable
+<code>n.samp</code> in <code>rnbconv()</code> defines the number of
+random deviates to be sampled from the target convolution.</p>
 
-<p>The method of moments approach is fairly intuitive and easy to
-implement. Briefly, because both the mean and variance of independent
-random variables are linear operators, for random variables
-$Y_i \sim NB(\phi_i, \mu_i)$,</p>
+<h3 id="examples">Examples</h3>
 
-\[\mathbb{E} \Bigl( \sum Y_i \Bigr) = \sum \mu_i\]
-
-\[Var \Bigl( \sum Y_i \Bigr) = \sum \Bigl( \mu_i + \frac{\mu^2}{\phi} \Bigr)\]
-
-<p>It follows from this observation that the sum of NB random variables
-might be well approximated by the combined mean $\bar \mu$ and
-dispersion parameter $\bar \phi$ plugged into a standard NB
-distribution.</p>
-
-<p>In other words,</p>
-
-\[\sum Y_i \sim NB(\bar \phi, \bar \mu)\]
-
-<p>where,</p>
-
-\[\bar  \mu = \sum \mu_i\]
-
-<p>and</p>
-
-\[\bar  \phi = \frac{\bigl( \sum \mu_i\bigr)^2 }{ \sum \frac{\mu_i^2}{\phi_i} }\]
-
-<p><br /></p>
-
-<h4 id="saddlepoint-approximation">Saddlepoint approximation</h4>
-
-<p>The saddlepoint approximation is slightly more complicated. I don’t want
-to go into too much detail here, but I want to give enough information
-so that the general idea can be easily followed. Martin provides more
-mathematical detail in his post. If you’re curious, I encourage you to
-visit his page for more information.</p>
-
-<p>The saddlepoint approximation requires knowing the cumulant generating
-function $K(t)$ of a target distribution, as well as $K(t)$’s first and
-second derivatives, $K^\prime(t)$ and $K^{\prime\prime}(t)$,
-respectively. By definition, $K(t)$ is just the log of the moment
-generating function, or $ K(t) = log \,\mathbb{E}[e^{tX}] $. MGFs
-for most well-known distributions are easily found online, so obtaining
-$K(t)$ isn’t too difficult. The trickier part is in ensuring the target
-CGF is twice differentiable. Fortunately, the CGF of the NB distribution
-is!</p>
-
-<p>With $K(t)$, $K^\prime(t)$, and $K^{\prime\prime}(t)$ in hand, the
-saddlepoint approximation then requires finding the saddlepoint $s_x$ at
-a given $x$ by solving the equation</p>
-
-\[K^\prime(s_x) = x\]
-
-<p>Then, with $s_x$ known, the probability density at $x$ is approximated
-by</p>
-
-\[f(x) \simeq \frac{1}{\sqrt {2 \pi K^{\prime\prime} (s_x)}} \exp({K(s_x)-xs_x})\]
-
-<p>Martin conveniently derived $K(t)$, $K^\prime(t)$, and
-$K^{\prime\prime}(t)$ for NB distributions in his blog post. I will
-repost those equations here, but all credit for their derivation goes to
-him. The three equations I am interested in are:</p>
-
-\[K(t)  = \sum \limits_{i=1}^n \phi_i[log(\phi_i) - log(\phi_i + \mu_i(1−e^t))]\]
-
-\[K^\prime(t) = \sum \limits_{i=1}^n \frac{\phi_i\mu_ie^t}{\phi_i + \mu_i(1-e^t)}\]
-
-\[K^{\prime\prime}(t) = \sum \limits_{i=1}^n \frac{\phi_i\mu_i(\phi_i + \mu_i)e^t}{(\phi_i + \mu_i(1-e^t))^2}\]
-
-<p>As noted by Martin, and as you can deduce from the equation for $K’(t)$
-above, $s_x$ is not defined for $x=0$. Therefore, $f(0)$ is evaluated as</p>
-
-\[f(0) = \prod_i P(X_i=0) = \prod_i NB(0 | \mu_i,\phi_i)\]
-
-<p>To give credit where its due, for the implementation of the NB
-saddlepoint approximation, I relied heavily on <a href="https://stats.stackexchange.com/questions/72479/generic-sum-of-gamma-random-variables/137318#137318">this
-post</a>
-to get my bearings.</p>
-
-<h3 id="package-information">Package information</h3>
-
-<p>I’ve wrapped up the functions to evaluate the sum of aribtrary NB
-distributions in the <code>nbconv</code> package, which can be
-downloaded from <a href="%22https://github.com/gbedwell/nbconv%22">GitHub</a>. All
-of the implementations included in this package are written in R, so
-they’re not expected to be as fast as implementations in C/C++ or a
-language like Stan that is translated to C/C++. Nevertheless, as it is
-currently written, <code>nbconv</code> provides an easy, R-compatible
-resource for computing the sums in question. I hope to improve
-performance by including C/C++ (or C/C++ interpreted) implementations in
-the future.</p>
-
-<p>To quickly install the package, use</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">devtools</span><span class="o">::</span><span class="n">install_github</span><span class="p">(</span><span class="n">repo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gbedwell/nbconv"</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<p>and then load the package</p>
+<p>To demonstrate general use of <code>nbconv</code> functions, I’ll
+generate some sample data. I’ll use the gamma distribution to ensure
+that $\mu ≥ 0$ and $\phi &gt; 0$.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">nbconv</span><span class="p">)</span><span class="w">
-</span><span class="c1">#&gt; Loading required package: parallel</span><span class="w">
-</span><span class="c1">#&gt; Loading required package: matrixStats</span><span class="w">
+
+</span><span class="n">set.seed</span><span class="p">(</span><span class="m">1234</span><span class="p">)</span><span class="w">
+</span><span class="n">mus</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rgamma</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">25</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3.5</span><span class="p">,</span><span class="w"> </span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3.5</span><span class="p">)</span><span class="w">
+
+</span><span class="n">set.seed</span><span class="p">(</span><span class="m">1234</span><span class="p">)</span><span class="w">
+</span><span class="n">phis</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rgamma</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">25</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<h3 id="sample-data">Sample data</h3>
+<p>Summary statistics of the convolution can be informative as to what
+methods might or might not work well with our data. I won’t go into too
+much detail here, but in general, the exact method provides the most
+accurate results but at what can be a steep computational cost. For
+convolutions of wildly different NB distributions and/or highly
+overdispersed distributions, the influence of the mixture distribution
+on the shape of the convolution grows. When this happens, the number of
+terms included in the series generally has to increase as well. Because
+the exact method depends on recursive parameters, this means linearly
+increasing computation time. However, in instances where the convolution
+is largely symmetric and/or doesn’t exhibit a large degree of kurtosis,
+the method of moments and saddlepoint approximations work pretty well.
+Anecdotally, the saddlepoint approximation is a little bit more robust
+to skewness and kurotosis than the method of moments approximation, but
+I won’t explore this point in any more detail here.</p>
 
-<p>To begin comparing methods, I’ll make some sample data.</p>
-
-<p>I’ll make two sample distributions — one somewhat symmetrical
-distribution and one with a heavier tail. The reason for the two
-distributions is that Martin showed that the saddlepoint approximation
-performed better than the method of moments approximation for the
-heavier tailed distribution, while the performance was more or less the
-same for the more symmetrical distribution.</p>
-
-<p>Each combined distribution will be composed of 50 individual NB
-distributions. The simulated $\mu$ values will be randomly sampled from
-a uniform distribution between 1 and 2500. For the symmetrical
-distribution, all 50 $\phi$ values will be sampled from a uniform
-distribution between 0 and 8. For the heavier tailed distribution, 25 of
-the $\phi$ values will be sampled from a unifrom distribution between 0
-and 10, while the other 25 $\phi$ values will be sampled from a uniform
-distribution between 0 and 1. This extra dispersion will generate the
-desired tail.</p>
-
-<p>In some respects, these are fairly extreme test data sets. While the
-number of distributions isn’t huge, it isn’t small, either. In addition,
-the means of the individual distributions are fairly large. I made the
-test data this way in an attempt to make the magnitude of the target
-distribution at least somewhat representative of the magnitude of the
-genomic data that I am most interested in. This will let me know how
-each of the three evaluation methods performs in the context that I am
-most likely to use them in. Inclusion of the heavier tailed distribution
-will additionally test the 3 evaluation methods in a rather extreme
-(though not necessarily commonly encountered) scenario.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">set.seed</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span><span class="w">
-</span><span class="n">mus</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">runif</span><span class="p">(</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2500</span><span class="p">)</span><span class="w">
-
-</span><span class="n">set.seed</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span><span class="w">
-</span><span class="n">phis1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">runif</span><span class="p">(</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">)</span><span class="w">
-
-</span><span class="n">set.seed</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span><span class="w">
-</span><span class="n">phis2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="n">phis1</span><span class="p">,</span><span class="w"> </span><span class="m">25</span><span class="p">,</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w">
-
-</span><span class="n">set.seed</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span><span class="w">
-</span><span class="n">phis2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">phis2</span><span class="p">,</span><span class="w"> </span><span class="n">runif</span><span class="p">(</span><span class="m">25</span><span class="p">,</span><span class="w"> </span><span class="n">min</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="o">=</span><span class="m">0.5</span><span class="p">))</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nbconv_params</span><span class="p">(</span><span class="w"> </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt;         mean       sigma2     skewness  ex.kurtosis       K.mean </span><span class="w">
+</span><span class="c1">#&gt; 259.98524927 722.99508196   0.17586635   0.04909827  26.26988006</span><span class="w">
 </span></code></pre></div></div>
 
-<p>With the distribution parameters defined, I’ll create empirical
-distributions using <code>nbconv::nb_empirical_sum()</code></p>
+<p>The output of <code>nbconv_params()</code> tells us that the convolution
+of the sample NB r.v.s is approximately symmetric and doesn’t exhibit
+much tailing. Because of this, we could probably get away with using any
+of the three evaluation methods. For the purposes of demonstration,
+however, I’ll go ahead and use them all. I’ll additionally calculate
+empirical probability masses from random deviates sampled using
+<code>rnbconv()</code> to serve as reference data.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">empirical.sum1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">nb_empirical_sum</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e6</span><span class="p">)</span><span class="w">
-</span><span class="n">empirical.sum2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">nb_empirical_sum</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis2</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e6</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">samps</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rnbconv</span><span class="p">(</span><span class="w"> </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">n.samp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e6</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">empirical</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">stats</span><span class="o">::</span><span class="n">density</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">samps</span><span class="p">,</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">500</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="o">$</span><span class="n">y</span><span class="w">
+
+</span><span class="n">exact</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dnbconv</span><span class="p">(</span><span class="w"> </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="p">,</span><span class="w"> 
+                  </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"exact"</span><span class="p">,</span><span class="w"> </span><span class="n">n.terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">moments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dnbconv</span><span class="p">(</span><span class="w"> </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"moments"</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">saddlepoint</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dnbconv</span><span class="p">(</span><span class="w"> </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="p">,</span><span class="w"> 
+                        </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"saddlepoint"</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p>and plot the respective histograms to get a better idea of the shapes of
-each distribution.</p>
+<p>For easier visualization, I’ll combine the four calculated probability
+mass vectors into a single long data frame.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">patchwork</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">empirical</span><span class="p">,</span><span class="w"> </span><span class="n">exact</span><span class="p">,</span><span class="w"> </span><span class="n">moments</span><span class="p">,</span><span class="w"> </span><span class="n">saddlepoint</span><span class="w"> </span><span class="p">)</span><span class="w">
 
-</span><span class="n">empirical.dist1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">empirical.sum1</span><span class="p">),</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray75"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">empirical.sum1</span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"darkblue"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">),</span><span class="w">
-        </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_x_continuous</span><span class="p">(</span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">35e3</span><span class="p">,</span><span class="w"> </span><span class="m">85e3</span><span class="p">),</span><span class="w">
-                     </span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">40e3</span><span class="p">,</span><span class="w"> </span><span class="m">50e3</span><span class="p">,</span><span class="w"> </span><span class="m">60e3</span><span class="p">,</span><span class="w"> </span><span class="m">70e3</span><span class="p">,</span><span class="w"> </span><span class="m">80e3</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Counts"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Frequency"</span><span class="p">)</span><span class="w">
+</span><span class="n">df</span><span class="o">$</span><span class="n">count</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="w"> </span><span class="p">)</span><span class="w">
 
-</span><span class="n">empirical.dist2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">empirical.sum2</span><span class="p">),</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray75"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">empirical.sum2</span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"darkblue"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">),</span><span class="w">
-        </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_x_continuous</span><span class="p">(</span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">10e3</span><span class="p">,</span><span class="w"> </span><span class="m">250e3</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Counts"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Frequency"</span><span class="p">)</span><span class="w">
+</span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">tidyr</span><span class="o">::</span><span class="n">pivot_longer</span><span class="p">(</span><span class="w"> </span><span class="n">cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">names_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"method"</span><span class="p">,</span><span class="w"> </span><span class="n">values_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"probability"</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">arrange</span><span class="p">(</span><span class="w"> </span><span class="n">method</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="p">)</span><span class="w">
 
-</span><span class="n">empirical.dist1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">empirical.dist2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">plot_layout</span><span class="p">(</span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+</span><span class="n">df</span><span class="o">$</span><span class="n">method</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="w"> </span><span class="n">df</span><span class="o">$</span><span class="n">method</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"empirical"</span><span class="p">,</span><span class="w"> </span><span class="s2">"exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"moments"</span><span class="p">,</span><span class="w"> </span><span class="s2">"saddlepoint"</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../figures/2023-02-01/empirical_distribution-1.png" width="80%" style="display: block; margin: auto;" />
-<br /></p>
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">ggplot2</span><span class="w"> </span><span class="p">)</span><span class="w">
 
-<p>As expected, the first distribution is approximately symmetrical about
-the mean while the second is highly tailed. Interestingly, despite their
-wildly different shapes, the distributions have similar means (60296.93
-and 60281.21, respectively, denoted by the blue vertical lines).</p>
-
-<p>For the purposes of downstream analysis, I want to define the maximum
-number of counts at which I want to evaluated the respective
-distributions. Based on the histogram of the first distribution,
-evaluating out to 100,000 counts seems sufficient for the probabilities
-to approach zero. For the second distribution, the slow rightward creep
-makes it a little more difficult to land on an end point. For
-computational brevity, I’ll say 300,000 is sufficient, though in reality
-I should probably go out a little farther.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">n.counts1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1e5</span><span class="w">
-</span><span class="n">n.counts2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">3e5</span><span class="w">
-</span></code></pre></div></div>
-
-<h3 id="evaluation-of-methods">Evaluation of methods</h3>
-
-<h4 id="impact-of-the-number-of-terms">Impact of the number of terms</h4>
-
-<p>Before comparing the three methods, I want to assess the impact of the
-number of terms on the evaluation of the exact function with respect to
-numeric accuracy. I want to be accurate, but I also don’t want to
-include so many terms that it unnecessarily prolongs evaluation. To
-assess accuracy, I will evaluate the probability densities for the first
-distribution using the exact method with 10000, 5000, 2500, 1000, 500,
-250, and 100 terms included, respectively.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">terms.time</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w">
-  </span><span class="n">terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="m">5000</span><span class="p">,</span><span class="w"> </span><span class="m">2500</span><span class="p">,</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="m">250</span><span class="p">,</span><span class="w"> </span><span class="m">100</span><span class="p">),</span><span class="w">
-  </span><span class="n">time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w">
-    </span><span class="n">sapply</span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span><span class="w"> </span><span class="m">5000</span><span class="p">,</span><span class="w"> </span><span class="m">2500</span><span class="p">,</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="m">250</span><span class="p">,</span><span class="w"> </span><span class="m">100</span><span class="p">),</span><span class="w">
-           </span><span class="n">FUN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="w">
-             </span><span class="n">system.time</span><span class="p">(</span><span class="w">
-               </span><span class="n">assign</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="s2">"sum.exact."</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">),</span><span class="w"> 
-                      </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nb_sum_exact</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w">
-                                           </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w">
-                                           </span><span class="n">n.terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w">
-                                           </span><span class="n">counts.start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">
-                                           </span><span class="n">counts.end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">),</span><span class="w">
-                      </span><span class="n">inherits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))[</span><span class="m">3</span><span class="p">]</span><span class="w">
-             </span><span class="p">}</span><span class="w">
-           </span><span class="p">)</span><span class="w">
-    </span><span class="p">)</span><span class="w">
-  </span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<p>I can additionally assess runtime. Runtime should increase as $O(N)$
-with the number of terms. The plot below verifies that expectation.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">terms.time.plot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">terms.time</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">terms</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">time</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"lm"</span><span class="p">,</span><span class="w"> </span><span class="n">se</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> 
-              </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray75"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3.5</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray50"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">),</span><span class="w">
-        </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Number of Terms"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Elapsed Time (s)"</span><span class="p">)</span><span class="w">
-
-</span><span class="n">terms.time.plot</span><span class="w">
-</span></code></pre></div></div>
-
-<p><img src="../figures/2023-02-01/terms_time-1.png" width="80%" style="display: block; margin: auto;" /></p>
-
-<p><br /></p>
-
-<p>In principle, the accuracy of the exact evaluation should improve as the
-number of terms increases. However, at some point the improvement in
-accuracy will become negligible, even as the computation time continues
-to increase linearly. In fact, with floating point arithmetic, there is
-defined limit to numeric precision. In R, that limit is 53 bits, or ~16
-digits. How does this limit impact the densities computed with varying
-numbers of terms?</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">all</span><span class="p">(</span><span class="w">
-  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.100</span><span class="p">,</span><span class="w">
-            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">),</span><span class="w">  
-  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.250</span><span class="p">,</span><span class="w">
-            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">),</span><span class="w">
-  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.500</span><span class="p">,</span><span class="w">
-            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">),</span><span class="w">
-  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.1000</span><span class="p">,</span><span class="w">
-            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">),</span><span class="w">
-  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.2500</span><span class="p">,</span><span class="w">
-            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">),</span><span class="w">
-  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.5000</span><span class="p">,</span><span class="w">
-            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum.exact.10000</span><span class="p">,</span><span class="w">
-            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-16</span><span class="p">)</span><span class="w">
-  </span><span class="p">)</span><span class="w">
-</span><span class="c1">#&gt; [1] TRUE</span><span class="w">
-</span></code></pre></div></div>
-
-<p>Evaluation of chunk above to <code>TRUE</code> indicates that there is
-no material advantage to increasing the number of terms beyond what the
-function will allow. The function contains built-in checks to ensure
-that the number of terms is sufficient to give accurate density values.</p>
-
-<h4 id="method-comparison">Method comparison</h4>
-
-<p>I now want to compare the exact method, the saddlepoint approximation,
-and the method of moments approximation for both speed and accuracy. I
-will do this for both of the distributions described above. To assess
-speed, I won’t be using <code>microbenchmark</code> for two reasons. The
-first is that because the number of counts that I’m evaluating over is
-large and I anticipate that some of the methods may take many seconds
-for each evaluation, the amount of time needed to repeat each evaluation
-numerous times is simply not worth it. The second is that I also want to
-output the densities for each method to assess accuracy. As such, I will
-use <code>base::system.time()</code> as I did before. The code is a bit
-clunky, but it does what I want it to do.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">methods.time1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w">
-  </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Exact - Parallel"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Saddlepoint"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Saddlepoint - Parallel"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Moments"</span><span class="p">),</span><span class="w">
-  </span><span class="n">time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w">
-    </span><span class="n">system.time</span><span class="p">(</span><span class="w">
-      </span><span class="n">sum.exact1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">nb_sum_exact</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w">
-                                 </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w"> 
-                                 </span><span class="n">n.terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100</span><span class="p">,</span><span class="w"> 
-                                 </span><span class="n">counts.start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> 
-                                 </span><span class="n">counts.end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">,</span><span class="w">
-                                 </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">))[</span><span class="m">3</span><span class="p">],</span><span class="w">
-      </span><span class="n">system.time</span><span class="p">(</span><span class="w">
-        </span><span class="n">sum.exact.parallel1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">nb_sum_exact</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w">
-                                            </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w">
-                                            </span><span class="n">n.terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100</span><span class="p">,</span><span class="w">
-                                            </span><span class="n">counts.start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">
-                                            </span><span class="n">counts.end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">,</span><span class="w">
-                                            </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">))[</span><span class="m">3</span><span class="p">],</span><span class="w">
-      </span><span class="n">system.time</span><span class="p">(</span><span class="w">
-        </span><span class="n">sum.saddlepoint1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">nb_sum_saddlepoint</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> 
-                                               </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w"> 
-                                               </span><span class="n">counts.start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> 
-                                               </span><span class="n">counts.end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">,</span><span class="w">
-                                               </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
-                                               </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">))[</span><span class="m">3</span><span class="p">],</span><span class="w">
-      </span><span class="n">system.time</span><span class="p">(</span><span class="w">
-        </span><span class="n">sum.saddlepoint.parallel1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">nb_sum_saddlepoint</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w">
-                                                        </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w"> 
-                                                        </span><span class="n">counts.start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> 
-                                                        </span><span class="n">counts.end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">,</span><span class="w">
-                                                        </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> 
-                                                        </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">))[</span><span class="m">3</span><span class="p">],</span><span class="w">
-      </span><span class="n">system.time</span><span class="p">(</span><span class="w">
-        </span><span class="n">sum.moments1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">nb_sum_moments</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> 
-                                       </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis1</span><span class="p">,</span><span class="w"> 
-                                       </span><span class="n">counts.start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> 
-                                       </span><span class="n">counts.end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">))[</span><span class="m">3</span><span class="p">]</span><span class="w">
-    </span><span class="p">)</span><span class="w">
-  </span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<p>Let’s visualize the runtimes…</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">methods.time1</span><span class="o">$</span><span class="n">method</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">methods.time1</span><span class="o">$</span><span class="n">method</span><span class="p">,</span><span class="w">
-                               </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Exact - Parallel"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Saddlepoint"</span><span class="p">,</span><span class="w">
-                                          </span><span class="s2">"Saddlepoint - Parallel"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Moments"</span><span class="p">))</span><span class="w">
-
-</span><span class="n">methods.time.plot1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">methods.time1</span><span class="p">,</span><span class="w">
-                             </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">method</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">time</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_bar</span><span class="p">(</span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"identity"</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray75"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">16</span><span class="p">),</span><span class="w">
-        </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">14</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_x_discrete</span><span class="p">(</span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Exact\nParallel"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Saddlepoint"</span><span class="p">,</span><span class="w"> 
-                              </span><span class="s2">"Saddlepoint\nParallel"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Moments"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Method"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Elapsed Time (s)"</span><span class="p">)</span><span class="w">
-
-</span><span class="n">methods.time.plot1</span><span class="w">
-</span></code></pre></div></div>
-
-<p><img src="../figures/2023-02-01/methods_runtime1-1.png" width="80%" style="display: block; margin: auto;" />
-<br /></p>
-
-<p>The method of moments approximation is the fastest method to run,
-clocking in at well under 1 second (~10 ms). This is not terribly
-surprising, as the method relies on simple algebra to calculate
-$\bar \mu$ and $\bar \phi$ and then calls
-<code>stats::dnbinom()</code>. The saddlepoint approximation, on the
-other hand, takes the longest to run. Running on a single core, the
-saddlepoint approximation took almost 30 seconds. The bottleneck of the
-saddlepoint approximation is in finding the root of $K’(s)-log(x)$ at
-every $x$. Fortunately, parallelization of this process is
-straightforward and should nicely scale over the number of cores used. I
-was able to decrease runtime by ~3x by parallelizing the saddlepoint
-approximation over 4 cores. Evaluation of the exact function with 100
-terms had an intermediate runtime of ~1 second, making it ~30x faster
-than the saddlepoint approximation but ~100x slower than the method of
-moments. As with the saddlepoint approximation, parallelization improved
-runtime, though less dramatically than with the saddlepoint
-approximation (~2x). Parallelization of this function might have a
-lower limit. While evaluating the PMF itself can be easily parallelized
-across $x$ values, the recursive calculation of $\delta_k$ cannot be
-(as far as I can tell — please let me know if I am incorrect).
-Therefore, evaluation of $\delta_k$ may remain a runtime bottleneck for
-evaluating the exact PMF.</p>
-
-<p>Before proceeding too much further, I want to make sure that each of the
-three functions work more or less as expected. That is, I want to make
-sure that each of the three calculated distributions sum to 1. The
-saddlepoint approximation is not guaranteed to do so, which is why
-<code>normalize</code> is included as an option in the function call.
-When set to <code>TRUE</code>, the function will re-normalize the
-calculated densities to enforce summation to 1. Distributions calculated
-using the other two methods should sum to 1 by definition. So, as a
-sanity check, I will make sure this is true (to the stated limit).</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">all</span><span class="p">(</span><span class="w">
-  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">sum.exact1</span><span class="p">),</span><span class="w">
-            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
-            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-10</span><span class="p">),</span><span class="w">
-  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">sum.saddlepoint1</span><span class="p">),</span><span class="w">
-            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
-            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-10</span><span class="p">),</span><span class="w">
-  </span><span class="n">all.equal</span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">sum.moments1</span><span class="p">),</span><span class="w">
-            </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
-            </span><span class="n">tolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e-10</span><span class="p">)</span><span class="w">
-</span><span class="p">)</span><span class="w">
-</span><span class="c1">#&gt; [1] TRUE</span><span class="w">
-</span></code></pre></div></div>
-
-<p>As expected, all three of the evaluated distributions sum to 1 when
-evaluated between 0 and 100,000 counts. Perhaps more accurately, the
-difference between the sum of each of the distributions and 1 is less
-than $1 \times 10^{-10}$. For my purposes, this is sufficiently close
-to 1 to say that the functions are working as expected.</p>
-
-<p>Now, how well do the three methods describe empirical data? Empirical
-densities can be estimated from the empirical distribution calculated
-above using <code>stats::density()</code> and directly compared to the
-calculated values.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">empirical.density1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">stats</span><span class="o">::</span><span class="n">density</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">empirical.sum1</span><span class="p">,</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n.counts1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="o">$</span><span class="n">y</span><span class="w">
-
-</span><span class="n">methods.df1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="n">n.counts1</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w">
-                          </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Exact"</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">sum.exact1</span><span class="p">)),</span><span class="w">
-                                     </span><span class="nf">rep</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Saddlepoint"</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">sum.saddlepoint1</span><span class="p">)),</span><span class="w">
-                                     </span><span class="nf">rep</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Moments"</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">sum.moments1</span><span class="p">))),</span><span class="w">
-                          </span><span class="n">mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">sum.exact1</span><span class="p">,</span><span class="w">
-                                   </span><span class="n">sum.saddlepoint1</span><span class="p">,</span><span class="w">
-                                   </span><span class="n">sum.moments1</span><span class="p">))</span><span class="w">
-
-</span><span class="n">methods.df1</span><span class="o">$</span><span class="n">method</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">methods.df1</span><span class="o">$</span><span class="n">method</span><span class="p">,</span><span class="w"> 
-                             </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Saddlepoint"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Moments"</span><span class="p">))</span><span class="w">
-
-</span><span class="n">methods.dist.plot1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">methods.df1</span><span class="p">,</span><span class="w">
-       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">counts</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">mass</span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">method</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_line</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="n">n.counts1</span><span class="p">,</span><span class="w">
-                              </span><span class="n">mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">empirical.density1</span><span class="p">),</span><span class="w">
-            </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">counts</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">mass</span><span class="p">)),</span><span class="w">
-            </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="p">,</span><span class="w">
-            </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray50"</span><span class="p">,</span><span class="w">
-            </span><span class="n">inherit.aes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">   
-  </span><span class="n">geom_line</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"darkblue"</span><span class="p">,</span><span class="s2">"darkred"</span><span class="p">,</span><span class="s2">"darkgreen"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">facet_wrap</span><span class="p">(</span><span class="n">vars</span><span class="p">(</span><span class="n">method</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">,</span><span class="w">
+             </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">probability</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_area</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">$</span><span class="n">method</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"empirical"</span><span class="p">,],</span><span class="w">
+              </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">probability</span><span class="w"> </span><span class="p">),</span><span class="w">
+              </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray50"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="s2">"gray50"</span><span class="p">,</span><span class="w">
+              </span><span class="n">inherit.aes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"#00000000"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_fill_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"gray50"</span><span class="p">,</span><span class="s2">"darkblue"</span><span class="p">,</span><span class="s2">"darkred"</span><span class="p">,</span><span class="s2">"darkgreen"</span><span class="p">),</span><span class="w">
+                     </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Empirical"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Moments"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Saddlepoint"</span><span class="w"> </span><span class="p">),</span><span class="w">
+                     </span><span class="n">guide</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">guide_legend</span><span class="p">(</span><span class="n">title.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"top"</span><span class="p">,</span><span class="w">
+                                          </span><span class="n">title.hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w">
+                                          </span><span class="n">override.aes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">),</span><span class="w">
         </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">),</span><span class="w">
-        </span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span><span class="p">,</span><span class="w"> </span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">),</span><span class="w">
-        </span><span class="n">strip.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">),</span><span class="w">
-        </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"none"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_x_continuous</span><span class="p">(</span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">n.counts1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">scale_y_continuous</span><span class="p">(</span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-30</span><span class="p">,</span><span class="w"> </span><span class="m">-5</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Counts"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"log(Probability)"</span><span class="p">)</span><span class="w">
-
-</span><span class="n">methods.dist.plot1</span><span class="w">
+        </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"top"</span><span class="p">,</span><span class="w">
+        </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
+        </span><span class="n">legend.key.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="s2">"point"</span><span class="p">),</span><span class="w">
+        </span><span class="n">panel.spacing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s2">"lines"</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Counts"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Probability"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../figures/2023-02-01/distributions1-1.png" width="80%" style="display: block; margin: auto;" />
-<br /></p>
+<p><img src="../figures/2023-02-01unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /></p>
 
-<p>The plot above shows the empirical distribution in gray overlayed with
-each of the respective evaluations. You can see that the three methods
-all look similar and nicely describe the empirical data at probability
-values greater than ~$2 \times 10^{-9}$. The empirical distribution is
-expectedly undersampled at the more extreme count values. It seems,
-therefore, that any of the three methods can return a good estimate of
-the sum of NB random variables when the resulting distribution nicely
-symmetrical.</p>
+<p>Visualizing the data, we can see that all three methods do indeed appear
+describe the empirical distribution well. This will not always be the
+case! I strongly encourage users of <code>nbconv</code> to pay attention
+to the summary statistics of the target convolution and to compare the
+evaluated distribution to random deviates!</p>
 
-<p>What about when the distribution is not nicely symmetrical? I’ll modify
-the runtime and empirical comparison code above to evaluate the second
-distribution. Since the code is the same, I’ll not reprint it here,
-though it should be noted that the exact function will be evaluated over
-$1 \times 10^4$ terms. I landed on this value empirically — at values
-below this, the functions internal checks were not passed. This is an
-inelegant way of deciding on the number of terms to include, but it
-works and isn’t <i>too</i> time-consuming. Regardless, because of this,
-and because each of the methods are evaluating over 2.5x more counts,
-the runtime for the second distribution is expected to be longer than
-for the first distribution — especially for the exact function. Let’s
-see what the actual runtimes are…</p>
-
-<p><img src="../figures/2023-02-01/methods_runtime2-1.png" width="80%" style="display: block; margin: auto;" />
-<br /></p>
-
-<p>As expected, the runtimes are all longer than they were for the first
-distribution. In the case of the exact function, by ~100-300x,
-depending on parallelization. This is roughly in-line with what would be
-expected if the number of terms was the primary determinant of runtime.
-The other functions show ~6-7x increases, though for the method of
-moments approach, evaluation time is still measured in milliseconds. Is
-this runtime penalty worth it? Comparison of the calculated densities to
-the empirical distribution might help answer this question.</p>
-
-<p><img src="../figures/2023-02-01/distributions2-1.png" width="80%" style="display: block; margin: auto;" />
-<br /> The exact method is the only evaluation method that describes the
-empirical distribution well. The saddlepoint approximation is closer to
-the empirical distribution than the method of moments approximation, but
-it still shows systematic errors. The method of moments approximation is
-wildly inaccurate in this extreme example. Therefore, in the case of
-highly tailed distributions, the exact method is the most reliable of
-the three methods, despite its relatively high computational cost.</p>
-
-<h3 id="conclusions">Conclusions</h3>
-
-<p>I wrote <code>nbconv</code> to neatly wrap different methods for the
-evaluation of the sum of NB distributions into the same tool. Those
-methods – Furman’s exact PMF, the saddlepoint approximation, and the
-method of moments approximation – each have their own strengths and
-weaknesses. Overall, the exact method is the most reliable of the three
-methods to accurately describe true distributions. The principle
-drawback of the exact method is computation time. Even with
-parallelization, evaluation of the exact function was not nearly as fast
-as the method of moments approximation. It can, however, be faster than
-the saddlepoint approximation when the number of terms included in the
-evaluation is small. The saddlepoint approximation can accurately
-describe true distributions — even in the case of some tailing, as
-Martin nicely showed — and in some (maybe many?) cases, might be faster
-than the exact method. I haven’t dug in deep enough to assess when the
-number of terms included might tip the balance between the saddlepoint
-approximation and the exact method. The method of moments approximation
-is by far the fastest method of the three. However, it only seems to
-work well when the distribution is approximately symmetrical. Care
-should be taken when using the method of moments approximation to ensure
-that the distribution of dispersion parameters doesn’t contain any
-clusters of varying values.</p>]]></content><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><summary type="html"><![CDATA[Implementing an exact expression and alternative options]]></summary></entry><entry><title type="html">Generating random genome fragments in R</title><link href="http://localhost:4000/random-genome-fragments/" rel="alternate" type="text/html" title="Generating random genome fragments in R" /><published>2022-12-27T00:00:00-05:00</published><updated>2022-12-27T00:00:00-05:00</updated><id>http://localhost:4000/random-genome-fragments</id><content type="html" xml:base="http://localhost:4000/random-genome-fragments/"><![CDATA[<p>In the analysis of genomic integration site data, a theoretical random
+<p>Hopefully this brief example effectively demonstrates the general
+workflow of <code>nbconv</code>. If you have any comments or questions,
+please reach out!</p>]]></content><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><summary type="html"><![CDATA[An R package to evaluation negative binomial convolutions.]]></summary></entry><entry><title type="html">Generating random genome fragments in R</title><link href="http://localhost:4000/random-genome-fragments/" rel="alternate" type="text/html" title="Generating random genome fragments in R" /><published>2022-12-27T00:00:00-05:00</published><updated>2022-12-27T00:00:00-05:00</updated><id>http://localhost:4000/random-genome-fragments</id><content type="html" xml:base="http://localhost:4000/random-genome-fragments/"><![CDATA[<p>In the analysis of genomic integration site data, a theoretical random
 integration site distribution is often used as a lower boundary for
 feature enrichment. That is, whether or not a given feature (e.g. a
 particular gene) harbors more integration sites than would be expected

@@ -1,0 +1,177 @@
+\documentclass{article}
+
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\title{nbconv: An R Package to Evaluate Arbitrary Negative Binomial Convolutions}
+
+\begin{document}
+	
+\section{Method Background}
+
+There exist several distinct but mathematically equivalent parameterizations of NB distributions. Perhaps the most common are: $ X \sim NB(\phi, p) $, $ X \sim NB(\phi, \mu) $, and $ X \sim NB(\alpha, \mu) $. In these formulations, $p$ is the probability of success in a single trial, $\mu$ is the distribution mean, and $\phi$ and $\alpha$ are different representations of the dispersion parameter. Throughout this manuscript, we assume that $0 < p \le 1$ and $\mu \ge 1$, and $ \phi, \alpha > 0$. As the name suggests, the dispersion parameter describes the spread of the distribution and is related to the distribution variance through the equation, $ Var(X) = \mu + \mu^2\phi^{-1}$. In addition, $\phi$ and $\alpha$ are related through the relationship $ \alpha = \phi^{-1} $ and $p$ and $\mu$ are related through, 
+
+\begin{equation}
+	\phantom{.} p = \frac{\phi}{\phi + \mu}.
+\end{equation}
+
+The moment generating function (MGF) of a NB distribution parameterized in this way is,
+
+$$
+\phantom{,} M_X(t) = \Bigl( \frac{ 1-q }{ 1-qe^t} \Bigr)^{ \phi }, 
+$$
+
+where 
+
+\begin{equation}
+	\phantom{.} q=1-p = \frac{ \mu }{ \phi + \mu }.
+\end{equation}
+
+Due to the assumption of independence, it follows that the MGF of the convolution $Y = \sum_{i=1}^n X_i$ of NB r.v.s ($X_i$) where $i=\{1,2,3,...,n\}$ is,
+
+$$ 
+\phantom{.} M_{Y}(t) = \prod_{i=1}^n \Bigl( \frac{ 1-q_i }{ 1-q_ie^t} \Bigr)^{\phi_i}. 
+$$
+
+The cumulant generating function (CGF) of $Y$, expressed in terms of $\phi$ and $q$ is,
+
+\begin{equation} 
+	K_Y(t) = \log ( M_Y(t)) = \sum_{i=1}^n \phi_i ( \log(1-q_i)-\log(1-q_ie^{t}) )
+\end{equation}
+
+Substituting $(1)$ and $(2)$ into $(3)$ and simplifying yields the CGF used throughout \verb|nbconv|,
+
+\begin{equation}
+	\phantom{.} K_Y(t) =  \sum_{i=1}^n \phi_i ( \log( \phi_i ) - \log( \phi_i + \mu_i ( 1-e^t ) ).
+\end{equation}
+
+The NB parameterization used in \verb|nbconv| is the same parameterization used in R's \verb|stats| package, as well as in \cite{furmanConvolutionNegativeBinomial2007}. 
+
+\subsection{Furman's exact method}
+
+The PMF derived by Furman is,
+
+\begin{equation} 
+	\phantom{,} P(Y=y) = R \sum_{k=0}^\infty \delta_k \frac{\Gamma(\phi_s + y + k)}{\Gamma(\phi_s + k) y! } p_1^{\phi_s + k} (1-p_1)^y , 
+\end{equation}
+
+where,
+
+$$ \phantom{;} R = \prod \limits_{i=1}^n \Bigl ( \frac{q_i p_1}{ q_1 p_i }\Bigr )^{-\phi_i} ; $$
+
+$$ \phantom{;} \phantom{,} \delta_{k+1}  = \frac{1}{k+1} \sum \limits_{j=1}^{k+1} i \xi_j \delta_{k+1-j} , \; \mbox{where $k = 0,1,2,...$ and $\delta_0=1$} ; $$
+
+
+$$ \phantom{;} \xi_j = \sum \limits_{i=1}^n \frac{ \phi_i(1-q_1 p_i /q_i p_1)^j }{ j } ; $$
+
+$$ \phantom{;} q_i = 1-p_i ; $$
+
+$$ \phantom{;} p_1 = \max(p_i) ; $$
+
+$$ \phantom{;} q_1 = 1-p_1 ; $$ 
+
+and
+
+$$ \phantom{.} \phi_s = \sum \limits_{i=1}^n \phi_i . $$
+
+Evaluation of this PMF in \verb|nbconv|, as well as evaluation of the parameters $\xi_j$ and $\delta_k$, are implemented on the log-scale to prevent numeric overflow. Importantly, Furman showed that $Y$ is a mixture NB distribution with parameters $Y \sim NB( \phi_s + K, p_1  )$, where $K$ is an integer r.v. with PMF $P(K=k) = R \delta_k$ \cite{furmanConvolutionNegativeBinomial2007}. The shape of $K$, therefore, largely determines the shape of $Y$. 
+
+\subsection{Saddlepoint approximation}
+
+The saddlepoint approximation is a convenient way to approximate the PMF of r.v.s when an exact expression cannot be easily derived or computed. The saddlepoint approximation requires knowledge of $(4)$, as well as the first two derivatives thereof. The first two derivatives of $(4)$ are,
+
+\begin{equation}
+	\phantom{,} K^{ \prime }_Y(t) = \sum_{i=1}^n \frac{ \phi_i \mu_i e^t }{ \phi_i + \mu_i ( 1-e^t ) } ,
+\end{equation}
+
+\begin{equation}
+	\phantom{,} K^{ \prime \prime }_Y(t) = \sum_{i=1}^n \frac{ \phi_i \mu_i e^t ( \phi_i + \mu_i ) }{ ( \phi_i + \mu_i ( 1-e^t ) )^2  } ,
+\end{equation}
+
+The saddlepoint approximation for the PMF of a discrete r.v. \cite{butlerSaddlepointApproximationsApplications2007} is,
+
+\begin{equation}
+	\phantom{ , } 
+	\hat{ p }(x) = \frac{ 1 }{ \sqrt { 2 \pi K_Y^{ \prime \prime } ( \hat{ t } ) } }  \exp( K_Y( \hat{ t } ) - \hat{ t } x ) ,
+\end{equation}
+
+where $ \hat{ t } = \hat{ t }(x) $  represents the unique solution to 
+
+\begin{equation}
+	\phantom{ . } K_Y^{ \prime }( \hat{ t } ) = x .
+\end{equation} 
+
+In \verb|nbconv|, the \verb|stats::uniroot()| function is used to find the value of $\hat{ t }$ that satisfies $(9)$. In addition, $K_Y(t)$ only exists when $  \phi_i + \mu_i ( 1-e^t ) > 0 $. This constrains $t$ such that for given vectors of matched $\mu_i$ and $\phi_i$,
+
+$$ \phantom{ . } t < \min \log \Bigl ( \frac{ \phi_i }{ \mu_i } + 1 \Bigr ) . $$
+
+This is used as the upper boundary when solving $(9)$. As with the evaluation of $(5)$, evaluation of $(8)$ and $(9)$ is done on the log-scale in \verb|nbconv| to avoid numeric overflow.
+
+\subsection{Method of moments approximation}
+
+The method of moments approximation is the simplest method implemented in \verb|nbconv|. It is based on the assumption that, under certain conditions (e.g. when the variance and/or skew of $K$ is small), $Y$ does not differ substantially from a NB distribution whose parameters can be derived from the moments of $Y$. Setting $t=0$ in $(6)$ and $(7)$ yields the first two cumulants of the distribution, which are equal to the first two central moments. These are,
+
+\begin{equation}
+	\phantom{ , } \kappa_1 =  \bar{ \mu } = \sum_{ i=1 }^n \mu_i ,
+\end{equation}
+
+and
+
+\begin{equation}
+	\phantom{ . } \kappa_2 = \bar{ \sigma }^2  = \sum_{ i=1 }^n \mu_i + \frac{ \mu_i^2 }{ \phi_i } .
+\end{equation}
+
+Under the assumption that the mean-variance relationship is the same for the convolution of NB r.v.s as it is for non-convoluted NB r.v.s, an expression for the estimation of the dispersion parameter can be derived by combining $(10)$ and $(11)$,
+
+\begin{equation}
+	\phantom{ . }	\bar{ \phi } = \frac{ \Bigl( \sum_{ i=1 }^n \mu_i \Bigr )^2}{ \sum_{ i=1 }^n \frac{ \mu_i^2 }{ \phi_i } } .
+\end{equation}
+
+While the aforementioned assumption is not strictly true, there are certain instances  where it might be a reasonably good assumption (see above). Under this assumption, calculated values of $\bar{ \mu }$ and $\bar{ \phi }$ can then be used to estimate the density, distribution, and quantile functions of $Y$ via the standard R functions \verb|(d/p/q)nbinom()|. 
+
+\subsection{Summary statistics}
+
+\verb|nbconv| additionally contains a function that calculates the mean, variance, skewness, and excess kurtosis of $Y$, as well as the mean of the mixture r.v. $K$. These summary statistics can be useful when deciding which evaluation method to use. The mean and variance of $Y$ are defined in $(10)$ and  $(11)$, respectively. To define the skewness and excess kurtosis of $Y$, the third and fourth cumulants of $(4)$ must first be defined:
+
+$$
+\kappa_3 = \sum_{i=1}^n \frac{ ( 2 \mu_i + \phi_i ) ( \mu_i + \phi_i)  \mu_i } {  \phi_i^2 }
+$$
+
+and
+
+$$
+\phantom{ . } \kappa_4 = \sum_{i=1}^n \frac{ ( 6 \mu_i^2 + 6 \mu_i \phi_i + \phi_i^2) ( \mu_i + \phi_i ) \mu_i } {  \phi_i^3 } .
+$$
+
+The skewness ($\gamma_1$) and excess kurtosis ($\gamma_2$) can then be defined as,
+
+\begin{equation}
+	\gamma_1 = \frac{ \kappa_3 }{ \kappa_2^{ 3/2 } }
+\end{equation}
+
+and 
+
+\begin{equation}
+	\phantom{ . } \gamma_2 = \frac{ \kappa_4 }{ \kappa_2^{ 2 } } .
+\end{equation}
+
+Finally, the mean of the mixture r.v. $K$ follows from the fact that $Y \sim NB( \phi_s + K, p_1 )$ \cite{furmanConvolutionNegativeBinomial2007}:
+
+\begin{equation}
+	\phantom{ . } \bar{ K } = \Bigl( \frac{ \bar{ \mu } p_1 } { q_1 } \Bigr) - \phi_s .
+\end{equation}
+
+\begin{thebibliography}{1}
+
+\bibitem{furmanConvolutionNegativeBinomial2007}
+Edward Furman.
+\newblock On the Convolution of the Negative Binomial Random Variables.
+\newblock In {\em Statistics \& Probability Letters}, 77(2): 169--172. 2007.
+
+ \end{thebibliography}
+
+\end{document}
