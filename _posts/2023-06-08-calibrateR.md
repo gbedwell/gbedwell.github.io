@@ -110,7 +110,7 @@ ggplot( bca.df, aes( x = conc, y = meas ) ) +
   labs( x = "Concentration", y = "Signal" )
 ```
 
-<img src="../figures/2023-06-08unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="../figures/2023-06-08/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" />
 The fit seems reasonable. The observed data points lie nicely along the
 fitted line. Now that we’ve calibrated the assay and are fairly
 confident that the calibration makes sense, we can feed in signal values
@@ -225,7 +225,7 @@ ggplot( sec.df, aes( x = vols, y = log( rads ) ) ) +
   labs( x = "Elution Volume", y = "Hydrodynamic Radius (nm)" )
 ```
 
-<img src="../figures/2023-06-08unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="../figures/2023-06-08/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" />
 
 To apply the calibrated function to analytes of unknown mass/radius,
 simply enter the empirical elution volume of the analyte into the

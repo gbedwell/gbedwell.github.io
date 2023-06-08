@@ -23,7 +23,7 @@ date <- "2023-06-08"
 base.dir <- "/Users/gbedwell/Documents/github/gbedwell.github.io/"
 base.url <- "/"
 dir.create(paste0("../figures/", date))
-fig.path <- paste0("../figures/", date)
+fig.path <- paste0("../figures/", date, "/")
 
 knitr::opts_chunk$set(
   fig.asp = 5/7,
