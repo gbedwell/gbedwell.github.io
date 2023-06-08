@@ -1,4 +1,226 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-06-07T15:10:21-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Undefined Functions</title><subtitle></subtitle><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><entry><title type="html">nbconv</title><link href="http://localhost:4000/nb-convolutions/" rel="alternate" type="text/html" title="nbconv" /><published>2023-02-01T00:00:00-05:00</published><updated>2023-02-01T00:00:00-05:00</updated><id>http://localhost:4000/nb-convolutions</id><content type="html" xml:base="http://localhost:4000/nb-convolutions/"><![CDATA[<h3 id="introduction">Introduction</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-06-08T14:13:26-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Undefined Functions</title><subtitle></subtitle><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><entry><title type="html">calibrateR</title><link href="http://localhost:4000/calibrateR/" rel="alternate" type="text/html" title="calibrateR" /><published>2023-06-08T00:00:00-04:00</published><updated>2023-06-08T00:00:00-04:00</updated><id>http://localhost:4000/calibrateR</id><content type="html" xml:base="http://localhost:4000/calibrateR/"><![CDATA[<h3 id="introduction">Introduction</h3>
+
+<p>When working at the bench, there are probably certain experiments and/or
+calculations that you routinely do that you <i>hate</i> doing. There’s
+no logical reason for why you feel this way. The experiment/calculation
+isn’t hard <i>per se</i>, you just wish that you didn’t have to do it
+<i>again</i>.</p>
+
+<p>With this feeling of frustration in mind, I decided to streamline some
+of these common calculations so that the heavy lifting is done behind
+the scenes (insofar as there is anything truly “heavy” about these
+calculations – perhaps “the clicking-and-dragging” is more apt). The
+result, <code>calibrateR</code>, is an easy-to-use R package that
+contains functions to help with Gibson assembly reaction setup, protein
+concentration determination via colorimetric assays, size exclusion
+column calibration, and more. I am happy to expand
+<code>calibrateR</code>’s current functionalities. Please reach out with
+other ideas/suggestions!</p>
+
+<p><code>calibrateR</code> can be downloaded from
+<a href="https://github.com/gbedwell/calibrateR">GitHub</a>.</p>
+
+<h3 id="usage">Usage</h3>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">calibrateR</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="colorimetric-assays">Colorimetric Assays</h4>
+
+<p>I’ll start by describing the way that the package approaches
+colorimetric assays. For those who might be unfamiliar, colorimetric
+assays are a very common way of determining the concentration of
+analytes in solution. There are various types of colorimetric assays,
+but the general procedure is similar across the board. First, the user
+must calibrate the assay by measuring the output signal across a range
+of known analyte concentrations. Then, from the empirically determined
+relationship between analyte concentration and signal, the concentration
+of analyte in the experimentally relevant samples can be determined.</p>
+
+<p>In the example below, I start with defined standard analyte
+concentrations (<code>conc</code>) and three replicates
+(<code>rep1-3</code>) of corresponding signal readings. Note that the
+signal readings are entered <i>in the same order</i> as the known
+concentrations.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">conc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">0.75</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="m">0.25</span><span class="p">,</span><span class="w"> </span><span class="m">0.125</span><span class="p">,</span><span class="w"> </span><span class="m">0.025</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w">
+</span><span class="n">rep1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2.312</span><span class="p">,</span><span class="w"> </span><span class="m">1.786</span><span class="p">,</span><span class="w"> </span><span class="m">1.273</span><span class="p">,</span><span class="w"> </span><span class="m">1.035</span><span class="p">,</span><span class="w"> </span><span class="m">0.744</span><span class="p">,</span><span class="w"> </span><span class="m">0.484</span><span class="p">,</span><span class="w"> </span><span class="m">0.351</span><span class="p">,</span><span class="w"> </span><span class="m">0.237</span><span class="p">,</span><span class="w"> </span><span class="m">0.209</span><span class="p">)</span><span class="w">
+</span><span class="n">rep2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2.249</span><span class="p">,</span><span class="w"> </span><span class="m">1.739</span><span class="p">,</span><span class="w"> </span><span class="m">1.207</span><span class="p">,</span><span class="w"> </span><span class="m">0.984</span><span class="p">,</span><span class="w"> </span><span class="m">0.701</span><span class="p">,</span><span class="w"> </span><span class="m">0.455</span><span class="p">,</span><span class="w"> </span><span class="m">0.338</span><span class="p">,</span><span class="w"> </span><span class="m">0.23</span><span class="p">,</span><span class="w"> </span><span class="m">0.209</span><span class="p">)</span><span class="w">
+</span><span class="n">rep3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2.282</span><span class="p">,</span><span class="w"> </span><span class="m">1.715</span><span class="p">,</span><span class="w"> </span><span class="m">1.204</span><span class="p">,</span><span class="w"> </span><span class="m">0.99</span><span class="p">,</span><span class="w"> </span><span class="m">0.712</span><span class="p">,</span><span class="w"> </span><span class="m">0.484</span><span class="p">,</span><span class="w"> </span><span class="m">0.345</span><span class="p">,</span><span class="w"> </span><span class="m">0.24</span><span class="p">,</span><span class="w"> </span><span class="m">0.208</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Next, I will use the <code>calibrate_colorimetric()</code> function in
+<code>calibrateR</code> to create a new function, here called
+<code>bca()</code>, to do all of the downstream data analysis for me.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bca</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">calibrate_colorimetric</span><span class="p">(</span><span class="w"> </span><span class="n">conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w">
+                               </span><span class="n">abs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="w"> </span><span class="p">),</span><span class="w">
+                               </span><span class="n">with.blank</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
+                               </span><span class="n">nrep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>With the calibrated function defined, we can do one of two things. The
+first thing we should do is look at our fit and make sure it’s
+reasonable. To do this, we’ll use our concentration values to calculate
+expected signal values based on the fit parameters. To do this, call
+<code>bca( a = conc, return.conc = FALSE )</code>. In this instance, we
+enter the known concentration values, and tell the function that it is
+<i>not</i> returning concentration values (it’s returning signal
+values). Because the units of both concentration and signal can vary
+widely across assays, I intentionally left units off of the example
+plot.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">ggplot2</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">bca.df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w">
+                      </span><span class="n">meas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">bca.fit.df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> 
+                          </span><span class="n">fit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bca</span><span class="p">(</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> </span><span class="n">return.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">ggplot</span><span class="p">(</span><span class="w"> </span><span class="n">bca.df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">meas</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray75"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">(</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bca.fit.df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.75</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">theme</span><span class="p">(</span><span class="w"> </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="p">),</span><span class="w">
+         </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Concentration"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Signal"</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../figures/2023-06-08unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" />
+The fit seems reasonable. The observed data points lie nicely along the
+fitted line. Now that we’ve calibrated the assay and are fairly
+confident that the calibration makes sense, we can feed in signal values
+from samples of unknown concentration. Here, we’ll assume that we have
+five unknown samples and that each unknown sample was measured at a
+2-fold dilution. We will use <code>return.conc = TRUE</code> and
+<code>df = 2</code> in <code>bca()</code> to tell the function that it
+<i>is</i> returning concentration values and to define the dilution
+factor(s), respectively. The returned units of concentration are the
+same as the units of concentration used to make the standard curve.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">set.seed</span><span class="p">(</span><span class="w"> </span><span class="m">1234</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">unk</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">runif</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.3</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
+
+</span><span class="n">bca</span><span class="p">(</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unk</span><span class="p">,</span><span class="w"> </span><span class="n">return.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt; [1] 0.5453686 2.2248925 2.1818814 2.2284591 3.0128681</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="gibson-assembly">Gibson assembly</h4>
+
+<p>To calculate Gibson assembly reaction volumes, you need to define seven
+parameters. These are: insert concentration(s), insert length(s), vector
+concentration, vector length, the molar ratio of insert to vector, the
+mass of vector in the reaction (in ng), and the final volume of the
+reaction <i>before</i> the addition of 2x master mix. To input multiple
+inserts per reaction, simply enter insert concentration(s) and insert
+length(s) as a vector. Concentration units should be ng/µL and length
+units should be bp. Given these parameters, the function
+<code>gibson()</code> returns a data frame of the volumes (in µL) of
+each fragment, linearized vector, water, and 2x master mix to add to the
+reaction.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gibson</span><span class="p">(</span><span class="w"> </span><span class="n">insert.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">35</span><span class="p">,</span><span class="w"> </span><span class="m">78</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">insert.len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">1800</span><span class="p">,</span><span class="w"> </span><span class="m">2400</span><span class="w"> </span><span class="p">),</span><span class="w">
+        </span><span class="n">vec.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">55</span><span class="p">,</span><span class="w"> </span><span class="n">vec.len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4710</span><span class="p">,</span><span class="w"> </span><span class="n">vec.mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span><span class="p">,</span><span class="w">
+        </span><span class="n">molar.ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="n">final.vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt;            Volume</span><span class="w">
+</span><span class="c1">#&gt; Fragment 1   1.64</span><span class="w">
+</span><span class="c1">#&gt; Fragment 2   0.98</span><span class="w">
+</span><span class="c1">#&gt; Vector       0.91</span><span class="w">
+</span><span class="c1">#&gt; Water        1.47</span><span class="w">
+</span><span class="c1">#&gt; Master Mix   5.00</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="size-exclusion-column-calibration">Size exclusion column calibration</h4>
+
+<p>Size exclusion chromatography (SEC) is a wildly available technique that
+can provide useful information about macromolecules. Most commonly, SEC
+is associated with molecular weight. However, SEC actually separates
+macromolecules according to their hydrodynamic radius (or Stokes
+radius). For macromolecules with similar overall shapes, changes in
+hydrodynamic radius are due predominantly to changes in the number of
+atoms present in the molecule (i.e., its mass). For macromolecules of
+different shapes, however, separation based on hydrodynamic radius is a
+poor indicator of molecular weight. For this reason, it is important to
+be able to calibrate SEC columns for both radius and mass.</p>
+
+<p>The <code>calibrate_sec()</code> function in <code>calibrateR</code>
+works similarly to the <code>calibrate_colorimetric()</code> function
+described above. The function minimally requires the user to define
+three parameters: the measured elution volume of standard analytes, the
+masses (yes, just the masses; in Da) of standard analytes, and the
+macromolecular parameter of interest – either molecular weight
+(<code>mw</code>) or hydrodynamic radius (<code>rh</code>).</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">masses</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">670000</span><span class="p">,</span><span class="w"> </span><span class="m">158000</span><span class="p">,</span><span class="w"> </span><span class="m">44000</span><span class="p">,</span><span class="w"> </span><span class="m">17000</span><span class="p">,</span><span class="w"> </span><span class="m">1350</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">rep1</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">13.36</span><span class="p">,</span><span class="w"> </span><span class="m">16.07</span><span class="p">,</span><span class="w"> </span><span class="m">17.56</span><span class="p">,</span><span class="w"> </span><span class="m">18.46</span><span class="p">,</span><span class="w"> </span><span class="m">20.30</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">rep2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">13.32</span><span class="p">,</span><span class="w"> </span><span class="m">16.03</span><span class="p">,</span><span class="w"> </span><span class="m">17.49</span><span class="p">,</span><span class="w"> </span><span class="m">18.38</span><span class="p">,</span><span class="w"> </span><span class="m">20.23</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">rep3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">13.38</span><span class="p">,</span><span class="w"> </span><span class="m">16.09</span><span class="p">,</span><span class="w"> </span><span class="m">17.58</span><span class="p">,</span><span class="w"> </span><span class="m">18.48</span><span class="p">,</span><span class="w"> </span><span class="m">20.33</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sec.rh</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">calibrate_sec</span><span class="p">(</span><span class="w"> </span><span class="n">vols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="w"> </span><span class="p">),</span><span class="w">
+                         </span><span class="n">masses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">masses</span><span class="p">,</span><span class="w">
+                         </span><span class="n">parameter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"rh"</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Running <code>calibrate_sec()</code> returns a function for downstream
+number crunching. Setting <code>parameter = “rh”</code> uses a
+<a href="https://febs.onlinelibrary.wiley.com/doi/full/10.1046/j.0014-2956.2001.02649.x?sid=nlm%3Apubmed">previously
+published</a>
+scaling law to convert the provided mass values to radius values.</p>
+
+<p>Convention for SEC column calibration plots is to plot $\log{(M)}$ or
+$\log{(R_H)}$ vs. volume. Here, I will create a sequence of dummy
+elution volumes between the observed elution volumes for the standard
+analytes. Because I calibrated the column based on hydrodynamic radius
+instead of mass, I will use the function <code>mass_to_radius()</code>
+to convert the standard analyte masses to hydrodynamic radii. Then, I
+will use the calibration to calculate the expected radii of analytes
+eluting at each of the dummy elution volumes. Non-normalized elution
+volumes are typically entered in mL units. Because these units don’t
+strictly matter, however, I’ve left those units off of the plot. Mass
+units must be entered in Daltons and are returned in Daltons.
+Hydrodynamic radius values are returned in nm.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sec.df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">vols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="w"> </span><span class="p">),</span><span class="w">
+                      </span><span class="n">rads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mass_to_radius</span><span class="p">(</span><span class="w"> </span><span class="n">masses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">masses</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">sec.fit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">vols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="m">13</span><span class="p">,</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="m">0.01</span><span class="w"> </span><span class="p">),</span><span class="w">
+                       </span><span class="n">fit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec.rh</span><span class="p">(</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="m">13</span><span class="p">,</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="m">0.01</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">ggplot</span><span class="p">(</span><span class="w"> </span><span class="n">sec.df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vols</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="w"> </span><span class="n">rads</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray75"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">(</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec.fit</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vols</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.75</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">theme</span><span class="p">(</span><span class="w"> </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="p">),</span><span class="w">
+         </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Elution Volume"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Hydrodynamic Radius (nm)"</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../figures/2023-06-08unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /></p>
+
+<p>To apply the calibrated function to analytes of unknown mass/radius,
+simply enter the empirical elution volume of the analyte into the
+function. If the column calibration was done using normalized elution
+volumes, the function <code>normalize_ev()</code> will normalize the
+analyte elution volumes based on the column’s void and column volumes.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sec.rh</span><span class="p">(</span><span class="w"> </span><span class="m">16.495</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt;      a </span><span class="w">
+</span><span class="c1">#&gt; 3.9831</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="conclusions">Conclusions</h3>
+
+<p>While the functions described above are not the only functions included
+in <code>calibrateR</code>, they are probably the most widely
+applicable. Other functions include <code>uv_vis()</code> to calculate
+macromolecular concentration based on UV/Vis spectroscopy and
+<code>cfu()</code>, which returns the volume of starter culture to add
+to a fresh culture of given volume to reach a desired concentration of
+cells (or CFU)/mL. The plan is incorporate more functionallity into
+<code>calibrateR</code> over time. As mentioned above, please reach out
+if you have other ideas/suggestions!</p>]]></content><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><summary type="html"><![CDATA[An R package to streamline standard laboratory calculations.]]></summary></entry><entry><title type="html">nbconv</title><link href="http://localhost:4000/nb-convolutions/" rel="alternate" type="text/html" title="nbconv" /><published>2023-02-01T00:00:00-05:00</published><updated>2023-02-01T00:00:00-05:00</updated><id>http://localhost:4000/nb-convolutions</id><content type="html" xml:base="http://localhost:4000/nb-convolutions/"><![CDATA[<h3 id="introduction">Introduction</h3>
 
 <p>The negative binomial (NB) distribution is widely used to model count
 data whose variance is greater than expected given other discrete

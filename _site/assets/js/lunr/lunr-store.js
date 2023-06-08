@@ -10,4 +10,10 @@ var store = [{
         "tags": [],
         "url": "/nb-convolutions/",
         "teaser": null
+      },{
+        "title": "calibrateR",
+        "excerpt":"Introduction When working at the bench, there are probably certain experiments and/or calculations that you routinely do that you hate doing. There’s no logical reason for why you feel this way. The experiment/calculation isn’t hard per se, you just wish that you didn’t have to do it again. With this...","categories": [],
+        "tags": [],
+        "url": "/calibrateR/",
+        "teaser": null
       },]
