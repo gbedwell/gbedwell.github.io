@@ -217,7 +217,7 @@ ggplot(data = df,
   labs(x = "Counts", y = "Probability")
 ```
 
-<img src="../figures/2023-02-01unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="../figures/2023-02-01/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" />
 
 Visualizing the data, we can see that all three methods do indeed appear
 describe the empirical distribution well. This will not always be the

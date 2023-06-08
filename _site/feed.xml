@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-06-08T16:08:24-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Undefined Functions</title><subtitle></subtitle><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><entry><title type="html">calibrateR</title><link href="http://localhost:4000/calibrateR/" rel="alternate" type="text/html" title="calibrateR" /><published>2023-06-08T00:00:00-04:00</published><updated>2023-06-08T00:00:00-04:00</updated><id>http://localhost:4000/calibrateR</id><content type="html" xml:base="http://localhost:4000/calibrateR/"><![CDATA[<h3 id="introduction">Introduction</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-06-08T17:46:09-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Undefined Functions</title><subtitle></subtitle><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><entry><title type="html">calibrateR</title><link href="http://localhost:4000/calibrateR/" rel="alternate" type="text/html" title="calibrateR" /><published>2023-06-08T00:00:00-04:00</published><updated>2023-06-08T00:00:00-04:00</updated><id>http://localhost:4000/calibrateR</id><content type="html" xml:base="http://localhost:4000/calibrateR/"><![CDATA[<h3 id="introduction">Introduction</h3>
 
 <p>When working at the bench, there are probably certain experiments and/or
 calculations that you routinely do that you <i>hate</i> doing. There’s
@@ -417,7 +417,7 @@ mass vectors into a single long data frame.</p>
   </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Counts"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Probability"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<p><img src="../figures/2023-02-01unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p><img src="../figures/2023-02-01/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /></p>
 
 <p>Visualizing the data, we can see that all three methods do indeed appear
 describe the empirical distribution well. This will not always be the
