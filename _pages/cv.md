@@ -19,7 +19,7 @@ permalink: /cv.html
 
 **Instructor in Medicine** - Dana-Farber Cancer Institute/Harvard Medical School.
 
-These days, my principal scientific interests are in computational and systems biology. I am particularly interested in developing ways to better understand retroviral integration targeting biases and how those biases relate to provirus expression and/or latency. To this end, I am developing a statistical method, xInt, to define the "expected" levels of integration into each genomic feature (e.g. a single gene) within a pre-defined feature-set (e.g. all genes). Conceptually, this is a formalization and an expansion of the rigrag methodology that I worked on previously (see below), but with improved statistical rigor and the introduction of expected integration levels for wild-type integration. I am additionally involved in collaborations looking at integration site locations in patients harboring certain clinical phenotypes and I am actively involved in designing, performing, and analyzing biophysical experiments related to protein phase separation.
+These days, my principal scientific interests are in computational and systems biology. I am particularly interested in developing ways to better understand retroviral integration targeting biases and how those biases relate to provirus expression and/or latency. To this end, I am developing a statistical method, xInt, to define the "expected" number of integration events within defined genomic features/regions. xInt will allow researchers to rigorously define baseline integration targeting preferences for a given retrovirus, and to identify differentially targeted regions under distinct infection conditions. I am additionally involved in collaborations aimed at better defining role that integration targeting plays in the establishment of particular clincal phenotypes and I am actively involved in designing, performing, and analyzing biophysical experiments related to protein phase separation.
 
 
 **Consulting** - Freelance.
@@ -31,7 +31,7 @@ I have consulted companies on processing and wrangling large data files into sma
 
 **Post-doctoral fellow** - Dana-Farber Cancer Institute/Harvard Medical School
 
-As a post-doctoral fellow, I devised a recombinant protein expression system and purification scheme for the human protein CPSF6, a protein with low sequence complexity and strong compositional biases. This expression system has been extended to several similar protein targets that could not be easily purified previously. I additionally began my foray into conceptualizing and developing computational methods to better define HIV-1 integration targeting preferences. To this end, I built phenomenological models of theoretical random integration in order to define genes preferentially integrated into or avoided during HIV-1 infection. The methodology and findings were published in Nucleic Acids Research. This approach, however, has since been superseded by a newer, more robust method: xInt (not yet published).
+As a post-doctoral fellow, I devised a recombinant protein expression system and purification scheme for the human protein CPSF6, a protein with low sequence complexity and strong compositional biases. This expression system has subsequently been extended to several similar protein targets that could not be easily purified previously. I additionally began my foray into conceptualizing and developing computational methods to better define HIV-1 integration targeting preferences. To this end, I built phenomenological models of theoretical random integration in order to define genes preferentially integrated into or avoided during HIV-1 infection. The methodology and findings were published in Nucleic Acids Research. This approach, however, has since been superseded by a newer, more robust method: xInt (not yet published).
 
 **Graduate student** - University of Alabama at Birmingham.
 
@@ -42,21 +42,24 @@ As a graduate student, I was interested in understanding and exploiting the arch
 
 **Languages**: Proficiency in R. Competency with Python, AWK, sed, etc. Exposure to Julia.
 
-**Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, jq, knitr/Rmarkdown/quarto/xaringan, HPC clusters (SLURM and Grid Engine).
+**Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, jq, knitr/Rmarkdown/quarto/xaringan, LaTeX, HPC clusters (SLURM and Grid Engine).
 
 **Bioinformatic tools**: 
-  - <u>Bioconductor</u>: GenomicRanges, BSgenome, Biostrings, DESeq2, Rsamtools, biomaRt, plyranges, etc. 
-  - <u>Miscellaneous software</u>: bedtools, samtools, MACS2. 
+  - <u>Bioconductor</u>: GenomicRanges, BSgenome, Biostrings, DESeq2, Rsamtools, and many more. 
+  - <u>Miscellaneous software</u>: bedtools, samtools, MACS2, and more. 
   - <u>Sequence (pseudo)aligners</u>: Rsubread, BWA, STAR, kallisto.
   - <u>Multiple sequence alignment</u>: hh-suite, Clustal Omega, MUSCLE.
   - <u>Macromolecular modeling</u>: hullrad, HYDROPRO.
-  - <u>Structure prediction</u>: ColabFold (AlphaFold), OmegaFold, MODELLER.
+  - <u>Structure prediction</u>: ColabFold (AlphaFold), OmegaFold.
 
 **Statistics**: categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric hypothesis testing, bootstrapping, maximum likelihood estimation.
 
 
 ## <i class="fas fa-code"></i> Software
-Coming soon!
+
+- [calibrateR](https://github.com/gbedwell/calibrateR): An R package written to streamline common laboratory calculations. A brief description of the package and general usage can be found [here](https://gbedwell.github.io/calibrateR/).
+
+- [nbconv](https://github.com/gbedwell/nbconv): An R package that implements three distinct methods for evaluating the sum of arbitrary negative binomial convolutions. See [this post](https://gbedwell.github.io/nb-convolutions/) for more information.
 
 
 ## <i class="fas fa-align-left"></i> Selected Publications

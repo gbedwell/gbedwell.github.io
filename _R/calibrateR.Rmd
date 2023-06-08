@@ -135,7 +135,7 @@ sec.rh <- calibrate_sec( vols = c( rep1, rep2, rep3 ),
 
 Running <code>calibrate_sec()</code> returns a function for downstream number crunching. Setting <code>parameter = "rh"</code> uses a [previously published](https://febs.onlinelibrary.wiley.com/doi/full/10.1046/j.0014-2956.2001.02649.x?sid=nlm%3Apubmed) scaling law to convert the provided mass values to radius values.
 
-Convention for SEC column calibration plots is to plot $\log{(M)}$ or $\log{(R_H)}$ vs. volume. Here, I will create a sequence of dummy elution volumes between the observed elution volumes for the standard analytes. Because I calibrated the column based on hydrodynamic radius instead of mass, I will use the function <code>mass_to_radius()</code> to convert the standard analyte masses to hydrodynamic radii. Then, I will use the calibration to calculate the expected radii of analytes eluting at each of the dummy elution volumes. Non-normalized elution volumes are typically entered in mL units. Because these units don't strictly matter, however, I've left those units off of the plot. Mass units must be entered in Daltons and are returned in Daltons. Hydrodynamic radius values are returned in nm.
+Convention for SEC column calibration plots is to plot $\log{(M)}$ or $\log{(R_H)}$ vs. volume. Here, I will create a sequence of dummy elution volumes between the observed elution volumes for the standard analytes. Because I calibrated the column based on hydrodynamic radius instead of mass, I will use the function <code>mass_to_radius()</code> to convert the standard analyte masses to hydrodynamic radii. Then, I will use the calibration to calculate the expected radii of analytes eluting at each of the dummy elution volumes. Non-normalized elution volumes are typically entered in mL units. Because these units don't strictly matter, however, I've left those units off of the plot. The y-axis values are log-transformed. By default, however, the function automatically re-transforms the expected values to the linear scale. Note that the input mass units must g/mol (Daltons). Calculated mass values are returned in the same units. Hydrodynamic radius values are returned in nm.
 
 ```{r}
 sec.df <- data.frame( vols = c( rep1, rep2, rep3 ),
@@ -150,7 +150,7 @@ ggplot( sec.df, aes( x = vols, y = log( rads ) ) ) +
   theme_bw() + 
   theme( axis.text = element_text( size = 14 ),
          axis.title = element_text( size = 16 ) ) +
-  labs( x = "Elution Volume", y = "Hydrodynamic Radius (nm)" )
+  labs( x = "Elution Volume", y = "log(Rh)" )
 ```
 
 To apply the calibrated function to analytes of unknown mass/radius, simply enter the empirical elution volume of the analyte into the function. If the column calibration was done using normalized elution volumes, the function <code>normalize_ev()</code> will normalize the analyte elution volumes based on the column's void and column volumes.

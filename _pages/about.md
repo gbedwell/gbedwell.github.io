@@ -16,4 +16,4 @@ When I moved to the Dana-Farber Cancer Institute/Harvard Medical School for a po
 
 I hope to use this website as a space where I can write about topics that interest me and to discuss my work in casual yet well-documented ways.
 
-Outside of work, I happily spend the majority of my time with my wife and kids. We enjoy fantastical stories, good food, silly jokes, cute animals, and many other things. I enjoy cooking, watching soccer matches whenever I can (YNWA), and reading. I am also an avid fan of music and am finally beginning to appreciate podcasts (or at least a few of them).
+Outside of work, I happily spend the majority of my time with my wife and kids. We enjoy fantastical stories, good food, silly jokes, cute animals, and many other things. I enjoy cooking, espresso, watching soccer matches whenever I can (YNWA), and reading. I am also an avid fan of music and am finally beginning to appreciate podcasts (or at least a few of them).

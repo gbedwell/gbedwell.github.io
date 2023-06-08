@@ -205,9 +205,12 @@ to convert the standard analyte masses to hydrodynamic radii. Then, I
 will use the calibration to calculate the expected radii of analytes
 eluting at each of the dummy elution volumes. Non-normalized elution
 volumes are typically entered in mL units. Because these units don’t
-strictly matter, however, I’ve left those units off of the plot. Mass
-units must be entered in Daltons and are returned in Daltons.
-Hydrodynamic radius values are returned in nm.
+strictly matter, however, I’ve left those units off of the plot. The
+y-axis values are log-transformed. By default, however, the function
+automatically re-transforms the expected values to the linear scale.
+Note that the input mass units must g/mol (Daltons). Calculated mass
+values are returned in the same units. Hydrodynamic radius values are
+returned in nm.
 
 ``` r
 sec.df <- data.frame( vols = c( rep1, rep2, rep3 ),
@@ -222,7 +225,7 @@ ggplot( sec.df, aes( x = vols, y = log( rads ) ) ) +
   theme_bw() + 
   theme( axis.text = element_text( size = 14 ),
          axis.title = element_text( size = 16 ) ) +
-  labs( x = "Elution Volume", y = "Hydrodynamic Radius (nm)" )
+  labs( x = "Elution Volume", y = "log(Rh)" )
 ```
 
 <img src="../figures/2023-06-08/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" />
