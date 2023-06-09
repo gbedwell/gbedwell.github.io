@@ -208,7 +208,7 @@ volumes are typically entered in mL units. Because these units don’t
 strictly matter, however, I’ve left those units off of the plot. The
 y-axis values are log-transformed. By default, however, the function
 automatically re-transforms the expected values to the linear scale.
-Note that the input mass units must g/mol (Daltons). Calculated mass
+Note that the input mass units must be g/mol (Daltons). Calculated mass
 values are returned in the same units. Hydrodynamic radius values are
 returned in nm.
 
