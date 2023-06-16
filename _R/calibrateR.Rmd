@@ -106,12 +106,22 @@ bca( a = unk, return.conc = TRUE, df = 2 )
 
 #### Gibson assembly
 
-To calculate Gibson assembly reaction volumes, you need to define seven parameters. These are: insert concentration(s), insert length(s), vector concentration, vector length, the molar ratio of insert to vector, the mass of vector in the reaction (in ng), and the final volume of the reaction <i>before</i> the addition of 2x master mix. To input multiple inserts per reaction, simply enter insert concentration(s) and insert length(s) as a vector. Concentration units should be ng/µL and length units should be bp. Given these parameters, the function <code>gibson()</code> returns a data frame of the volumes (in µL) of each fragment, linearized vector, water, and 2x master mix to add to the reaction.
+To calculate Gibson assembly reaction volumes, you need to define eight parameters for each reaction. These are: insert concentration(s), insert length(s), vector concentration, vector length, the number of fragments in the reaction, the molar ratio of insert to vector, the mass of vector in the reaction (in ng), and the final volume of the reaction <i>before</i> the addition of 2x master mix. Concentration units should be ng/µL (or equivalent) and length units should be bp. 
+
+The function can calculate parameters for multiple reactions one fell swoop. Vectors with lengths corresponding to the number of unique reactions must be entered for all parameters except insert concentration and insert length. For each reaction, the function will then extract the relevant parameters from the input vectors and perform the requisite calculations. A list of data frames is returned, where each list element represents a unique reaction.
+
+In the example below, I'm calculating reaction parameters for two reactions. The first reaction has 2 input fragments and the second has 3.
 
 ```{r}
-gibson( insert.conc = c( 35, 78 ), insert.len = c( 1800, 2400 ),
-        vec.conc = 55, vec.len = 4710, vec.mass = 50,
-        molar.ratio = 3, final.vol = 5 )
+gibson( insert.conc = c( 35, 78, 48, 37, 40 ), 
+        insert.len = c( 1894, 2403, 887, 1764, 943 ),
+        vec.conc = c( 55, 65 ), 
+        vec.len = c( 4710, 5934 ), 
+        n.frag = c( 2, 3 ), 
+        vec.mass = rep( 50, 2 ),
+        molar.ratio = rep( 3, 2 ), 
+        final.vol = rep( 5, 2 ), 
+        ids = c( "Reaction 1", "Reaction 2" ) )
 ```
 
 #### Size exclusion column calibration
@@ -159,9 +169,18 @@ To apply the calibrated function to analytes of unknown mass/radius, simply ente
 sec.rh( 16.495 )
 ```
 
-### Conclusions
+#### UV/vis
 
-While the functions described above are not the only functions included in <code>calibrateR</code>, they are probably the most widely applicable. Other functions include <code>uv_vis()</code> to calculate macromolecular concentration based on UV/Vis spectroscopy and <code>cfu()</code>, which returns the volume of starter culture to add to a fresh culture of given volume to reach a desired concentration of cells (or CFU)/mL. The plan is incorporate more functionallity into <code>calibrateR</code> over time. As mentioned above, please reach out if you have other ideas/suggestions!
+Concentration determination by UV/Vis spectroscopy is very common in the lab. The <code>calibrateR</code> function <code>uv_vis()</code> takes as input the measured absorbance at the desired wavelength, the extinction coefficient of the molecule of interest, the dilution factor of the measurement, the path length of light, and the type of molecule being measured. If the type of molecule being measured is "protein", the extinction coefficient must be defined. If the type of molecule is one of "dsDNA", "ssDNA", or "ssRNA", the extinction coefficient can be <code>NULL</code>, and the standard (average) extinction coefficients for these macromolecules are used. The path length defaults to 1 cm.
+
+In the example below, a two-fold dilution of a purified protein with an extinction coefficient of 35000 M<sup>-1</sup>cm<sup>-1</sup> was measured to have an absorbance of 0.491 at 280 nm. <code>uv_vis()</code> returns concentrations in same concentration units used in the extinction coefficient. In the example, that is molar units.
+
+```{r}
+uv_vis( abs = 0.491, 
+        ext = 35000,
+        df = 2,
+        type = "protein" )
+```
 
 
 

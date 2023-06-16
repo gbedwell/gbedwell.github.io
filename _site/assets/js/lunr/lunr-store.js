@@ -16,4 +16,10 @@ var store = [{
         "tags": [],
         "url": "/calibrateR/",
         "teaser": null
+      },{
+        "title": "The ECF, the 3 point shot, and empirical Bayes",
+        "excerpt":"The 2022-2023 NBA playoffs have come to an end. The Denver Nuggets, this season’s Western Conference champions and Finals favorites, have defeated the never-say-die Miami Heat 4 games to 1. The Nuggets, led by the virtually unstoppable Nikola Jokíc (who averaged a triple double per game in these playoffs), made...","categories": [],
+        "tags": [],
+        "url": "/ecf-three/",
+        "teaser": null
       },]

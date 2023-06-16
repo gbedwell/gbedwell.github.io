@@ -305,7 +305,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          8 minute read
         
       </span>
     
@@ -427,26 +427,50 @@ same as the units of concentration used to make the standard curve.</p>
 
 <h4 id="gibson-assembly">Gibson assembly</h4>
 
-<p>To calculate Gibson assembly reaction volumes, you need to define seven
-parameters. These are: insert concentration(s), insert length(s), vector
-concentration, vector length, the molar ratio of insert to vector, the
-mass of vector in the reaction (in ng), and the final volume of the
-reaction <i>before</i> the addition of 2x master mix. To input multiple
-inserts per reaction, simply enter insert concentration(s) and insert
-length(s) as a vector. Concentration units should be ng/µL and length
-units should be bp. Given these parameters, the function
-<code>gibson()</code> returns a data frame of the volumes (in µL) of
-each fragment, linearized vector, water, and 2x master mix to add to the
-reaction.</p>
+<p>To calculate Gibson assembly reaction volumes, you need to define eight
+parameters for each reaction. These are: insert concentration(s), insert
+length(s), vector concentration, vector length, the number of fragments
+in the reaction, the molar ratio of insert to vector, the mass of vector
+in the reaction (in ng), and the final volume of the reaction
+<i>before</i> the addition of 2x master mix. Concentration units should
+be ng/µL (or equivalent) and length units should be bp.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gibson</span><span class="p">(</span><span class="w"> </span><span class="n">insert.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">35</span><span class="p">,</span><span class="w"> </span><span class="m">78</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">insert.len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">1800</span><span class="p">,</span><span class="w"> </span><span class="m">2400</span><span class="w"> </span><span class="p">),</span><span class="w">
-        </span><span class="n">vec.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">55</span><span class="p">,</span><span class="w"> </span><span class="n">vec.len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4710</span><span class="p">,</span><span class="w"> </span><span class="n">vec.mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span><span class="p">,</span><span class="w">
-        </span><span class="n">molar.ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="n">final.vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="p">)</span><span class="w">
+<p>The function can calculate parameters for multiple reactions one fell
+swoop. Vectors with lengths corresponding to the number of unique
+reactions must be entered for all parameters except insert concentration
+and insert length. For each reaction, the function will then extract the
+relevant parameters from the input vectors and perform the requisite
+calculations. A list of data frames is returned, where each list element
+represents a unique reaction.</p>
+
+<p>In the example below, I’m calculating reaction parameters for two
+reactions. The first reaction has 2 input fragments and the second has
+3.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gibson</span><span class="p">(</span><span class="w"> </span><span class="n">insert.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">35</span><span class="p">,</span><span class="w"> </span><span class="m">78</span><span class="p">,</span><span class="w"> </span><span class="m">48</span><span class="p">,</span><span class="w"> </span><span class="m">37</span><span class="p">,</span><span class="w"> </span><span class="m">40</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+        </span><span class="n">insert.len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">1894</span><span class="p">,</span><span class="w"> </span><span class="m">2403</span><span class="p">,</span><span class="w"> </span><span class="m">887</span><span class="p">,</span><span class="w"> </span><span class="m">1764</span><span class="p">,</span><span class="w"> </span><span class="m">943</span><span class="w"> </span><span class="p">),</span><span class="w">
+        </span><span class="n">vec.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">55</span><span class="p">,</span><span class="w"> </span><span class="m">65</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+        </span><span class="n">vec.len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">4710</span><span class="p">,</span><span class="w"> </span><span class="m">5934</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+        </span><span class="n">n.frag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+        </span><span class="n">vec.mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="w"> </span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">),</span><span class="w">
+        </span><span class="n">molar.ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+        </span><span class="n">final.vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">),</span><span class="w"> 
+        </span><span class="n">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="s2">"Reaction 1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Reaction 2"</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt; $`Reaction 1`</span><span class="w">
 </span><span class="c1">#&gt;            Volume</span><span class="w">
-</span><span class="c1">#&gt; Fragment 1   1.64</span><span class="w">
+</span><span class="c1">#&gt; Fragment 1   1.72</span><span class="w">
 </span><span class="c1">#&gt; Fragment 2   0.98</span><span class="w">
 </span><span class="c1">#&gt; Vector       0.91</span><span class="w">
-</span><span class="c1">#&gt; Water        1.47</span><span class="w">
+</span><span class="c1">#&gt; Water        1.39</span><span class="w">
+</span><span class="c1">#&gt; Master Mix   5.00</span><span class="w">
+</span><span class="c1">#&gt; </span><span class="w">
+</span><span class="c1">#&gt; $`Reaction 2`</span><span class="w">
+</span><span class="c1">#&gt;            Volume</span><span class="w">
+</span><span class="c1">#&gt; Fragment 1   0.47</span><span class="w">
+</span><span class="c1">#&gt; Fragment 2   1.21</span><span class="w">
+</span><span class="c1">#&gt; Fragment 3   0.60</span><span class="w">
+</span><span class="c1">#&gt; Vector       0.77</span><span class="w">
+</span><span class="c1">#&gt; Water        1.95</span><span class="w">
 </span><span class="c1">#&gt; Master Mix   5.00</span><span class="w">
 </span></code></pre></div></div>
 
@@ -500,7 +524,7 @@ volumes are typically entered in mL units. Because these units don’t
 strictly matter, however, I’ve left those units off of the plot. The
 y-axis values are log-transformed. By default, however, the function
 automatically re-transforms the expected values to the linear scale.
-Note that the input mass units must g/mol (Daltons). Calculated mass
+Note that the input mass units must be g/mol (Daltons). Calculated mass
 values are returned in the same units. Hydrodynamic radius values are
 returned in nm.</p>
 
@@ -532,17 +556,31 @@ analyte elution volumes based on the column’s void and column volumes.</p>
 </span><span class="c1">#&gt; 3.9831</span><span class="w">
 </span></code></pre></div></div>
 
-<h3 id="conclusions">Conclusions</h3>
+<h4 id="uvvis">UV/vis</h4>
 
-<p>While the functions described above are not the only functions included
-in <code>calibrateR</code>, they are probably the most widely
-applicable. Other functions include <code>uv_vis()</code> to calculate
-macromolecular concentration based on UV/Vis spectroscopy and
-<code>cfu()</code>, which returns the volume of starter culture to add
-to a fresh culture of given volume to reach a desired concentration of
-cells (or CFU)/mL. The plan is incorporate more functionallity into
-<code>calibrateR</code> over time. As mentioned above, please reach out
-if you have other ideas/suggestions!</p>
+<p>Concentration determination by UV/Vis spectroscopy is very common in the
+lab. The <code>calibrateR</code> function <code>uv_vis()</code> takes as
+input the measured absorbance at the desired wavelength, the extinction
+coefficient of the molecule of interest, the dilution factor of the
+measurement, the path length of light, and the type of molecule being
+measured. If the type of molecule being measured is “protein”, the
+extinction coefficient must be defined. If the type of molecule is one
+of “dsDNA”, “ssDNA”, or “ssRNA”, the extinction coefficient can be
+<code>NULL</code>, and the standard (average) extinction coefficients
+for these macromolecules are used. The path length defaults to 1 cm.</p>
+
+<p>In the example below, a two-fold dilution of a purified protein with an
+extinction coefficient of 35000 M<sup>-1</sup>cm<sup>-1</sup> was
+measured to have an absorbance of 0.491 at 280 nm. <code>uv_vis()</code>
+returns concentrations in same concentration units used in the
+extinction coefficient. In the example, that is molar units.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">uv_vis</span><span class="p">(</span><span class="w"> </span><span class="n">abs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.491</span><span class="p">,</span><span class="w"> 
+        </span><span class="n">ext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">35000</span><span class="p">,</span><span class="w">
+        </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w">
+        </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"protein"</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt; [1] 2.805714e-05</span><span class="w">
+</span></code></pre></div></div>
 
         
       </section>
@@ -578,7 +616,8 @@ if you have other ideas/suggestions!</p>
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="/ecf-three/" class="pagination--pager" title="The ECF, the 3 point shot, and empirical Bayes
+">Next</a>
     
   </nav>
 
@@ -592,6 +631,46 @@ if you have other ideas/suggestions!</p>
     <div class="page__related">
       <h2 class="page__related-title">You may also enjoy</h2>
       <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/ecf-three/" rel="permalink">The ECF, the 3 point shot, and empirical Bayes
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Analyzing 3 point shooting percentage in the 2023 NBA playoffs.
+</p>
+  </article>
+</div>
+
         
           
 

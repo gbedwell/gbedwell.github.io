@@ -1,0 +1,911 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>The ECF, the 3 point shot, and empirical Bayes - Undefined Functions</title>
+<meta name="description" content="Analyzing 3 point shooting percentage in the 2023 NBA playoffs.">
+
+
+  <meta name="author" content="Greg Bedwell">
+  
+  <meta property="article:author" content="Greg Bedwell">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Undefined Functions">
+<meta property="og:title" content="The ECF, the 3 point shot, and empirical Bayes">
+<meta property="og:url" content="http://localhost:4000/ecf-three/">
+
+
+  <meta property="og:description" content="Analyzing 3 point shooting percentage in the 2023 NBA playoffs.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-06-13T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/ecf-three/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Greg Bedwell",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Undefined Functions Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Undefined Functions
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about.html">About Me</a>
+            </li><li class="masthead__menu-item">
+              <a href="/cv.html">CV</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/">
+        <img src="/assets/images/image001.png" alt="Greg Bedwell" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Greg Bedwell</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>computational biologist <code class="language-plaintext highlighter-rouge">|</code> protein chemist</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Boston, MA</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:gregoryjbedwell@gmail.com" rel="me" class="u-email">
+            <meta itemprop="email" content="gregoryjbedwell@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/gregory-bedwell" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+            <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/gbedwell" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="The ECF, the 3 point shot, and empirical Bayes">
+    <meta itemprop="description" content="Analyzing 3 point shooting percentage in the 2023 NBA playoffs.">
+    <meta itemprop="datePublished" content="2023-06-13T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/ecf-three/" class="u-url" itemprop="url">The ECF, the 3 point shot, and empirical Bayes
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>The 2022-2023 NBA playoffs have come to an end. The Denver Nuggets, this
+season’s Western Conference champions and Finals favorites, have
+defeated the never-say-die Miami Heat 4 games to 1. The Nuggets, led by
+the virtually unstoppable Nikola Jokíc (who <i>averaged</i> a triple
+double per game in these playoffs), made relatively easy work of the
+(not your typical) 8-seed Heat. Nevertheless, the Heat’s impressive, and
+at times utterly dominant, run through both the 1-seed Milwaukee Bucks
+(4-1) and the 2-seed Boston Celtics (4-3) has already had <a href="https://www.nba.com/bucks/news/milwaukee-bucks-part-ways-with-head-coach-mike-budenholzer">significant
+consequences</a>
+and could yet have more.</p>
+
+<p>In the Eastern Conference Finals against the Celtics, the Heat
+overturned double-digit deficits in the second halves of both Games 1
+and 2 and went on to win them both. Game 3 was an emphatic 128-102 Heat
+victory. The Celtics won the next 3 games, evening the series at three
+games each and forcing a deciding Game 7. Back in Boston, the Heat
+absolutely embarrassed the home team and silenced the TD Garden crowd
+with a 103-84 victory. Much has been said about how this ECF played out.
+Most of this commentary can be succinctly summarized as the Heat having
+“that dawg in ’em”, while the Celtics decidedly did not. Another, more
+tangible, aspect of the series, however, was the apparent difference in
+3 point shooting percentage between the Heat and the Celtics. Per
+<a href="https://www.basketball-reference.com/">basketball-reference</a>, the
+Celtics rode the three point shot to 57 wins over the 2022-2023 NBA
+season, shooting 42.6 threes per game (2nd overall) with a season
+average 37.7% success rate (6th overall). The Heat, on the other hand,
+shot 34.8 threes per game (10th overall) with a measly 34.4% success
+rate (27th overall). During the ECF, however, the Heat shot 43.4% from
+behind the arc, while the Celtics shot just 30.3%. On the surface, this
+seems like a staggering reversal. However, there is inherent randomness
+to shooting. Even the best three point shooters will have hot and cold
+streaks. Over the course of a 7 game series, these streaks can be the
+difference between moving on and going home. Importantly, the impact of
+this randomness is greater for smaller sample sizes than for larger
+ones.</p>
+
+<p>With this in mind, I want to try to answer the following questions:</p>
+
+<ol>
+  <li>How much better was the Heat’s 3 point shooting percentage in the
+ECF relative to their regular season performance?</li>
+  <li>How much worse was the Celtics?</li>
+</ol>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># library(lubridate)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">rvest</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt; </span><span class="w">
+</span><span class="c1">#&gt; Attaching package: 'dplyr'</span><span class="w">
+</span><span class="c1">#&gt; The following objects are masked from 'package:stats':</span><span class="w">
+</span><span class="c1">#&gt; </span><span class="w">
+</span><span class="c1">#&gt;     filter, lag</span><span class="w">
+</span><span class="c1">#&gt; The following objects are masked from 'package:base':</span><span class="w">
+</span><span class="c1">#&gt; </span><span class="w">
+</span><span class="c1">#&gt;     intersect, setdiff, setequal, union</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">tibble</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">tidyr</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">gamlss</span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt; Loading required package: splines</span><span class="w">
+</span><span class="c1">#&gt; Loading required package: gamlss.data</span><span class="w">
+</span><span class="c1">#&gt; </span><span class="w">
+</span><span class="c1">#&gt; Attaching package: 'gamlss.data'</span><span class="w">
+</span><span class="c1">#&gt; The following object is masked from 'package:datasets':</span><span class="w">
+</span><span class="c1">#&gt; </span><span class="w">
+</span><span class="c1">#&gt;     sleep</span><span class="w">
+</span><span class="c1">#&gt; Loading required package: gamlss.dist</span><span class="w">
+</span><span class="c1">#&gt; Loading required package: MASS</span><span class="w">
+</span><span class="c1">#&gt; </span><span class="w">
+</span><span class="c1">#&gt; Attaching package: 'MASS'</span><span class="w">
+</span><span class="c1">#&gt; The following object is masked from 'package:dplyr':</span><span class="w">
+</span><span class="c1">#&gt; </span><span class="w">
+</span><span class="c1">#&gt;     select</span><span class="w">
+</span><span class="c1">#&gt; Loading required package: nlme</span><span class="w">
+</span><span class="c1">#&gt; </span><span class="w">
+</span><span class="c1">#&gt; Attaching package: 'nlme'</span><span class="w">
+</span><span class="c1">#&gt; The following object is masked from 'package:dplyr':</span><span class="w">
+</span><span class="c1">#&gt; </span><span class="w">
+</span><span class="c1">#&gt;     collapse</span><span class="w">
+</span><span class="c1">#&gt; Loading required package: parallel</span><span class="w">
+</span><span class="c1">#&gt;  **********   GAMLSS Version 5.4-12  **********</span><span class="w">
+</span><span class="c1">#&gt; For more on GAMLSS look at https://www.gamlss.com/</span><span class="w">
+</span><span class="c1">#&gt; Type gamlssNews() to see new features/changes/bug fixes.</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">broom.mixed</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">player.dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">lapply</span><span class="p">(</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">as.list</span><span class="p">(</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"202"</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">3</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w">
+                      </span><span class="n">FUN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="w">
+                        </span><span class="n">url</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"https://www.basketball-reference.com/leagues/NBA_"</span><span class="p">,</span><span class="w"> 
+                                       </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="s2">"_totals.html"</span><span class="w"> </span><span class="p">)</span><span class="w">
+                        </span><span class="n">page</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read_html</span><span class="p">(</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="p">)</span><span class="w">
+                        
+                        </span><span class="n">cols</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+                          </span><span class="n">html_nodes</span><span class="p">(</span><span class="s2">"table#totals_stats &gt; thead &gt; tr &gt; th"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+                          </span><span class="n">html_text</span><span class="p">()</span><span class="w">
+                        
+                        </span><span class="n">cols</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cols</span><span class="p">[</span><span class="w"> </span><span class="o">-</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="p">]</span><span class="w">
+                        
+                        </span><span class="n">dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> 
+                          </span><span class="n">t</span><span class="p">(</span><span class="w"> </span><span class="n">matrix</span><span class="p">(</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+                                       </span><span class="n">html_nodes</span><span class="p">(</span><span class="s2">"table#totals_stats &gt; tbody &gt; tr &gt; td"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+                                       </span><span class="n">html_text</span><span class="p">(),</span><span class="w">
+                                     </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">29</span><span class="w"> </span><span class="p">)</span><span class="w">
+                             </span><span class="p">)</span><span class="w"> 
+                          </span><span class="p">)</span><span class="w">
+                        </span><span class="n">colnames</span><span class="p">(</span><span class="w"> </span><span class="n">dat</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cols</span><span class="w">
+                        
+                        </span><span class="n">dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dat</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+                          </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="p">),</span><span class="w">
+                                         </span><span class="n">across</span><span class="p">(</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">5</span><span class="o">:</span><span class="m">29</span><span class="p">),</span><span class="w"> </span><span class="n">as.numeric</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+                          </span><span class="n">tibble</span><span class="o">::</span><span class="n">add_column</span><span class="p">(</span><span class="w"> </span><span class="n">Season</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">.after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">)</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                      </span><span class="p">)</span><span class="w">
+
+</span><span class="n">player.dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">do.call</span><span class="p">(</span><span class="w"> </span><span class="n">rbind</span><span class="p">,</span><span class="w"> </span><span class="n">player.dat</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">three.dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">player.dat</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="w"> </span><span class="n">Player</span><span class="p">,</span><span class="w"> </span><span class="n">Season</span><span class="p">,</span><span class="w"> </span><span class="n">Tm</span><span class="p">,</span><span class="w"> </span><span class="n">MP</span><span class="p">,</span><span class="w"> </span><span class="n">`3P`</span><span class="p">,</span><span class="w"> </span><span class="n">`3PA`</span><span class="p">,</span><span class="w"> </span><span class="n">`3P%`</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">tidyr</span><span class="o">::</span><span class="n">drop_na</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gamlss</span><span class="p">(</span><span class="w"> </span><span class="n">cbind</span><span class="p">(</span><span class="n">`3P`</span><span class="p">,</span><span class="w"> </span><span class="n">`3PA`</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">`3P`</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="w"> </span><span class="n">`3PA`</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w">
+               </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">three.dat</span><span class="p">,</span><span class="w">
+               </span><span class="n">family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BB</span><span class="p">(</span><span class="w"> </span><span class="n">mu.link</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"identity"</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt; GAMLSS-RS iteration 1: Global Deviance = 17705.38 </span><span class="w">
+</span><span class="c1">#&gt; GAMLSS-RS iteration 2: Global Deviance = 14796.71 </span><span class="w">
+</span><span class="c1">#&gt; GAMLSS-RS iteration 3: Global Deviance = 14764.15 </span><span class="w">
+</span><span class="c1">#&gt; GAMLSS-RS iteration 4: Global Deviance = 14764.15 </span><span class="w">
+</span><span class="c1">#&gt; GAMLSS-RS iteration 5: Global Deviance = 14764.15</span><span class="w">
+
+</span><span class="n">plot</span><span class="p">(</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../figures/2023-06-13/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; ******************************************************************
+#&gt;   Summary of the Randomised Quantile Residuals
+#&gt;                            mean   =  -0.01271775 
+#&gt;                        variance   =  1.017853 
+#&gt;                coef. of skewness  =  0.03850354 
+#&gt;                coef. of kurtosis  =  3.054804 
+#&gt; Filliben correlation coefficient  =  0.999368 
+#&gt; ******************************************************************
+# tidy(fit)
+</code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">three.dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">three.dat</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fitted</span><span class="p">(</span><span class="w"> </span><span class="n">fit</span><span class="p">,</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mu"</span><span class="w"> </span><span class="p">),</span><span class="w">
+                 </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fitted</span><span class="p">(</span><span class="w"> </span><span class="n">fit</span><span class="p">,</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"sigma"</span><span class="w"> </span><span class="p">),</span><span class="w">
+                 </span><span class="n">alpha0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">sigma</span><span class="p">,</span><span class="w">
+                 </span><span class="n">beta0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mu</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">sigma</span><span class="p">,</span><span class="w">
+                 </span><span class="n">alphai</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">alpha0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">`3P`</span><span class="p">,</span><span class="w">
+                 </span><span class="n">betai</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">beta0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">`3PA`</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">`3P`</span><span class="p">,</span><span class="w">
+                 </span><span class="n">eb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alphai</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">alphai</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">betai</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="w"> </span><span class="n">three.dat</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">`3P%`</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eb</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">`3PA`</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"#00000000"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_fill_gradient</span><span class="p">(</span><span class="s2">"3P Attempts"</span><span class="p">,</span><span class="w">
+                      </span><span class="n">guide</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">guide_colorbar</span><span class="p">(</span><span class="n">title.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"top"</span><span class="p">,</span><span class="w">
+                                             </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
+                                             </span><span class="n">title.hjust</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="w">
+                                             </span><span class="n">ticks.colour</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+                                             </span><span class="n">ticks.linewidth</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w">
+                                             </span><span class="n">frame.colour</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+                                             </span><span class="n">frame.linewidth</span><span class="o">=</span><span class="m">0.5</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="w"> </span><span class="n">legend.position</span><span class="o">=</span><span class="s2">"top"</span><span class="p">,</span><span class="w">
+         </span><span class="n">legend.key.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="p">(</span><span class="m">0.3</span><span class="p">,</span><span class="w"> </span><span class="s2">"cm"</span><span class="p">),</span><span class="w">
+         </span><span class="n">legend.key.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="s2">"cm"</span><span class="p">),</span><span class="w">
+         </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">10</span><span class="p">),</span><span class="w">
+         </span><span class="n">legend.title</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">12</span><span class="p">),</span><span class="w">
+         </span><span class="n">legend.box.margin</span><span class="o">=</span><span class="n">margin</span><span class="p">(</span><span class="m">-10</span><span class="p">,</span><span class="m">-10</span><span class="p">,</span><span class="m">-10</span><span class="p">,</span><span class="m">-10</span><span class="p">),</span><span class="w">
+         </span><span class="n">legend.justification</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span><span class="w">
+         </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="p">),</span><span class="w">
+         </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"3P%"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Adjusted 3P%"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../figures/2023-06-13/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /></p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">ggpointdensity</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">ggplot</span><span class="p">(</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">three.dat</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">`3PA`</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">`3P%`</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_hline</span><span class="p">(</span><span class="w"> </span><span class="n">yintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">three.dat</span><span class="o">$</span><span class="n">`3P%`</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_pointdensity</span><span class="p">(</span><span class="w"> </span><span class="n">adjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="c1"># geom_point( aes( x = `3PA`, y = eb ), color = "purple", alpha = 0.5 ) +</span><span class="w">
+  </span><span class="n">scale_color_gradient</span><span class="p">(</span><span class="n">guide</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">guide_colorbar</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Nearest Neighbors"</span><span class="p">,</span><span class="w">
+                                              </span><span class="n">title.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"top"</span><span class="p">,</span><span class="w">
+                                              </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w">
+                                              </span><span class="n">title.hjust</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="w">
+                                              </span><span class="n">ticks.colour</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+                                              </span><span class="n">ticks.linewidth</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w">
+                                              </span><span class="n">frame.colour</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+                                              </span><span class="n">frame.linewidth</span><span class="o">=</span><span class="m">0.5</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">(</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">`3PA`</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">`mu`</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="w"> </span><span class="n">legend.position</span><span class="o">=</span><span class="s2">"top"</span><span class="p">,</span><span class="w">
+         </span><span class="n">legend.key.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="p">(</span><span class="m">0.3</span><span class="p">,</span><span class="w"> </span><span class="s2">"cm"</span><span class="p">),</span><span class="w">
+         </span><span class="n">legend.key.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="s2">"cm"</span><span class="p">),</span><span class="w">
+         </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">10</span><span class="p">),</span><span class="w">
+         </span><span class="n">legend.title</span><span class="o">=</span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">12</span><span class="p">),</span><span class="w">
+         </span><span class="n">legend.box.margin</span><span class="o">=</span><span class="n">margin</span><span class="p">(</span><span class="m">-10</span><span class="p">,</span><span class="m">-10</span><span class="p">,</span><span class="m">-10</span><span class="p">,</span><span class="m">-10</span><span class="p">),</span><span class="w">
+         </span><span class="n">legend.justification</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span><span class="w">
+         </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="p">),</span><span class="w">
+         </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"3P Attempts"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"3P%"</span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span><span class="w">
+</span><span class="c1">#&gt; ℹ Please use `linewidth` instead.</span><span class="w">
+</span><span class="c1">#&gt; This warning is displayed once every 8 hours.</span><span class="w">
+</span><span class="c1">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span><span class="w">
+</span><span class="c1">#&gt; generated.</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="../figures/2023-06-13/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /></p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">year</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"2023"</span><span class="w">
+</span><span class="n">playoff.url</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste0</span><span class="p">(</span><span class="w"> </span><span class="s2">"https://www.basketball-reference.com/playoffs/NBA_"</span><span class="p">,</span><span class="w"> </span><span class="n">year</span><span class="p">,</span><span class="w"> </span><span class="s2">"_totals.html"</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">playoff.page</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read_html</span><span class="p">(</span><span class="w"> </span><span class="n">playoff.url</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">playoff.cols</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">playoff.page</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">html_nodes</span><span class="p">(</span><span class="s2">"table#totals_stats &gt; thead &gt; tr &gt; th"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">html_text</span><span class="p">()</span><span class="w">
+
+</span><span class="n">playoff.cols</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">playoff.cols</span><span class="p">[</span><span class="w"> </span><span class="o">-</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="p">]</span><span class="w">
+
+</span><span class="n">playoff.dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> 
+  </span><span class="n">t</span><span class="p">(</span><span class="w"> </span><span class="n">matrix</span><span class="p">(</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">playoff.page</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+               </span><span class="n">html_nodes</span><span class="p">(</span><span class="s2">"table#totals_stats &gt; tbody &gt; tr &gt; td"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+               </span><span class="n">html_text</span><span class="p">(),</span><span class="w">
+             </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">29</span><span class="w"> </span><span class="p">)</span><span class="w">
+     </span><span class="p">)</span><span class="w"> 
+  </span><span class="p">)</span><span class="w">
+
+</span><span class="n">colnames</span><span class="p">(</span><span class="w"> </span><span class="n">playoff.dat</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">playoff.cols</span><span class="w">
+
+</span><span class="n">playoff.dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">playoff.dat</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="w"> </span><span class="n">Age</span><span class="w"> </span><span class="p">),</span><span class="w">
+                 </span><span class="n">across</span><span class="p">(</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">5</span><span class="o">:</span><span class="m">29</span><span class="p">),</span><span class="w"> </span><span class="n">as.numeric</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">tibble</span><span class="o">::</span><span class="n">add_column</span><span class="p">(</span><span class="w"> </span><span class="n">Season</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2023</span><span class="p">,</span><span class="w"> </span><span class="n">.after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">playoff.threes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">playoff.dat</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">select</span><span class="p">(</span><span class="w"> </span><span class="n">Player</span><span class="p">,</span><span class="w"> </span><span class="n">Season</span><span class="p">,</span><span class="w"> </span><span class="n">Tm</span><span class="p">,</span><span class="w"> </span><span class="n">MP</span><span class="p">,</span><span class="w"> </span><span class="n">`3P`</span><span class="p">,</span><span class="w"> </span><span class="n">`3PA`</span><span class="p">,</span><span class="w"> </span><span class="n">`3P%`</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">tidyr</span><span class="o">::</span><span class="n">drop_na</span><span class="p">()</span><span class="w">
+
+</span><span class="n">coefs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">tidy</span><span class="p">(</span><span class="n">fit</span><span class="p">)</span><span class="o">$</span><span class="n">estimate</span><span class="w">
+
+</span><span class="n">playoff.threes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">playoff.threes</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">coefs</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">coefs</span><span class="p">[</span><span class="m">2</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="w"> </span><span class="n">`3PA`</span><span class="w"> </span><span class="p">),</span><span class="w">
+                 </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">exp</span><span class="p">(</span><span class="w"> </span><span class="n">coefs</span><span class="p">[</span><span class="m">3</span><span class="p">]</span><span class="w"> </span><span class="p">),</span><span class="w">
+                 </span><span class="n">alpha0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">sigma</span><span class="p">,</span><span class="w">
+                 </span><span class="n">beta0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mu</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">sigma</span><span class="p">,</span><span class="w">
+                 </span><span class="n">alphai</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">alpha0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">`3P`</span><span class="p">,</span><span class="w">
+                 </span><span class="n">betai</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">beta0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">`3PA`</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">`3P`</span><span class="p">,</span><span class="w">
+                 </span><span class="n">eb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alphai</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">alphai</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">betai</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">poi</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="s2">"Gabe Vincent"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Max Strus"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Duncan Robinson"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Caleb Martin"</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">heat.reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">three.dat</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="w"> </span><span class="n">Player</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">poi</span><span class="p">,</span><span class="w"> </span><span class="n">Season</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Regular Season"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">heat.post</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">playoff.threes</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="w"> </span><span class="n">Player</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">poi</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Playoffs"</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">poi.dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rbind</span><span class="p">(</span><span class="w"> </span><span class="n">heat.reg</span><span class="p">,</span><span class="w"> </span><span class="n">heat.post</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">arrange</span><span class="p">(</span><span class="w"> </span><span class="n">Player</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">heat.reg.sum</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">three.dat</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="w"> </span><span class="n">Player</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">poi</span><span class="p">,</span><span class="w"> </span><span class="n">Season</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">summarise</span><span class="p">(</span><span class="w"> </span><span class="n">total.3P</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="n">`3P`</span><span class="w"> </span><span class="p">),</span><span class="w">
+                    </span><span class="n">total.3PA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="n">`3PA`</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">total.perc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">total.3P</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">total.3PA</span><span class="p">,</span><span class="w">
+                 </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Regular Season"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">heat.playoff.sum</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">playoff.threes</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="w"> </span><span class="n">Player</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">poi</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">summarise</span><span class="p">(</span><span class="w"> </span><span class="n">total.3P</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="n">`3P`</span><span class="w"> </span><span class="p">),</span><span class="w">
+                    </span><span class="n">total.3PA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="w"> </span><span class="n">`3PA`</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">total.perc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">total.3P</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">total.3PA</span><span class="p">,</span><span class="w">
+                 </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Playoffs"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">playoff.threes</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="w"> </span><span class="n">Player</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="s2">"Jayson Tatum"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Jaylen Brown"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Al Horford"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Derrick White"</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Playoffs"</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt;          Player Season  Tm  MP 3P 3PA   3P%        mu       sigma   alpha0</span><span class="w">
+</span><span class="c1">#&gt; 1  Jaylen Brown   2023 BOS 751 40 113 0.354 0.3404005 0.002320794 146.6741</span><span class="w">
+</span><span class="c1">#&gt; 2    Al Horford   2023 BOS 617 28  94 0.298 0.3355152 0.002320794 144.5691</span><span class="w">
+</span><span class="c1">#&gt; 3  Jayson Tatum   2023 BOS 799 53 164 0.323 0.3502851 0.002320794 150.9333</span><span class="w">
+</span><span class="c1">#&gt; 4 Derrick White   2023 BOS 593 50 110 0.455 0.3396865 0.002320794 146.3665</span><span class="w">
+</span><span class="c1">#&gt;      beta0   alphai    betai        eb     type</span><span class="w">
+</span><span class="c1">#&gt; 1 284.2128 186.6741 357.2128 0.3432223 Playoffs</span><span class="w">
+</span><span class="c1">#&gt; 2 286.3178 172.5691 352.3178 0.3287739 Playoffs</span><span class="w">
+</span><span class="c1">#&gt; 3 279.9537 203.9333 390.9537 0.3428102 Playoffs</span><span class="w">
+</span><span class="c1">#&gt; 4 284.5205 196.3665 344.5205 0.3630453 Playoffs</span><span class="w">
+
+</span><span class="n">three.dat</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">filter</span><span class="p">(</span><span class="w"> </span><span class="n">Player</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="s2">"Jayson Tatum"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Jaylen Brown"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Al Horford"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Derrick White"</span><span class="p">),</span><span class="w">
+                 </span><span class="n">Season</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Regular Season"</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="c1">#&gt;          Player Season  Tm   MP  3P 3PA   3P%        mu       sigma   alpha0</span><span class="w">
+</span><span class="c1">#&gt; 1  Jaylen Brown   2023 BOS 2405 163 487 0.335 0.3791683 0.002320794 163.3787</span><span class="w">
+</span><span class="c1">#&gt; 2    Al Horford   2023 BOS 1922 145 325 0.446 0.3684356 0.002320794 158.7541</span><span class="w">
+</span><span class="c1">#&gt; 3  Jayson Tatum   2023 BOS 2732 240 686 0.350 0.3882604 0.002320794 167.2963</span><span class="w">
+</span><span class="c1">#&gt; 4 Derrick White   2023 BOS 2319 149 391 0.381 0.3733419 0.002320794 160.8681</span><span class="w">
+</span><span class="c1">#&gt;      beta0   alphai    betai        eb           type</span><span class="w">
+</span><span class="c1">#&gt; 1 267.5083 326.3787 591.5083 0.3555761 Regular Season</span><span class="w">
+</span><span class="c1">#&gt; 2 272.1329 303.7541 452.1329 0.4018512 Regular Season</span><span class="w">
+</span><span class="c1">#&gt; 3 263.5906 407.2963 709.5906 0.3646710 Regular Season</span><span class="w">
+</span><span class="c1">#&gt; 4 270.0188 309.8681 512.0188 0.3770204 Regular Season</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mia.url</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s2">"https://www.basketball-reference.com/playoffs/2023-nba-eastern-conference-finals-heat-vs-celtics.html"</span><span class="w">
+
+</span><span class="n">mia.page</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read_html</span><span class="p">(</span><span class="w"> </span><span class="n">mia.url</span><span class="w"> </span><span class="p">)</span><span class="w">
+
+</span><span class="n">mia.cols</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mia.page</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">html_nodes</span><span class="p">(</span><span class="s2">"table#MIA &gt; thead &gt; tr &gt; th"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">html_text</span><span class="p">()</span><span class="w">
+
+</span><span class="n">mia.cols</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mia.cols</span><span class="p">[</span><span class="w"> </span><span class="o">-</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">)</span><span class="w"> </span><span class="p">]</span><span class="w">
+
+</span><span class="n">mia.dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> 
+  </span><span class="n">t</span><span class="p">(</span><span class="w"> </span><span class="n">matrix</span><span class="p">(</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mia.page</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+               </span><span class="n">html_nodes</span><span class="p">(</span><span class="s2">"table#MIA &gt; tbody &gt; tr &gt; td"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+               </span><span class="n">html_text</span><span class="p">(),</span><span class="w">
+             </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">29</span><span class="w"> </span><span class="p">)</span><span class="w">
+     </span><span class="p">)</span><span class="w"> 
+  </span><span class="p">)</span><span class="w">
+
+</span><span class="n">colnames</span><span class="p">(</span><span class="w"> </span><span class="n">mia.dat</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mia.cols</span><span class="w">
+
+</span><span class="n">mia.dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mia.dat</span><span class="p">[</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="w"> </span><span class="p">]</span><span class="w">
+
+</span><span class="n">mia.dat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mia.dat</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">mutate</span><span class="p">(</span><span class="w"> </span><span class="n">across</span><span class="p">(</span><span class="w"> </span><span class="m">2</span><span class="o">:</span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="n">as.numeric</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">tibble</span><span class="o">::</span><span class="n">add_column</span><span class="p">(</span><span class="w"> </span><span class="n">Season</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2023</span><span class="p">,</span><span class="w"> </span><span class="n">.after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2023-06-13T00:00:00-04:00">June 13, 2023</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=The+ECF%2C+the+3+point+shot%2C+and+empirical+Bayes%20http%3A%2F%2Flocalhost%3A4000%2Fecf-three%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fecf-three%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fecf-three%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/calibrateR/" class="pagination--pager" title="calibrateR
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You may also enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/calibrateR/" rel="permalink">calibrateR
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">An R package to streamline standard laboratory calculations.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/nb-convolutions/" rel="permalink">nbconv
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">An R package to evaluation negative binomial convolutions.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/random-genome-fragments/" rel="permalink">Generating random genome fragments in R
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Quickly and easily generating simulated random fragments of a chosen genome.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Greg Bedwell. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" async
+	src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+     extensions: ["tex2jax.js"],
+     jax: ["input/TeX", "output/HTML-CSS"],
+     tex2jax: {
+       inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+       displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+       processEscapes: true
+     },
+     "HTML-CSS": { availableFonts: ["TeX"] }
+   });
+</script>
+
+
+  </body>
+</html>
