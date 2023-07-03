@@ -52,7 +52,7 @@ As a graduate student, I was interested in understanding and exploiting the arch
   - <u>Macromolecular modeling</u>: hullrad, HYDROPRO.
   - <u>Structure prediction</u>: ColabFold (AlphaFold), OmegaFold.
 
-**Statistics**: categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric hypothesis testing, bootstrapping, maximum likelihood estimation.
+**Statistics**: categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric statistics, null hypothesis significance testing, bootstrapping, maximum likelihood estimation, hidden Markov models, empirical Bayes
 
 
 ## <i class="fas fa-code"></i> Software

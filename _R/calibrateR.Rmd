@@ -169,9 +169,9 @@ To apply the calibrated function to analytes of unknown mass/radius, simply ente
 sec.rh( 16.495 )
 ```
 
-#### UV/vis
+#### UV/Vis
 
-Concentration determination by UV/Vis spectroscopy is very common in the lab. The <code>calibrateR</code> function <code>uv_vis()</code> takes as input the measured absorbance at the desired wavelength, the extinction coefficient of the molecule of interest, the dilution factor of the measurement, the path length of light, and the type of molecule being measured. If the type of molecule being measured is "protein", the extinction coefficient must be defined. If the type of molecule is one of "dsDNA", "ssDNA", or "ssRNA", the extinction coefficient can be <code>NULL</code>, and the standard (average) extinction coefficients for these macromolecules are used. The path length defaults to 1 cm.
+Concentration determination by UV/Vis spectroscopy is very common in the lab. The <code>calibrateR</code> function <code>uv_vis()</code> takes as input the measured absorbance at the desired wavelength, the extinction coefficient of the molecule of interest, the dilution factor of the measurement, the path length of light, and the type of molecule being measured. If the type of molecule being measured is "protein", the extinction coefficient must be defined. If the type of molecule is one of dsDNA, ssDNA, or ssRNA, the extinction coefficient can be <code>NULL</code>, and the standard (average) extinction coefficients for these macromolecules are used. The path length defaults to 1 cm.
 
 In the example below, a two-fold dilution of a purified protein with an extinction coefficient of 35000 M<sup>-1</sup>cm<sup>-1</sup> was measured to have an absorbance of 0.491 at 280 nm. <code>uv_vis()</code> returns concentrations in same concentration units used in the extinction coefficient. In the example, that is molar units.
 

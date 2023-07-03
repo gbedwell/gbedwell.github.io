@@ -266,7 +266,7 @@ sec.rh( 16.495 )
 #> 3.9831
 ```
 
-#### UV/vis
+#### UV/Vis
 
 Concentration determination by UV/Vis spectroscopy is very common in the
 lab. The <code>calibrateR</code> function <code>uv_vis()</code> takes as
@@ -275,7 +275,7 @@ coefficient of the molecule of interest, the dilution factor of the
 measurement, the path length of light, and the type of molecule being
 measured. If the type of molecule being measured is “protein”, the
 extinction coefficient must be defined. If the type of molecule is one
-of “dsDNA”, “ssDNA”, or “ssRNA”, the extinction coefficient can be
+of dsDNA, ssDNA, or ssRNA, the extinction coefficient can be
 <code>NULL</code>, and the standard (average) extinction coefficients
 for these macromolecules are used. The path length defaults to 1 cm.
 
