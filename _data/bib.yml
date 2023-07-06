@@ -44,6 +44,14 @@ abbreviations:
   - &baf Fane, B.F.
   - &rl Li, R.
   - &sp Palchoudhury, S.
+  - &am Mohammadi, A. 
+  - &be Etemad, B.
+  - &xz Zhang, X.
+  - &yl Li, Y.
+  - &rs Sharaf, R.
+  - &ak Kittilson, A.
+  - &mm Melberg, M.
+  - &cm Melberg, C.
   - &where_nar Nucleic Acids Research
   - &where_virol Virology
   - &where_biomac Biomacromolecules
@@ -53,6 +61,7 @@ abbreviations:
   - &where_natchem Nature Chemistry
   - &where_jvirol Journal of Virology
   - &where_langmuir  Langmuir
+  - &where_medrxiv medRxiv
 
 
 publications:
