@@ -95,41 +95,41 @@ publications:
 
   -
     authors:
-      *am 
-      *be 
-      *xz 
-      *yl 
-      *rs 
-      *ak 
-      *mm 
-      *cm 
-      *cw 
-      *jf 
-      *jpw 
-      *ar 
-      *hj 
-      *nj 
-      *ck 
-      *fg 
-      *xl 
-      *rd 
-      *eg 
-      *rc 
-      *sa 
-      *ta 
-      *as 
-      *pla 
-      *sgd 
-      *mml 
-      *sy 
-      *drk  
-      *mdl 
-      *at 
-      *mc 
-      *zlb 
-      *jrcm 
-      *gdg 
-      *jzl 
+      - *am 
+      - *be 
+      - *xz 
+      - *yl 
+      - *rs 
+      - *ak 
+      - *mm 
+      - *cm 
+      - *cw 
+      - *jf 
+      - *jpw 
+      - *ar 
+      - *hj 
+      - *nj 
+      - *ck 
+      - *fg 
+      - *xl 
+      - *rd 
+      - *eg 
+      - *rc 
+      - *sa 
+      - *ta 
+      - *as 
+      - *pla 
+      - *sgd 
+      - *mml 
+      - *sy 
+      - *drk  
+      - *mdl 
+      - *at 
+      - *mc 
+      - *zlb 
+      - *jrcm 
+      - *gdg 
+      - *jzl 
     when:
       year: 2023
     title: >

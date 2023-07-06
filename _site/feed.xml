@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-06T12:55:23-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Undefined Domains</title><subtitle></subtitle><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><entry><title type="html">The 2023 ECF, the 3 point shot, and under-/over-performance</title><link href="http://localhost:4000/ecf-three/" rel="alternate" type="text/html" title="The 2023 ECF, the 3 point shot, and under-/over-performance" /><published>2023-06-12T00:00:00-04:00</published><updated>2023-06-12T00:00:00-04:00</updated><id>http://localhost:4000/ecf-three</id><content type="html" xml:base="http://localhost:4000/ecf-three/"><![CDATA[<h3 id="introduction">Introduction</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-06T17:27:51-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Signal From Noise</title><subtitle></subtitle><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><entry><title type="html">The 2023 ECF, the 3 point shot, and under-/over-performance</title><link href="http://localhost:4000/ecf-three/" rel="alternate" type="text/html" title="The 2023 ECF, the 3 point shot, and under-/over-performance" /><published>2023-06-12T00:00:00-04:00</published><updated>2023-06-12T00:00:00-04:00</updated><id>http://localhost:4000/ecf-three</id><content type="html" xml:base="http://localhost:4000/ecf-three/"><![CDATA[<h3 id="introduction">Introduction</h3>
 
 <p>The 2022-2023 NBA season is over. The Denver Nuggets, this season’s
 Western Conference champions and Finals favorites, defeated the
@@ -125,7 +125,7 @@ re-sampling shot attempts from the season-long data to generate a new
 distribution that, in the end, reflects the number of shot attempts
 taken in the ECF.</p>
 
-<h4 id="team-wide-analysis">Team-wide analysis</h4>
+<h4 id="team-analysis">Team analysis</h4>
 
 <p>During the regular season, the Celtics’ team-wide average adjusted 3P%
 was 37.29%. The Heat’s was 34.72%. On average, therefore, the Celtics
@@ -139,13 +139,13 @@ estimate this probability by sampling from these respective
 distributions many times and quantifying the fraction of times that the
 Heat’s 3P% is better than the Celtics’. Doing this, we find that the
 probability that the Heat outshoot the Celtics in the ECF given their
-regular season 3P% is 28.03% – not <i>great</i>, but certainly not bad,
+regular season 3P% is 28.11% – not <i>great</i>, but certainly not bad,
 either. Let’s take a look at what actually happened.</p>
 
 <p><img src="../figures/2023-06-12/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" /></p>
 
 <p>During the ECF, the Celtics went 81/267 from three (30.34%), while the
-Heat went 89/205 (43.41%). Clearly, the Heat’s 28.03% chance of
+Heat went 89/205 (43.41%). Clearly, the Heat’s 28.11% chance of
 outshooting the Celtics from three was not for nothing! Using the
 “expected” distributions, we can easily calculate the probabilities of
 each team having the performance that they did. However, because both
@@ -217,11 +217,11 @@ career-best performances from Caleb Martin, Gabe Vincent, and Duncan
 Robinson – three undrafted role players who most people watching the ECF
 might have never heard of before then. The Celtics, on the other hand,
 saw their big shooters vanish. Jayson Tatum (first team all-NBA) and
-<b>especially</b> Jaylen Brown (second team all-NBA) had a series to
-forget, and hopefully they will. The statistical improbability of the
-3-point shooting during the ECF is something to behold. It defied all
-(reasonable) expectations and, ultimately, you can’t help but laugh.
-That’s sports!</p>]]></content><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><summary type="html"><![CDATA[Analyzing 3 point shooting percentage in the 2023 ECF.]]></summary></entry><entry><title type="html">calibrateR</title><link href="http://localhost:4000/calibrateR/" rel="alternate" type="text/html" title="calibrateR" /><published>2023-06-08T00:00:00-04:00</published><updated>2023-06-08T00:00:00-04:00</updated><id>http://localhost:4000/calibrateR</id><content type="html" xml:base="http://localhost:4000/calibrateR/"><![CDATA[<h3 id="introduction">Introduction</h3>
+(especially) Jaylen Brown (second team all-NBA) had a series to forget,
+and hopefully they will. The statistical improbability of the 3-point
+shooting during the ECF is something to behold. It defied all
+(reasonable) expectations and, ultimately, you can’t help but marvel
+that it happened. That’s sports!</p>]]></content><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><summary type="html"><![CDATA[Analyzing 3 point shooting percentage in the 2023 ECF.]]></summary></entry><entry><title type="html">calibrateR</title><link href="http://localhost:4000/calibrateR/" rel="alternate" type="text/html" title="calibrateR" /><published>2023-06-08T00:00:00-04:00</published><updated>2023-06-08T00:00:00-04:00</updated><id>http://localhost:4000/calibrateR</id><content type="html" xml:base="http://localhost:4000/calibrateR/"><![CDATA[<h3 id="introduction">Introduction</h3>
 
 <p>When working at the bench, there are probably certain experiments and/or
 calculations that you routinely do that you <i>hate</i> doing. There’s
