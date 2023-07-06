@@ -17,7 +17,7 @@ var store = [{
         "url": "/calibrateR/",
         "teaser": null
       },{
-        "title": "The 2023 ECF, the 3 point shot, and under/overperformance",
+        "title": "The 2023 ECF, the 3 point shot, and under-/over-performance",
         "excerpt":"Introduction The 2022-2023 NBA season is over. The Denver Nuggets, this season’s Western Conference champions and Finals favorites, defeated the never-say-die Miami Heat in the Finals 4 games to 1. The Nuggets, led by the virtually unstoppable Nikola Jokíc (who averaged 30-13.5-9.5 per game across these playoffs), made relatively easy...","categories": [],
         "tags": [],
         "url": "/ecf-three/",

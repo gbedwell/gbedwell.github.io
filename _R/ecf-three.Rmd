@@ -1,11 +1,12 @@
 ---
-title: 'The 2023 ECF, the 3 point shot, and under/overperformance'
+title: 'The 2023 ECF, the 3 point shot, and under-/over-performance'
 excerpt: 'Analyzing 3 point shooting percentage in the 2023 ECF.'
 classes: wide
 output:
   md_document:
     variant: gfm
     preserve_yaml: true
+usemathjax: true
 knit: (function(input, ...) {
     rmarkdown::render(
       input,
@@ -43,12 +44,12 @@ knitr::opts_chunk$set(
 ### Introduction
 The 2022-2023 NBA season is over. The Denver Nuggets, this season's Western Conference champions and Finals favorites, defeated the never-say-die Miami Heat in the Finals 4 games to 1. The Nuggets, led by the virtually unstoppable Nikola Jokíc (who <i>averaged</i> 30-13.5-9.5 per game across these playoffs), made relatively easy work of the 8-seed Heat. Nevertheless, the Heat's impressive, and at times utterly dominant, run through both the 1-seed Milwaukee Bucks (4-1) and the 2-seed Boston Celtics (4-3) has already had [significant consequences](https://www.nba.com/bucks/news/milwaukee-bucks-part-ways-with-head-coach-mike-budenholzer) and could yet have more.
 
-In the Eastern Conference Finals (ECF) against the Celtics, the Heat overturned double-digit deficits in the second halves of both Games 1 and 2 and went on to win them both. Game 3 was an emphatic 128-102 Heat victory. The Celtics won the next 3 games, evening the series at three games apiece and forcing a deciding Game 7 back in Boston. In this winner-take-all showdown, the Heat absolutely embarrassed the home team with a 103-84 victory. Much has been said about how this ECF played out. Most of this commentary can be succinctly summarized: the Heat have "that dawg in 'em", and the Celtics simply do not. It's hard not to be at least a little sympathetic to this argument. Another, more tangible, aspect of the series, however, was the apparent difference in 3 point shooting percentage (3P%) between the Heat and the Celtics. Per [basketball-reference](https://www.basketball-reference.com/leagues/NBA_2023.html), the Celtics rode the three point shot to 57 wins over the 2022-2023 NBA season, shooting 42.6 threes per game (2nd overall) with a season average 37.7% success rate (6th overall). The Heat, on the other hand, shot 34.8 threes per game (10th overall) with a measly 34.4% success rate (27th overall). During the [ECF](https://www.basketball-reference.com/playoffs/2023-nba-eastern-conference-finals-heat-vs-celtics.html), however, the Heat shot 43.4% from behind the arc, while the Celtics shot just 30.3% -- a staggering reversal. Notably, Celtics stars Jayson Tatum and Jaylen Brown went a combined 18/90 (20%) from downtown, while Heat role players Caleb Martin, Gabe Vincent, and Duncan Robinson went 53/107 (49.5%). It was, in other words, a perfect storm of sustained underperformance from players on one team paired with sustained overperformance from players on the other. Exactly how bad was the Celtics' 3P% in the ECF relative to their regular season numbers? How good was the Heat's? 
+In the Eastern Conference Finals (ECF) against the Celtics, the Heat overturned double-digit deficits in the second halves of both Games 1 and 2 and went on to win them both. Game 3 was an emphatic 128-102 Heat victory. The Celtics won the next 3 games, evening the series at three games apiece and forcing a deciding Game 7 back in Boston. In this winner-take-all showdown, the Heat absolutely embarrassed the home team with a 103-84 victory. Much has been said about how this ECF played out. Most of this commentary can be succinctly summarized: the Heat had "that dawg in 'em", and the Celtics simply did not. It's hard not to be at least a little sympathetic to this argument. Another, more tangible, aspect of the series, however, was the apparent difference in 3 point shooting percentage (3P%) between the Heat and the Celtics. Per [basketball-reference](https://www.basketball-reference.com/leagues/NBA_2023.html), the Celtics rode the three point shot to 57 wins over the 2022-2023 NBA season, shooting 42.6 threes per game (2nd overall) with a season average 37.7% success rate (6th overall). The Heat, on the other hand, shot 34.8 threes per game (10th overall) with a measly 34.4% success rate (27th overall). During the [ECF](https://www.basketball-reference.com/playoffs/2023-nba-eastern-conference-finals-heat-vs-celtics.html), however, the Heat shot 43.4% from behind the arc, while the Celtics shot just 30.3% -- a staggering reversal. Notably, Celtics stars Jayson Tatum and Jaylen Brown went a combined 18/90 (20%) from downtown, while Heat role players Caleb Martin, Gabe Vincent, and Duncan Robinson went 53/107 (49.5%). It was, in other words, a perfect storm of sustained under-performance from players on one team paired with sustained over-performance from players on the other. Exactly how bad was the Celtics' 3P% in the ECF relative to their regular season numbers? How good was the Heat's? 
 
 My general approach to answering these questions is as follows:
 
 1. Collect league-wide data for the 2019-2023 regular seasons.
-2. Use this collated data to approximate the "true" 3P% for the 2022-2023 Miami Heat and Boston Celtics
+2. Use this collated data to estimate the "true" 3P% for the 2022-2023 Miami Heat and Boston Celtics
 2. Re-scale the season-long 3P% distributions to the ECF.
 3. Calculate the probabilities of observing the actual ECF 3P% from the adjusted 3P% data.
 
@@ -104,12 +105,10 @@ season <- lapply( X = as.list( c( 2019, paste0( "202", 0:3 ) ) ),
 season <- do.call( rbind, season )
 
 # Extract season 3P data
-# Filter for players who played at least 25 games with a single team.
 season.three <- season |>
   dplyr::select( Player, Season, Tm, G, `3P`, `3PA`, `3P%` ) |>
   tidyr::drop_na() |>
-  magrittr::set_colnames( c( "player", "season", "team", "games", "made", "attempts", "perc" ) ) |>
-  dplyr::filter( games >= 25 )
+  magrittr::set_colnames( c( "player", "season", "team", "games", "made", "attempts", "perc" ) )
 ```
 
 ```{r, echo = FALSE}
@@ -144,10 +143,12 @@ ecf <- lapply( X = as.list( c( "MIA", "BOS") ),
 
 # Get ECF 3P data
 ecf.three <- do.call( rbind, ecf ) |>
-  dplyr::select( Player, Tm, `3P`, `3PA` ) |>
+  dplyr::select( Player, Tm, G, `3P`, `3PA` ) |>
   dplyr::mutate( `3P%` = `3P` / `3PA` ) |>
   tidyr::drop_na() |>
-  magrittr::set_colnames( c( "player", "team", "ecf.made", "ecf.attempts", "ecf.perc" ) )
+  magrittr::set_colnames( c( "player", "team", "ecf.games", "ecf.made", "ecf.attempts", "ecf.perc" ) ) |>
+  dplyr::mutate( team = case_when( team == "BOS" ~ "Boston",
+                                   team == "MIA" ~ "Miami" ) )
 ```
 
 ```{r, echo = FALSE, include = FALSE}
@@ -183,30 +184,59 @@ poi.df <- season.three |>
   dplyr::arrange( team, player ) |>
   dplyr::select( player, team, games, attempts, season.alpha, season.beta, season.mean ) |>
   dplyr::mutate( season.low  = qbeta( 0.025, shape1 = season.alpha, shape2 = season.beta ),
-                 season.high = qbeta( 0.975, shape1 = season.alpha, shape2 = season.beta ) )
-  # tidyr::crossing( x = seq( 0.32, 0.42, 0.0001 ) ) |>
-  # dplyr::mutate( density = dbeta(x, shape1 = season.alpha, shape2 = season.beta ) )
-```
+                 season.high = qbeta( 0.975, shape1 = season.alpha, shape2 = season.beta ) ) |>
+  dplyr::mutate( team = case_when( team == "BOS" ~ "Boston",
+                                   team == "MIA" ~ "Miami" ) )
 
-### 2022-2023 Regular Season 3P%
-
-Statistically speaking, every shot that a player takes is a [Bernoulli random variable](https://en.wikipedia.org/wiki/Bernoulli_distribution) with some probability of success. Not all shots are the same, however. A 3-point shot taken from center court, for instance, is going to have a lower probability of success than a 3-point shot taken with the shooter's toe just behind the arc. Because of this, the probability of success varies from shot to shot. Over time, however, it is reasonable to assume that the types of shots that a player takes will, on average, be similar to the shots taken by players across the entire league. No player is going to explicitly seek out lower probability shots. Under this assumption, a player's shooting percentage can be thought of as the <i>average</i> probability of success that any given shot by the player will result in a basket. A series of shots taken by the player over the course of a game, series, or season, therefore, is a [binomial](https://en.wikipedia.org/wiki/Binomial_distribution) random variable with a probability of success equal to the player's shooting percentage. There is an inherent degree of randomness to shooting, however, and the observed shooting percentage might not be the best estimate of the player's <i>true</i> shooting percentage. To try to correct for this, I used empirical Bayes estimation to obtain better estimates of player's true shooting percentage. See David Robinson's (no, not <i>that</i> David Robinson) [blog posts and book](http://varianceexplained.org/r/empirical-bayes-book/) for a fantastic introduction to empirical Bayes.
-
-Below, I show the 2022-2023 regular season adjusted 3P% for all Celtics and Heat players that took over 15 3PA during the ECF. The players on the y-axis are ranked in descending order by adjusted 3P%. Adjusted 3P% is shown as a colored point for each player. The points are colored according to the team the player played for. The number of 3-point shots taken by the player during the regular season is denoted by the size of the point. The 95% [credible interval](https://en.wikipedia.org/wiki/Credible_interval) is additionally shown for each player.
-
-```{r, echo = FALSE, warning = FALSE}
-desc.df <- poi.df |>
+poi.df <- poi.df |>
   dplyr::arrange( desc( season.mean ) )
 
-desc.df$player <- factor( desc.df$player, levels = rev( desc.df$player ) )
+poi.df$player <- factor( poi.df$player, levels = rev( poi.df$player ) )
+```
 
-ggplot( desc.df, aes( x = season.mean, y = player, fill = team, size = attempts ) ) +
+```{r, echo = FALSE}
+# Create team-wide 3P% data frame
+# Estimate beta prior from fitting a beta distribution to the observed 3P%
+# No obvious systematic trend with 3PA for team-wide data (not shown)
+# Use prior alpha and beta values to shrink observed values
+
+team.three <- season.three |>
+  dplyr::group_by( team, season ) |>
+  dplyr::summarize( team.made = sum( made ),
+                    team.attempts = sum( attempts ),
+                    .groups = "drop" ) |>
+  dplyr::mutate( team.perc = team.made / team.attempts )
+
+
+team.fit <- MASS::fitdistr( team.three$team.perc, dbeta,
+                            start = list( shape1 = 300, shape2 = 500 ) )
+
+team.three <- team.three |>
+  dplyr::mutate( prior.alpha = team.fit$estimate[1],
+                 prior.beta = team.fit$estimate[2],
+                 team.alpha  = prior.alpha + team.made,
+                 team.beta =  prior.beta + team.attempts - team.made,
+                 team.mean = team.alpha / ( team.alpha + team.beta ) )
+```
+
+### 3P% and parameter estimation
+
+Statistically speaking, every shot that a player takes is a [Bernoulli random variable](https://en.wikipedia.org/wiki/Bernoulli_distribution) with some probability of success. Not all shots are the same, however. A 3-point shot taken from center court, for instance, is going to have a lower probability of success than a 3-point shot taken with the shooter's toe just behind the arc. Because of this, the probability of success varies from shot to shot. Over time, however, it is reasonable to assume that the types of shots that a player takes will, on average, be similar to the shots taken by players across the entire league. Under this assumption, a player's reported shooting percentage can be thought of as the <i>average</i> probability of success that any given shot that player takes will result in a basket. A series of shots taken by the player over the course of a game, series, or season can therefore be described as a [binomial random variable](https://en.wikipedia.org/wiki/Binomial_distribution) with a probability of success equal to the player's shooting percentage. There is an inherent degree of randomness to shooting, however, and an observed shooting percentage might not be the best estimate of the player's <i>true</i> shooting percentage. In fact, a player's shooting percentage can itself be represented as a range of possible values. The most convenient way to represent this range of probabilities as a [beta distribution](https://en.wikipedia.org/wiki/Beta_distribution). The beta distribution is defined only over the interval [0, 1] and is characterized by the shape parameters $\alpha$ and $\beta$. These shape parameters can be thought of as the number of successes and the number of failures in a series of Bernoulli trials, respectively.
+
+[Empirical Bayes estimation](https://en.wikipedia.org/wiki/Empirical_Bayes_method) is an effective technique for improving parameter estimates relative to raw/observed values alone. The technique is called "empirical" Bayes because, unlike in <i>bona fide</i> Bayesian analysis, the [prior distribution](https://en.wikipedia.org/wiki/Prior_probability) is derived from the data itself, rather than specified beforehand. Regardless of how/when the prior is specified, however, once the prior has been established, the observed data can "updated" in a way that pulls the observed data towards the mean value. This has the effect of reducing the variance in our data and therefore giving us more confidence in the values themselves. For a fantastic introduction to empirical Bayes, see David Robinson's [blog posts and book](http://varianceexplained.org/r/empirical-bayes-book/).
+
+Here, I'll use both player- and team-level estimates of 3P% for the 2022-2023 regular season. The data were adjusted using empirical Bayes. I'll not go into much more technical detail here, but if you're interested, the .Rmd file contains the steps for prior estimation and data updating.
+
+```{r, eval = FALSE, echo = FALSE, warning = FALSE}
+# NOT USED
+# Plot POI adjusted 3P% for 2022-2023 reg season
+
+ggplot( poi.df, aes( x = season.mean, y = player, fill = team, size = attempts ) ) +
   geom_errorbarh( aes( xmax = season.high, xmin = season.low ), 
                   linewidth = 0.5, height = 0.3, show.legend = FALSE ) +
   geom_point( shape = 21, color = "black" ) +
   scale_fill_manual("Team",
-                    values = c( BOS = "#007A33", MIA = "#98002E" ),
-                    labels = c( "Boston", "Miami" ),
+                    values = c( Boston = "#007A33", Miami = "#98002E" ),
                     guide = guide_legend( override.aes = list( size = 4 ),
                                           title.position = "top",
                                           title.hjust = 0.5 ) ) +  
@@ -217,12 +247,14 @@ ggplot( desc.df, aes( x = season.mean, y = player, fill = team, size = attempts 
          legend.text = element_text(size=12),
          legend.justification="center",
          legend.title = element_text( size = 12 ),
+         legend.box.margin = margin( -10, -10, -10, -10 ),
          axis.text = element_text( size = 14 ),
          axis.title = element_text( size = 16) ) +
-  labs( x = "Adjusted Season 3P%", y = "" )
+  labs( x = "Season Adjusted 3P%", y = "" )
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
+# NOT USED
 # Calculate the probability of observing 5 Celtics ranked in the top 5
 # Assuming random sampling from a uniform distribution
 # Replace "BOS" and "MIA" with 1 and 0, respectively, to make assessment an easy sum.
@@ -234,60 +266,157 @@ perm <- replicate( n = 1E6, expr = sample( x = vec, size = length( vec ), replac
 rank.p <- sum( colSums( perm[ 1:5, ] ) == 5 ) / ncol( perm )
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
+# NOT USED
 # Permute adjusted 3P% values and calculate the difference in BOS/MIA means.
 # Compare it to the observed difference in means.
+# Frequentist approach to determine whether the difference in means is 0.
 
 perm.diff <- sapply( X = 1:1E6,
                      FUN = function(x){
                        perm <- sample( nrow( poi.df ) )
                        dat <- transform( poi.df, season.mean = season.mean[ perm ] )
-                       mean( dat$season.mean[ dat$team == "BOS" ] ) - 
-                         mean( dat$season.mean[ dat$team == "MIA" ] )
+                       mean( dat$season.mean[ dat$team == "Boston" ] ) - 
+                         mean( dat$season.mean[ dat$team == "Miami" ] )
                        }
                      )
 
-real.diff <- mean( poi.df$season.mean[ poi.df$team == "BOS" ] ) - 
-  mean( poi.df$season.mean[ poi.df$team == "MIA" ] )
+real.diff <- mean( poi.df$season.mean[ poi.df$team == "Boston" ] ) - 
+  mean( poi.df$season.mean[ poi.df$team == "Miami" ] )
 
 mean.diff.p <- sum( perm.diff >= real.diff ) / length( perm.diff )
 ```
 
-What immediately stands out is that the 5 highest ranked players are all Celtics. How probable is this assuming that the rankings were randomly generated from a uniform distribution (i.e., that all players have the same 3P%)? Using a brute force approach, I randomly re-sampled the list 1 million times and counted the number of times 5 Celtics players made up the top 5. The answer is just `r round( rank.p * 100, 2 )`% of the time. To assess whether or not these 7 Boston players shot better collectively during the regular season than these 6 Heat players, I used a similar permutation-based approach to determine whether or not the observed difference in the mean adjusted 3P% for each <i>team</i> was equal to zero. I randomly shuffled the adjusted 3P% values across all 13 players 1 million times and quantified the number of times the permuted difference was greater than or equal to the observed difference. This happened just `r round( mean.diff.p * 100, 2 )`% of the time. These data provide strong evidence that these Boston Celtics really were better 3-point shooters than these Miami Heat during the 2022-2023 regular season. Now lets look at what happened during the ECF. 
+### 2023 Eastern Conference Finals 3P%
 
-### 2023 Eastern Conference Final 3P%
+The general question that I am attempting to address here is: how did 3-point shooting for both teams in the ECF compare to their regular season numbers? The ECF is a 7-game, best-of-four series. The number of shots taken by even the most prolific 3-point shooter during a 7-game series will be substantially less than the number of shots that same player might take during the 82-game regular season. To compare regular season 3P% with ECF 3P%, therefore, it is important to re-scale the season 3P% distributions to be compatible with the number of shots taken during the ECF. To do this, we can essentially act as if we are randomly re-sampling shot attempts from the season-long data to generate a new distribution that, in the end, reflects the number of shot attempts taken in the ECF.
 
-I've already mentioned how dramatically the tables seemed to turn with respect to 3-point shooting during the 2023 ECF. I've also highlighted how particular players seemed to under/overperform during the 7-game series relative to their season-long output. What I want to do now is try to determine just how significant that under/overperformance was.
+#### Team-wide analysis
 
-The most convenient way to describe 3P% and its range of possible values is as a [beta](https://en.wikipedia.org/wiki/Beta_distribution) distribution. The beta distribution is described by the shape parameters $\alpha$ and $\beta$, which can be thought of, respectively, as the number of successes and the number of failures in a series of Bernoulli trials. Given the season-long adjusted 3P%, therefore, we can rescale the regular season 3P% distribution to match the number of 3-point attempts each player made during the ECF. This will allow us to better account for the increased variance associated with taking fewer shots during a 7-game playoff series relative to the 82-game regular season.
+```{r, echo = FALSE}
+team.df <- team.three |>
+  dplyr::filter( team %in% c( "BOS", "MIA" ) & season == 2023 ) |>
+  dplyr::mutate( team = case_when( team == "BOS" ~ "Boston",
+                                   team == "MIA" ~ "Miami" ) )
 
-```{r}
+team.ecf.df <- ecf.three |>
+  dplyr::group_by( team ) |>
+  dplyr::summarise( team.ecf.made = sum( ecf.made ),
+                    team.ecf.attempts = sum( ecf.attempts ) ) |>
+  dplyr::mutate( team.ecf.perc = team.ecf.made / team.ecf.attempts )
+
+team.ecf.df <- dplyr::left_join( team.ecf.df, team.df |> dplyr::select( team, team.mean ), by = c( "team" ) ) |>
+  dplyr::mutate( team.rescale.alpha = team.ecf.attempts * team.mean,
+                 team.rescale.beta = team.ecf.attempts * ( 1 - team.mean ),
+                 team.rescale.mean = team.mean ) |>
+  dplyr::select( team, team.ecf.made, team.ecf.attempts, team.ecf.perc, team.rescale.alpha, team.rescale.beta, team.mean )
+```
+
+```{r, echo = FALSE}
+bos.ecf.sim <- rbeta( n = 1e6, 
+                      shape1 = team.ecf.df[ team.ecf.df$team == "Boston", ]$team.rescale.alpha,
+                      shape2 = team.ecf.df[ team.ecf.df$team == "Boston", ]$team.rescale.beta )
+
+mia.ecf.sim <- rbeta( n = 1e6, 
+                      shape1 = team.ecf.df[ team.ecf.df$team == "Miami", ]$team.rescale.alpha,
+                      shape2 = team.ecf.df[ team.ecf.df$team == "Miami", ]$team.rescale.beta )
+
+ecf.sim <- mean( bos.ecf.sim <= mia.ecf.sim )
+```
+
+During the regular season, the Celtics' team-wide average adjusted 3P% was `r round( team.df[ team.df$team == "Boston", ]$team.mean, 4) * 100 `%. The Heat's was `r round( team.df[ team.df$team == "Miami", ]$team.mean, 4) * 100 `%. On average, therefore, the Celtics were a better 3-point shooting team. We might reasonably expect this trend to continue into the ECF. These average values, however, fail to tell the whole story. Comparing the re-scaled team adjusted 3P% distributions (below), we can see that there is a substantial degree of overlap between the respective distributions. This means that there is a non-zero chance the Heat outshoot the Celtics in the ECF. We can estimate this probability by sampling from these respective distributions many times and quantifying the fraction of times that the Heat's 3P% is better than the Celtics'. Doing this, we find that the probability that the Heat outshoot the Celtics in the ECF given their regular season 3P% is `r round( ecf.sim, 4 ) * 100`% -- not <i>great</i>, but certainly not bad, either. Let's take a look at what actually happened.
+
+```{r, echo = FALSE}
+team.ecf.plot.df <- team.ecf.df |>
+  tidyr::crossing( sim.perc = seq( 0.20, 0.50, 0.001 ) ) |>
+  dplyr::mutate( density = dbeta( x = sim.perc, shape1 = team.rescale.alpha, shape2 = team.rescale.beta ) )
+
+ggplot( team.ecf.plot.df, aes( x = sim.perc, y = density, color = team ) ) +
+  geom_ribbon( aes( ymin = 0, ymax = density, fill = team ),
+               alpha = 0.5 ) +
+  geom_line( linewidth = 1, show.legend = FALSE ) +
+  scale_color_manual( "Team",
+                      values = c( Boston = "#007A33", Miami = "#98002E" ),
+                      guide = guide_legend( title.position = "top",
+                                            title.hjust = 0.5 ) ) + 
+  scale_fill_manual( "Team",
+                      values = c( Boston = "#007A33", Miami = "#98002E" ),
+                      guide = guide_legend( override.aes = list( linewidth = 0.75 ),
+                                            title.position = "top",
+                                            title.hjust = 0.5 ) ) +
+  theme_bw() +
+  theme( legend.position="top",
+         legend.text = element_text( size = 12 ),
+         legend.justification="center",
+         legend.title = element_text( size = 12 ),
+         legend.box.margin = margin( -10, -10, -10, -10 ),
+         legend.key.size = unit( 0.5, 'cm' ),
+         axis.text.y = element_text( size = 14 ),
+         axis.text.x = element_text( size = 14 ),
+         axis.title = element_text( size = 16 ) ) +
+  labs( x = "Team Adjusted 3P%", y = "Density" )
+```
+```{r, echo = FALSE}
+b.ecf.made <- team.ecf.df[ team.ecf.df$team == "Boston", ]$team.ecf.made
+b.ecf.attempts <- team.ecf.df[ team.ecf.df$team == "Boston", ]$team.ecf.attempts
+b.ecf.perc <- round( team.ecf.df[ team.ecf.df$team == "Boston", ]$team.ecf.perc, 4 ) * 100
+
+m.ecf.made <- team.ecf.df[ team.ecf.df$team == "Miami", ]$team.ecf.made
+m.ecf.attempts <- team.ecf.df[ team.ecf.df$team == "Miami", ]$team.ecf.attempts
+m.ecf.perc <- round( team.ecf.df[ team.ecf.df$team == "Miami", ]$team.ecf.perc, 4 ) * 100
+
+b.ecf.prob <- pbeta( q = team.ecf.df[ team.ecf.df$team == "Boston", ]$team.ecf.perc, 
+                     shape1 = team.ecf.df[ team.ecf.df$team == "Boston", ]$team.rescale.alpha, 
+                     shape2 = team.ecf.df[ team.ecf.df$team == "Boston", ]$team.rescale.beta ) * 2
+
+m.ecf.prob <- pbeta( q = team.ecf.df[ team.ecf.df$team == "Miami", ]$team.ecf.perc, 
+                     shape1 = team.ecf.df[ team.ecf.df$team == "Miami", ]$team.rescale.alpha, 
+                     shape2 = team.ecf.df[ team.ecf.df$team == "Miami", ]$team.rescale.beta,
+                     lower.tail = FALSE ) * 2
+```
+
+During the ECF, the Celtics went `r b.ecf.made`/`r b.ecf.attempts` from three (`r b.ecf.perc`%), while the Heat went `r m.ecf.made`/`r m.ecf.attempts` (`r m.ecf.perc`%). Clearly, the Heat's `r round( ecf.sim, 4 ) * 100`% chance of outshooting the Celtics from three was not for nothing! Using the "expected" distributions, we can easily calculate the probabilities of each team having the performance that they did. However, because both teams could have hypothetically under- or over-performed (think of the observed ECF as just one hypothetical outcome out of many), I think it's more interesting to calculate two-tailed probabilities. That is, I will calculate the probability of either team under- <i>or</i> over-performing <i>to the same or greater degree</i> given their regular season 3P%. For the Celtics, the chance of them doing this is just `r round( b.ecf.prob, 4 ) * 100`%. For the Heat, the number is similar: `r round( m.ecf.prob, 4 ) * 100`%. The way that this ECF played out, therefore, at least with respect to 3-point shooting, was pretty unlikely given the respective team's regular season 3P%. It should be noted that there is no shortage of qualifiers to append to that last statement. There is certainly more at stake during a Conference Championship than an inconsequential game against a bottom-of-the-league team in February, for instance, and that mental impact is something that I have completely disregarded here. Nevertheless, I believe that any of us would be hard-pressed to find someone who thought that the 3-point shooting disparity during the ECF would have been what it was.
+
+#### Player analysis
+
+Team shooting efficiency is calculated from the shooting efficiencies of the individual players on the team. It might be interesting, therefore, to dig into player-level data to identify which (if any) players contributed most dramatically to the observed ECF outcome. Below, I show the re-scaled 3P% distributions for each player that took 15 or more 3-point shots in the ECF (open in new tab to expand). In addition to the re-scaled 3P% distributions themselves, the 95% credible intervals, and the observed ECF 3P% (red points) are also included. The 95% credible interval defines the range that contains 95% of the possible values for a given player's 3P%. This doesn't mean that a player cannot have a 3P% outside of that range. It just means that there is a less than 5% chance that the player will. The data shown in the plot below is striking. For the Celtics, Malcolm Brogdon, Jayson Tatum, and Jaylen Brown all shot <i>below</i> the lower limit of their respective 95% credible interval. Malcolm Brogdon, however, was playing with a torn tendon in his shooting elbow and should therefore be given significant leeway for his apparent drop in form. Al Horford shot close to the lower limit of his 95% credibility interval, but ultimately inside of it. Grant Williams and Marcus Smart shot near their season average, and so can't be held responsible for the Celtics' abysmal shooting. Derrick White was the only Celtic who shot near the upper end of his 95% credible interval. For the Heat, it was an different story entirely. Of the 6 Heat players included as a player-of-interest, 3 of them -- Max Strus, Kyle Lowry, and Jimmy Butler -- all shot very near their season adjusted 3P%. The other 3 Heat players -- Caleb Martin, Gabe Vincent, and Duncan Robinson -- all shot near the upper end of their respective 95% credible intervals. In other words, the performances of the players on the respective teams are almost mirror images of each other (with Derrick White being the most notable exception).
+
+```{r, echo = FALSE}
 # Marry poi.df with ECF data
 poi.df <- dplyr::left_join( poi.df, ecf.three, by = c( "player", "team" ) )
 
 # Rescale regular season distribution to ECF shooting numbers
 poi.df <- poi.df |>
-  dplyr::mutate( rescale.alpha = season.mean * ecf.attempts,
-                 rescale.beta = ecf.attempts - rescale.alpha,
+  dplyr::mutate( rescale.alpha = ecf.attempts * season.mean,
+                 rescale.beta = ecf.attempts * ( 1 - season.mean ),
+                 rescale.mean = season.mean,
                  rescale.low  = qbeta( 0.025, shape1 = rescale.alpha, shape2 = rescale.beta ),
                  rescale.high  = qbeta( 0.975, shape1 = rescale.alpha, shape2 = rescale.beta ) )
-```
 
-The rescaled 3P% data are shown in the plot below. The plot features are the same as the plot above, but with the addition of the observed ECF 3P% for each player. The position of the observed ECF 3P% for each player along the 95% credible interval for the rescaled regular season 3P% provides a quick visual representation of player under/overperformance in the ECF. 
-
-```{r, echo = FALSE}
-library( ggnewscale )
-desc.df2 <- poi.df |>
+poi.df <- poi.df |>
   dplyr::arrange( desc( season.mean ) )
 
-desc.df2$player <- factor( desc.df2$player, levels = rev( desc.df2$player ) )
+poi.df$player <- factor( poi.df$player, levels = rev( poi.df$player ) )
+```
 
-ggplot( desc.df2, aes( x = season.mean, y = player, fill = team, size = ecf.attempts ) ) +
+```{r, echo = FALSE}
+ecf.dists <- poi.df |>
+  dplyr::select( player, team, ecf.perc, rescale.alpha, rescale.beta, 
+                 rescale.mean, rescale.high, rescale.low ) |>
+  tidyr::crossing( sim.perc = seq( 0, 1, 0.001 ) ) |>
+  dplyr::mutate( density = dbeta( x = sim.perc, shape1 = rescale.alpha, shape2 = rescale.beta ) )
+```
+
+```{r, echo = FALSE, eval = FALSE}
+# PLOT NOT USED, BUT RETAINED FOR POTENTIAL FUTURE USE.
+
+library( ggnewscale )
+
+ggplot( poi.df, aes( x = season.mean, y = player, fill = team, size = ecf.attempts ) ) +
   geom_errorbarh( aes( xmax = rescale.high, xmin = rescale.low ), linewidth = 0.5, height = 0.3, show.legend = FALSE ) +
   geom_point( shape = 21, color = "black" ) +
   scale_fill_manual("Team",
-                    values = c( BOS = "#007A33", MIA = "#98002E" ),
-                    labels = c( "Boston", "Miami" ),
+                    values = c( Boston = "#007A33", Miami = "#98002E" ),
                     guide = guide_legend( override.aes = list( size = 4 ),
                                           title.position = "top",
                                           title.hjust = 0.5 ) ) + 
@@ -310,22 +439,88 @@ ggplot( desc.df2, aes( x = season.mean, y = player, fill = team, size = ecf.atte
          axis.title = element_text( size = 16) ) +
   labs( x = "Adjusted Season 3P%", y = "" )
 ```
-The 95% credible interval defines the range that contains 95% of the probable values for a given player's 3P%. This doesn't mean that a player cannot have a 3P% outside of that range. It just means that there is a less than 5% chance that the player will. 
 
-```{r}
-credint <- function( x, y, z ){
+```{r, echo = FALSE}
+pfun <- function( w, x, y, z ){
+  
+  if ( x < w ){
+    lt <- TRUE
+  } else{
+    lt <- FALSE
+  }
+  
   tmp <- pbeta( q = as.numeric( x ), 
                 shape1 = as.numeric( y ), 
-                shape2 = as.numeric( z ) ) }
+                shape2 = as.numeric( z ),
+                lower.tail = lt )
+  }
 
 poi.df <- poi.df |>
   dplyr::rowwise() |>
-  dplyr::mutate( prob.season.better = credint( ecf.perc, rescale.alpha, rescale.beta ) ) |>
+  dplyr::mutate( obs.prob = 2 * pfun( w = rescale.mean, x = ecf.perc, 
+                                      y = rescale.alpha, z = rescale.beta ) ) |>
   dplyr::ungroup()
 ```
 
+```{r, echo = FALSE, fig.width = 12, fig.asp = 3/7, message = FALSE}
+b.dists <- ggplot( ecf.dists |> dplyr::filter( team == "Boston" ), aes( x = sim.perc, y = density ) ) +
+  geom_area( fill="gray50", alpha = 0.5 ) + 
+  geom_line( linewidth = 1 ) +
+  geom_point( aes( x = ecf.perc, y = dbeta( x = ecf.perc, 
+                                            shape1 = rescale.alpha, 
+                                            shape2 = rescale.beta ) ),
+              color = "red",
+              size = 1.5 ) +
+  geom_errorbarh( aes( xmax = rescale.high, xmin = rescale.low, y = 0 ), 
+                  linewidth = 0.5, height = 0.15, show.legend = FALSE ) +
+  geom_point( aes( x = rescale.mean, y = 0 ), size = 1.5 ) +
+  geom_text( data = poi.df |> dplyr::filter( team == "Boston" ),
+             aes(x = 0.6, y = 5.5, 
+                 label = paste0( "p = ", round( obs.prob, 4 ) ) ),
+             size = 3,
+             hjust = 0,
+             vjust = 1,
+             inherit.aes = FALSE) +  
+  facet_grid( rows = vars( team ), cols = vars( forcats::fct_rev( player ) ) ) +
+  theme_bw() +
+  theme( axis.text.y = element_text( size = 12 ),
+         axis.text.x = element_text( size = 10, angle = 45, hjust = 1 ),
+         axis.title = element_text( size = 14 ) ) +
+  labs( x = "3P%", y = "Density" )  
 
+m.dists <- ggplot( ecf.dists |> dplyr::filter( team == "Miami" ), aes( x = sim.perc, y = density ) ) +
+  geom_area( fill="gray50", alpha = 0.5 ) + 
+  geom_line( linewidth = 1 ) +
+  geom_point( aes( x = ecf.perc, y = dbeta( x = ecf.perc, 
+                                            shape1 = rescale.alpha, 
+                                            shape2 = rescale.beta ) ),
+              color = "red",
+              size = 1.5 ) +
+  geom_errorbarh( aes( xmax = rescale.high, xmin = rescale.low, y = 0 ), 
+                  linewidth = 0.5, height = 0.15, show.legend = FALSE ) +
+  geom_point( aes( x = rescale.mean, y = 0 ), size = 1.5 ) +
+  geom_text( data = poi.df |> dplyr::filter( team == "Miami" ),
+             aes(x = 0.6, y = 5.5, 
+                 label = paste0( "p = ", round( obs.prob, 4 ) ) ),
+             size = 3,
+             hjust = 0,
+             vjust = 1,
+             inherit.aes = FALSE) +    
+  facet_grid( rows = vars( team ), cols = vars( forcats::fct_rev( player ) ) ) +
+  theme_bw() +
+  theme( axis.text.y = element_text( size = 12 ),
+         axis.text.x = element_text( size = 10, angle = 45, hjust = 1 ),
+         axis.title = element_text( size = 14 ) ) +
+  labs( x = "3P%", y = "Density" )  
 
+library( patchwork )
+
+b.dists / ( m.dists + plot_spacer() + plot_layout( widths = c( 1, 1/7.5 ) ) ) 
+```
+
+### Conclusions
+
+The way that the 2022-2023 ECF unfolded came as a surprise to many, myself included. The surprise, however, was less in the fact that the Heat beat the Celtics, but in <i>how</i>. The Celtics, the NBA's second-best 3-point shooting team during the regular season, shot like the regular season Heat during the ECF. The ECF Heat, on the other hand, shot like the regular season Celtics. It was a stunning reversal. That <i>one</i> of those two things might happen was unlikely enough. That they would both happen is incredible. I might argue that the Celtics' drop in form was worse and has worse implications than the Heat's (noteworthy) over-performance. The Heat had what might have been career-best performances from Caleb Martin, Gabe Vincent, and Duncan Robinson -- three undrafted role players who most people watching the ECF might have never heard of before then. The Celtics, on the other hand, saw their big shooters vanish. Jayson Tatum (first team all-NBA) and <b>especially</b> Jaylen Brown (second team all-NBA) had a series to forget, and hopefully they will. The statistical improbability of the 3-point shooting during the ECF is something to behold. It defied all (reasonable) expectations and, ultimately, you can't help but laugh. That's sports!
 
 
 
