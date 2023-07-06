@@ -52,6 +52,33 @@ abbreviations:
   - &ak Kittilson, A.
   - &mm Melberg, M.
   - &cm Melberg, C.
+  - &cw Wong, C.
+  - &jf Fajnzylber, J. 
+  - &jpw Worrall, D.P.
+  - &ar Rosenthal, A. 
+  - &hj Jordan, H.
+  - &nj Jilg, N.
+  - &ck Kaseke, C.
+  - &fg Giguel, F.
+  - &xl Lian, X.
+  - &rd Deo, R.
+  - &eg Gillespie, E.
+  - &rc Chishti, R.
+  - &sa Abrha, S.
+  - &ta Adams, T.
+  - &as Siagian, A.
+  - &pla Anderson, P.L.
+  - &sgd Deeks, S.G.
+  - &mml Lederman, M.M. 
+  - &sy Yawetz, S.
+  - &drk Kuritzkes, D.R. 
+  - &mdl Lichterfeld, M.D.
+  - &at Tsibris, A.
+  - &mc Carrington, M.
+  - &zlb Brumme,  Z.L.
+  - &jrcm Castillo-Mancilla, J.R.
+  - &gdg Gaiha, G.D.
+  - &jzl Li, J.Z.
   - &where_nar Nucleic Acids Research
   - &where_virol Virology
   - &where_biomac Biomacromolecules
@@ -65,6 +92,58 @@ abbreviations:
 
 
 publications:
+
+  -
+    authors:
+      *am 
+      *be 
+      *xz 
+      *yl 
+      *rs 
+      *ak 
+      *mm 
+      *cm 
+      *cw 
+      *jf 
+      *jpw 
+      *ar 
+      *hj 
+      *nj 
+      *ck 
+      *fg 
+      *xl 
+      *rd 
+      *eg 
+      *rc 
+      *sa 
+      *ta 
+      *as 
+      *pla 
+      *sgd 
+      *mml 
+      *sy 
+      *drk  
+      *mdl 
+      *at 
+      *mc 
+      *zlb 
+      *jrcm 
+      *gdg 
+      *jzl 
+    when:
+      year: 2023
+    title: >
+      Viral and Host Mediators of Non-Suppressible HIV-1 Viremia
+    where:
+      journal: *where_medrxiv
+      volume:
+      pages:
+    doi: 10.1101/2023.03.30.23287124 
+    bonus:
+      text:  >
+        &#128275;&nbsp;Open Access.
+
+
 
   -
     authors:
