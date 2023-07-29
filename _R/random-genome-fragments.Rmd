@@ -38,9 +38,9 @@ knitr::opts_chunk$set(
   )
 ```
 
-In the analysis of genomic integration site data, a theoretical random integration site distribution is often used as a lower boundary for feature enrichment. That is, whether or not a given feature (e.g. a particular gene) harbors more integration sites than would be expected given a true random distribution. In principle, the derivation of an expected random distribution is not too difficult. Given the genome size, $L_G$, the binomial probability of integration into a particular region $i$ is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$. Therefore, the expected number of integration sites in $i$ can be expressed as $I \sim Bin(n, p_i)$.
+In the analysis of genomic integration site data, a theoretical random integration site distribution is often used as a lower boundary for feature enrichment. That is, whether or not a given feature (e.g. a particular gene) harbors more integration sites than would be expected given a uniform random distribution. In principle, the derivation of an expected random distribution is not too difficult. Given the genome size, $L_G$, the probability of integration into a particular region $i$ is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$. Therefore, the expected number of integration sites in $i$ can be expressed as $I \sim Bin(n, p_i)$.
 
-In reality, however, the entire genome is rarely accessible by common next-generation sequencing technologies. While long-read sequencing is growing in both accessibility and throughput, it is still common for integration site mapping to be done using e.g. 150 bp paired-end sequencing. Because of this, certain regions of the genome, such has highly repetitive regions, are effectively "invisible" due to the inability to confidently align short reads to them. In addition, different genome fragmentation strategies may influence the mappable regions of a genome in a given experiment. For example, when using a restriction enzyme (or a cocktail of restriction enzymes) to fragment the genome, certain regions deficient in the target recognition sequence(s) will have comparatively fewer mapped reads than other regions.
+In reality, however, the entire genome is rarely accessible by common next-generation sequencing technologies. While long-read sequencing is growing in both accessibility and throughput, it is still common for integration site mapping to be done using e.g. 150 bp paired-end sequencing. Because of this, certain regions of the genome, such has highly repetitive regions, are effectively "invisible" due to the inability to confidently align short reads to them. In addition, different genome fragmentation strategies may influence the mappable regions of a genome in a given experiment. For example, when using a restriction enzyme (or a cocktail of several restriction enzymes) to fragment the genome, certain regions deficient in the target recognition sequence(s) will have comparatively fewer mapped reads than other regions.
 
 To accurately calculate $p_i$ for a given set of sequencing conditions, one really needs to know the <i>effective</i> genome length, $L_{G_{eff}}$. Because mappable regions of the genome can depend on things like fragmentation strategy, it is convenient to be able to easily estimate the mappable genome using simulated genomic fragments that match both the genome fragmentation method used and the sequencing approach.
 
@@ -66,19 +66,19 @@ library(BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
 If fragmenting the genome by restriction digestion, the first step in generating random genome fragments is to extract the sequences of each chromosome.
 
 ```{r}
-chr.seqs <- xInt::get_chromosome_seqs(genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
+chr.seqs <- get_chromosome_seqs( genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0 )
 ```
 
 The output of <code>get_chromosome_seqs()</code> is a list of DNAString objects corresponding to each of the chromosomes in the target genome.
 
 ```{r, echo=FALSE}
-head(chr.seqs, 2)
+head( chr.seqs, 2 )
 ```
 Next, you can use the <code>digest()</code> function to identify all of the possible fragmentation positions on both forward and reverse strands of each chromosome. You must supply the recognition sequences of the enzymes being used as a character vector.
 
 ```{r}
-re.cuts <- xInt::digest(string.list = chr.seqs, 
-                        re.sites=c("TTAA","AGATCT"))
+re.cuts <- digest( string.list = chr.seqs, 
+                   re.sites=c( "TTAA","AGATCT" ) )
 ```
 
 ### Random integration site positions
@@ -86,8 +86,8 @@ re.cuts <- xInt::digest(string.list = chr.seqs,
 Now you want to generate random integration sites throughout the genome. This step is the same regardless of the fragmentation method used. First, define the number of sites that you want to generate. For good estimation of the mappable genome, this number should be rather high (e.g. $10^7-10^8$ sites). If you just want a representative random dataset, however, this number can be much smaller (e.g. $10^4-10^5$ sites). For example purposes, I'll generate $10^5$ sites.
 
 ```{r}
-rand.sites <- xInt::random_sites(n.sites = 1E5, 
-                                 genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
+rand.sites <- random_sites( n.sites = 1E5,
+                            genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0 )
 ```
 
 ### Generating genomic fragments
@@ -95,21 +95,21 @@ rand.sites <- xInt::random_sites(n.sites = 1E5,
 You now want to make genomic fragments that mimic the genomic fragments obtained in your experiment. For restriction digestion, you want to use the random sites and the restriction enzyme cut positions generated with the <code>digest()</code> function to generate the fragments. Be sure to set <code>random = FALSE</code> in <code>make_fragments()</code>. Fragment coordinates are defined from the simulated random integration site to the nearest restriction enzyme cut position <i>downstream</i> of the integration site. This is analogous to sequencing off of the viral 3' LTR. I have not yet incorporated a way to simulate fragments generated from the viral 5' LTR.
 
 ```{r}
-re.fragments <- xInt::make_fragments(int.sites = rand.sites, 
-                                     frag.sites = re.cuts,
-                                     random = FALSE,
-                                     genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
+re.fragments <- make_fragments( int.sites = rand.sites,
+                                frag.sites = re.cuts,
+                                random = FALSE,
+                                genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0 )
 ```
 
 For random fragmentation, you want to set <code>frag.sites = NULL</code> and <code>random = TRUE</code> in <code>make_fragments()</code>. You also want to set the mean ± sd fragment lengths (default values of 500 bp and 250 bp, respectively). Fragments lengths are randomly sampled from a log-normal distribution with the defined parameters and fragment end positions are calculated relative to each simulated random integration site.
 
 ```{r}
-rand.fragments <- xInt::make_fragments(int.sites = rand.sites, 
-                                       frag.sites = NULL, 
-                                       random = TRUE, 
-                                       mean = 500, 
-                                       sd = 250,
-                                       genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
+rand.fragments <- make_fragments( int.sites = rand.sites,
+                                  frag.sites = NULL, 
+                                  random = TRUE,
+                                  mean = 500, 
+                                  sd = 250,
+                                  genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0 )
 ```
 
 ### Extracting and trimming fragment sequences
@@ -117,9 +117,9 @@ rand.fragments <- xInt::make_fragments(int.sites = rand.sites,
 I rely on <code>BSgenome::getSeq()</code> to extract the sequences corresponding to the fragment positions. These sequences are intended to mimic the genomic fragments sequenced in the sequencing reaction.
 
 ```{r}
-frag.seqs <- BSgenome::getSeq(x = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0,
-                              names = rand.fragments,
-                              as.character = FALSE)
+frag.seqs <- getSeq( x = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0,
+                     names = rand.fragments,
+                     as.character = FALSE )
 ```
 
 ```{r, echo=FALSE}
@@ -131,10 +131,10 @@ To mimic the sequencing output, however, the genomic fragments must be trimmed. 
 In addition to defining the maximum read length, <code>trim_seqs()</code> has options to define the minimum fragment width (default 14 bp) and the maximum inner distance between pairs (default 1000 bp). These filtering parameters will decrease the number of output read pairs, so don't be alarmed if the lengths of the <code>trim_seqs()</code> list elements is less than the number of generated sites.
 
 ```{r}
-frag.trim <- xInt::trim_seqs(fragments = frag.seqs, 
-                             min.width = 14, 
-                             max.distance = 1000, 
-                             max.bp = 150)
+frag.trim <- trim_seqs( fragments = frag.seqs,
+                        min.width = 14,
+                        max.distance = 1000,
+                        max.bp = 150 )
 ```
 
 ```{r, echo=FALSE}
@@ -146,10 +146,10 @@ frag.trim
 Finally, now that your pairs have been generated, you can save the pairs as R1 and R2 fasta files for genome alignment. The <code>compress</code> option in <code>save_fasta()</code> will compress the fasta files to save space. Given the input parameters below, the files will be saved as <code>path/to/directory/prefix_R1.fa(.gz)</code> and <code>path/to/directory/prefix_R2.fa(.gz)</code>, respectively.
 
 ```{r, eval=FALSE}
-xInt::save_fasta(trimmed.seqs = frag.trim, 
-                 directory.path = "path/to/directory",
-                 file.prefix = "prefix",
-                 compress = TRUE)
+save_fasta( trimmed.seqs = frag.trim,
+            directory.path = "path/to/directory",
+            file.prefix = "prefix",
+            compress = TRUE )
 ```
 
 ### Conclusions

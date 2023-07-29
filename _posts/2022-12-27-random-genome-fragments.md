@@ -21,12 +21,12 @@ In the analysis of genomic integration site data, a theoretical random
 integration site distribution is often used as a lower boundary for
 feature enrichment. That is, whether or not a given feature (e.g. a
 particular gene) harbors more integration sites than would be expected
-given a true random distribution. In principle, the derivation of an
+given a uniform random distribution. In principle, the derivation of an
 expected random distribution is not too difficult. Given the genome
-size, $L_G$, the binomial probability of integration into a particular
-region $i$ is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$.
-Therefore, the expected number of integration sites in $i$ can be
-expressed as $I \sim Bin(n, p_i)$.
+size, $L_G$, the probability of integration into a particular region $i$
+is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$. Therefore,
+the expected number of integration sites in $i$ can be expressed as
+$I \sim Bin(n, p_i)$.
 
 In reality, however, the entire genome is rarely accessible by common
 next-generation sequencing technologies. While long-read sequencing is
@@ -37,8 +37,8 @@ highly repetitive regions, are effectively “invisible” due to the
 inability to confidently align short reads to them. In addition,
 different genome fragmentation strategies may influence the mappable
 regions of a genome in a given experiment. For example, when using a
-restriction enzyme (or a cocktail of restriction enzymes) to fragment
-the genome, certain regions deficient in the target recognition
+restriction enzyme (or a cocktail of several restriction enzymes) to
+fragment the genome, certain regions deficient in the target recognition
 sequence(s) will have comparatively fewer mapped reads than other
 regions.
 
@@ -89,7 +89,7 @@ generating random genome fragments is to extract the sequences of each
 chromosome.
 
 ``` r
-chr.seqs <- xInt::get_chromosome_seqs(genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
+chr.seqs <- get_chromosome_seqs( genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0 )
 ```
 
 The output of <code>get_chromosome_seqs()</code> is a list of DNAString
@@ -109,8 +109,8 @@ of each chromosome. You must supply the recognition sequences of the
 enzymes being used as a character vector.
 
 ``` r
-re.cuts <- xInt::digest(string.list = chr.seqs, 
-                        re.sites=c("TTAA","AGATCT"))
+re.cuts <- digest( string.list = chr.seqs, 
+                   re.sites=c( "TTAA","AGATCT" ) )
 ```
 
 ### Random integration site positions
@@ -124,8 +124,8 @@ dataset, however, this number can be much smaller (e.g. $10^4-10^5$
 sites). For example purposes, I’ll generate $10^5$ sites.
 
 ``` r
-rand.sites <- xInt::random_sites(n.sites = 1E5, 
-                                 genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
+rand.sites <- random_sites( n.sites = 1E5,
+                            genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0 )
 ```
 
 ### Generating genomic fragments
@@ -142,10 +142,10 @@ the integration site. This is analogous to sequencing off of the viral
 generated from the viral 5’ LTR.
 
 ``` r
-re.fragments <- xInt::make_fragments(int.sites = rand.sites, 
-                                     frag.sites = re.cuts,
-                                     random = FALSE,
-                                     genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
+re.fragments <- make_fragments( int.sites = rand.sites,
+                                frag.sites = re.cuts,
+                                random = FALSE,
+                                genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0 )
 ```
 
 For random fragmentation, you want to set <code>frag.sites = NULL</code>
@@ -157,12 +157,12 @@ end positions are calculated relative to each simulated random
 integration site.
 
 ``` r
-rand.fragments <- xInt::make_fragments(int.sites = rand.sites, 
-                                       frag.sites = NULL, 
-                                       random = TRUE, 
-                                       mean = 500, 
-                                       sd = 250,
-                                       genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0)
+rand.fragments <- make_fragments( int.sites = rand.sites,
+                                  frag.sites = NULL, 
+                                  random = TRUE,
+                                  mean = 500, 
+                                  sd = 250,
+                                  genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0 )
 ```
 
 ### Extracting and trimming fragment sequences
@@ -172,24 +172,24 @@ corresponding to the fragment positions. These sequences are intended to
 mimic the genomic fragments sequenced in the sequencing reaction.
 
 ``` r
-frag.seqs <- BSgenome::getSeq(x = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0,
-                              names = rand.fragments,
-                              as.character = FALSE)
+frag.seqs <- getSeq( x = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0,
+                     names = rand.fragments,
+                     as.character = FALSE )
 ```
 
     #> DNAStringSet object of length 100000:
     #>          width seq
-    #>      [1]   808 TTAATGGAAAGAGGAGGAGGAGGACGGGGGT...CAATGCAAAAAGCATACTGCCTTCTCTTCTG
-    #>      [2]   693 AAAATGAAAGAACAGTTAAATAAATCATGGC...GCAGACTGGCTCCTTCAGTGGGTAGGCCAGC
-    #>      [3]   360 GCTAGGTCAAGGTGAACACCAGTGTTGAGTT...TAGGCGACTTTACACAATAAAATAGGCAATG
-    #>      [4]   797 TTTATAGTCTTTAAAAAGCAGGAACTACAAA...TGGGTGTGTAGGAGTGTGAATACGAACACGT
-    #>      [5]   124 CCAACAGTAAAAACACCAAATAATCCAGTTA...TTCCATCAGCCACCAGGGAGATGCAAATTAC
+    #>      [1]   414 CCTTCTCAATCTGCAAGAAAAATGTAGAAGG...CCCCCAACTCCAGTTCATGTTTTTCCCTCCA
+    #>      [2]   201 GGGCCTGTTGCACTGTGTTGTTGTGGGGCGG...AGAGTCAAACTCAGTAAAATATTTGAAGAGA
+    #>      [3]   808 GAGGATCGCTTCAGCCTGGAAGGTTGAGGCT...TGAGACCCCGTGTCTACAAAACAATTTAAAA
+    #>      [4]   378 ACCGAATGGAATGGAATGGACTTGAATGGAA...GGAATGGAATGCAATGGAATGCACTCGAACG
+    #>      [5]   369 TCTAACACATGAAAATCAGTGTAATATCACA...TATTCCAATTTTTTAAAAAGTAAAATTATCT
     #>      ...   ... ...
-    #>  [99996]   524 TAGAGGATTTTTGTGAGATTATGTATATAAA...AAGAGATTGGCTATATTTAGTACTGGGTAGG
-    #>  [99997]   359 GTGTGAAGGAGCTGTTGGTAAAATGTGTTAT...ATGTCACCATTTTGGGAGCAAGACAGCTAAT
-    #>  [99998]   197 TATGGTGAAAAGAAAAGGCTTAACACTACTG...AAGACACCTGTACTTGTATGTTTATCACAGC
-    #>  [99999]   718 TAAAACTAACTCTGAGATTAAAGAAAAAAGC...GTCAGCATAGGGTTAAGTTTAGGGGTTAGGG
-    #> [100000]   487 TGTCAAGTTGAGGGGAGGAGGGAATGGAGAG...AGTGTAAGCATGCTGGATCCATACAAATGTA
+    #>  [99996]   303 AGAGACGAGCCCTCACCAGACATGGAATCTT...ACATGGATGTATTTAACAATTTAGAAACTCT
+    #>  [99997]   292 CTCCTCCCAGGTTCAAGCAATTCTTCTGCCT...TCCAAATTTCCCCTTTTTAAAATCACAATAA
+    #>  [99998]   452 CAGTGACATGATCTTGGCTCACTGCAACCTG...TCTCATCCACACAGCGGCAGTCACTTTGCGG
+    #>  [99999]   701 CGGGTTCGGGTTCGGGTTCGGGTTCGGGTTA...AGGGTTAGGGTTAGGGTTAGGGTTAGGGGTT
+    #> [100000]   424 TGTGAGAAGAAGCAGGCCGGATGTCAGAGGG...AATTAGTACGGGAAGGGTATAACCAACATTT
 
 To mimic the sequencing output, however, the genomic fragments must be
 trimmed. The function <code>trim_seqs()</code> will trim the ends of
@@ -207,41 +207,41 @@ of output read pairs, so don’t be alarmed if the lengths of the
 generated sites.
 
 ``` r
-frag.trim <- xInt::trim_seqs(fragments = frag.seqs, 
-                             min.width = 14, 
-                             max.distance = 1000, 
-                             max.bp = 150)
+frag.trim <- trim_seqs( fragments = frag.seqs,
+                        min.width = 14,
+                        max.distance = 1000,
+                        max.bp = 150 )
 ```
 
     #> [[1]]
-    #> DNAStringSet object of length 98821:
+    #> DNAStringSet object of length 98820:
     #>         width seq                                           names               
-    #>     [1]   150 TTAATGGAAAGAGGAGGAGGA...TGCTTTTATTAGTTGATGTCT sequence_1
-    #>     [2]   150 AAAATGAAAGAACAGTTAAAT...CAGGTGGGGGCCAAGCGAGAT sequence_2
-    #>     [3]   150 GCTAGGTCAAGGTGAACACCA...GTCCCATGCCGCAAAGATGGG sequence_3
-    #>     [4]   150 TTTATAGTCTTTAAAAAGCAG...GGATTATATGTGTGACAGTGT sequence_4
-    #>     [5]   124 CCAACAGTAAAAACACCAAAT...CACCAGGGAGATGCAAATTAC sequence_5
+    #>     [1]   150 CCTTCTCAATCTGCAAGAAAA...TATTGCCCGAGCTGGAGTGAG sequence_1
+    #>     [2]   150 GGGCCTGTTGCACTGTGTTGT...GTGATCAAAGAAAATCATTTC sequence_2
+    #>     [3]   150 GAGGATCGCTTCAGCCTGGAA...AATGAGGTCTGCTGGGCAAAA sequence_3
+    #>     [4]   150 ACCGAATGGAATGGAATGGAC...AATGGAATACAATGGAATTTA sequence_4
+    #>     [5]   150 TCTAACACATGAAAATCAGTG...ATAAAAAGAAAGAAAACACCT sequence_5
     #>     ...   ... ...
-    #> [98817]   150 TAGAGGATTTTTGTGAGATTA...TGGGAAGATTTTAAAATAAGC sequence_98817
-    #> [98818]   150 GTGTGAAGGAGCTGTTGGTAA...AAGCTCCAAAAATAGTCTCAG sequence_98818
-    #> [98819]   150 TATGGTGAAAAGAAAAGGCTT...TGGGTATCTACTCAAAGGGAA sequence_98819
-    #> [98820]   150 TAAAACTAACTCTGAGATTAA...GCCCAGATGTCTGAAGTTGTT sequence_98820
-    #> [98821]   150 TGTCAAGTTGAGGGGAGGAGG...ATGTTAATATCACTGAACTGT sequence_98821
+    #> [98816]   150 AGAGACGAGCCCTCACCAGAC...CCTGAAAGGACTAAGACCCCA sequence_98816
+    #> [98817]   150 CTCCTCCCAGGTTCAAGCAAT...GGTCTCAAACTCCTGATATCA sequence_98817
+    #> [98818]   150 CAGTGACATGATCTTGGCTCA...ATAGACGCGGTTTCACCATGT sequence_98818
+    #> [98819]   150 CGGGTTCGGGTTCGGGTTCGG...TTAGAGTTAGAGTTAGAGGGT sequence_98819
+    #> [98820]   150 TGTGAGAAGAAGCAGGCCGGA...AGTATTGGTTATGGTTCATTG sequence_98820
     #> 
     #> [[2]]
-    #> DNAStringSet object of length 98821:
+    #> DNAStringSet object of length 98820:
     #>         width seq                                           names               
-    #>     [1]   150 CAGAAGAGAAGGCAGTATGCT...CCCAGCCAGAAAAACACTTTA sequence_1
-    #>     [2]   150 GCTGGCCTACCCACTGAAGGA...AAAGAGAGCTCCTAGGGGTCC sequence_2
-    #>     [3]   150 CATTGCCTATTTTATTGTGTA...GGATTTTGATCTTTGGGATTT sequence_3
-    #>     [4]   150 ACGTGTTCGTATTCACACTCC...CTCACTCATACACACCGATTG sequence_4
-    #>     [5]   124 GTAATTTGCATCTCCCTGGTG...ATTTGGTGTTTTTACTGTTGG sequence_5
+    #>     [1]   150 TGGAGGGAAAAACATGAACTG...CCCTCTGGGGCAGCCCGGAAC sequence_1
+    #>     [2]   150 TCTCTTCAAATATTTTACTGA...ATGAGAGAGGGAGATGGCTCC sequence_2
+    #>     [3]   150 TTTTAAATTGTTTTGTAGACA...TCAATTTTCTAAAAAAGAAAT sequence_3
+    #>     [4]   150 CGTTCGAGTGCATTCCATTGC...CTATTCCATTCGAGTCCATTC sequence_4
+    #>     [5]   150 AGATAATTTTACTTTTTAAAA...TGAGGGTAAAAGCTTTCAGTC sequence_5
     #>     ...   ... ...
-    #> [98817]   150 CCTACCCAGTACTAAATATAG...TCTTGTTATACTTTCTCTCCC sequence_98817
-    #> [98818]   150 ATTAGCTGTCTTGCTCCCAAA...GCCAAAGAGGGTAAGCGTTTA sequence_98818
-    #> [98819]   150 GCTGTGATAAACATACAAGTA...TGTTTTCCATAGAGGTTGTAC sequence_98819
-    #> [98820]   150 CCCTAACCCCTAAACTTAACC...GACCCAATCTCTGACCCCTAA sequence_98820
-    #> [98821]   150 TACATTTGTATGGATCCAGCA...CTCAGCCTCCTGAATAGCTGG sequence_98821
+    #> [98816]   150 AGAGTTTCTAAATTGTTAAAT...TTTACCATGTCCTTTATAATG sequence_98816
+    #> [98817]   150 TTATTGTGATTTTAAAAAGGG...CAGACGGATCACTTGATATCA sequence_98817
+    #> [98818]   150 CCGCAAAGTGACTGCCGCTGT...CTGTGGATTTTGGAAATTACG sequence_98818
+    #> [98819]   150 AACCCCTAACCCTAACCCTAA...CCCTAACCCTAACCCTAACCC sequence_98819
+    #> [98820]   150 AAATGTTGGTTATACCCTTCC...AATAAACATGCTAGCTTTTAT sequence_98820
 
 ### Generating fasta files
 
@@ -253,10 +253,10 @@ save space. Given the input parameters below, the files will be saved as
 <code>path/to/directory/prefix_R2.fa(.gz)</code>, respectively.
 
 ``` r
-xInt::save_fasta(trimmed.seqs = frag.trim, 
-                 directory.path = "path/to/directory",
-                 file.prefix = "prefix",
-                 compress = TRUE)
+save_fasta( trimmed.seqs = frag.trim,
+            directory.path = "path/to/directory",
+            file.prefix = "prefix",
+            compress = TRUE )
 ```
 
 ### Conclusions
