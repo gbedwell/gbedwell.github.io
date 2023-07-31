@@ -42,24 +42,24 @@ As a graduate student, I was interested in understanding and exploiting the arch
 
 **Languages**: Proficiency in R. Competency with Python, AWK, sed, etc. Exposure to Julia.
 
-**Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, jq, knitr/Rmarkdown/quarto/xaringan, LaTeX, HPC clusters (SLURM and Grid Engine).
+**Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, knitr/Rmarkdown/quarto/xaringan, LaTeX, HPC clusters (SLURM and Grid Engine), jq.
 
 **Bioinformatic tools**: 
-  - <u>Bioconductor</u>: GenomicRanges, BSgenome, Biostrings, DESeq2, Rsamtools, and many more. 
+  - <u>Bioconductor</u>: GenomicRanges, Biostrings, DESeq2, BSgenome, Rsamtools, and many more. 
   - <u>Miscellaneous software</u>: bedtools, samtools, MACS2, and more. 
   - <u>Sequence (pseudo)aligners</u>: Rsubread, BWA, STAR, kallisto.
   - <u>Multiple sequence alignment</u>: hh-suite, Clustal Omega, MUSCLE.
   - <u>Macromolecular modeling</u>: hullrad, HYDROPRO.
-  - <u>Structure prediction</u>: ColabFold (AlphaFold), OmegaFold.
+  - <u>Structure prediction</u>: AlphaFold, OmegaFold.
 
-**Statistics**: categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric statistics, null hypothesis significance testing, bootstrapping, maximum likelihood estimation, hidden Markov models, empirical Bayes
+**Statistics**: categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric models/tests, null hypothesis significance testing, bootstrapping, maximum likelihood estimation, optimization, hidden Markov models, empirical Bayes.
 
 
 ## <i class="fas fa-code"></i> Software
 
 - [calibrateR](https://github.com/gbedwell/calibrateR): An R package written to streamline common laboratory calculations. A brief description of the package and general usage can be found [here](https://gbedwell.github.io/calibrateR/).
 
-- [nbconv](https://github.com/gbedwell/nbconv): An R package that implements three distinct methods for evaluating the sum of arbitrary negative binomial convolutions. See [this post](https://gbedwell.github.io/nb-convolutions/) for more information.
+- [nbconv](https://github.com/gbedwell/nbconv): An R package that implements three distinct methods for evaluating the sum of arbitrary negative binomial convolutions. See [this post](https://gbedwell.github.io/nb-convolutions/) for more information. nbconv can be found on [CRAN](https://cran.r-project.org/web/packages/nbconv/index.html).
 
 
 ## <i class="fas fa-align-left"></i> Selected Publications
