@@ -146,7 +146,7 @@ frag.trim
 Finally, now that your pairs have been generated, you can save the pairs as R1 and R2 fasta files for genome alignment. The <code>compress</code> option in <code>save_fasta()</code> will compress the fasta files to save space. Given the input parameters below, the files will be saved as <code>path/to/directory/prefix_R1.fa(.gz)</code> and <code>path/to/directory/prefix_R2.fa(.gz)</code>, respectively.
 
 ```{r, eval=FALSE}
-save_fasta( trimmed.seqs = frag.trim,
+save_fasta( reads = frag.trim,
             directory.path = "path/to/directory",
             file.prefix = "prefix",
             compress = TRUE )
@@ -155,3 +155,8 @@ save_fasta( trimmed.seqs = frag.trim,
 ### Conclusions
 
 On my 2 GHz quad-core laptop with 16 GB RAM, this entire process ran in just over 2 minutes. Obviously, as you increase the number of random sites generated, this run time will increase. For generating extremely large datasets, I would recommend moving this to an HPC cluster. Regardless of where you run this, I hope I've demonstrated how easy it can be to generate random genome fragments in a way that should integrate seamlessly with your other Bioconductor workflows!
+
+
+### Addendum: 08/01/2023
+
+A wrapper function, <code>simulate_random_data()</code>, was included in the package that automatically calls all of these functions. See the [source code](https://github.com/gbedwell/xInt/blob/master/R/simulate_random_data.R) for more information.
