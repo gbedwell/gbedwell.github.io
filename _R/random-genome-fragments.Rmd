@@ -154,4 +154,4 @@ save_fasta( trimmed.seqs = frag.trim,
 
 ### Conclusions
 
-On my 2 GHz quad-core laptop with 16 GB RAM, this entire process ran in just over 2 minutes. Obviously, as you increase the number of random sites generated, this run time will increase. For generating extremely large datasets, I would recommend moving this to an HPC cluster. Regardless of where you run this, I hope I've demonstrated how easy it can be to generate random genome fragments in a way that should integrate (lol, get it?!) seamlessly with your other Bioconductor workflows!
+On my 2 GHz quad-core laptop with 16 GB RAM, this entire process ran in just over 2 minutes. Obviously, as you increase the number of random sites generated, this run time will increase. For generating extremely large datasets, I would recommend moving this to an HPC cluster. Regardless of where you run this, I hope I've demonstrated how easy it can be to generate random genome fragments in a way that should integrate seamlessly with your other Bioconductor workflows!
