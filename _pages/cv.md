@@ -45,7 +45,7 @@ As a graduate student, I was interested in understanding and exploiting the arch
 **Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, knitr/Rmarkdown/quarto/xaringan, LaTeX, HPC clusters (SLURM and Grid Engine), jq.
 
 **Bioinformatic tools**: 
-  - <u>Bioconductor</u>: GenomicRanges, Biostrings, DESeq2, BSgenome, Rsamtools, and many more. 
+  - <u>Bioconductor</u>: GenomicRanges, Biostrings, DESeq2, BSgenome, SummarizedExperiment, Rsamtools, and many more. 
   - <u>Miscellaneous software</u>: bedtools, samtools, MACS2, and more. 
   - <u>Sequence (pseudo)aligners</u>: Rsubread, BWA, STAR, kallisto.
   - <u>Multiple sequence alignment</u>: hh-suite, Clustal Omega, MUSCLE.

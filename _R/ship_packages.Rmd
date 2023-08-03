@@ -1,0 +1,62 @@
+---
+title: Automating package installation after R updates
+excerpt: Streamlining an otherwise tedious process.
+classes: wide
+output:
+  md_document:
+    variant: gfm
+    preserve_yaml: true
+knit: (function(input, ...) {
+    rmarkdown::render(
+      input,
+      output_file = paste0(
+        '/Users/gbedwell/Documents/github/gbedwell.github.io/_posts/', '2023-08-01', '-', 'ship_packages','.md'
+      ),
+      envir = globalenv()
+    )
+  })
+---
+
+```{r, include=FALSE}
+date <- "2023-08-01"
+
+base.dir <- "/Users/gbedwell/Documents/github/gbedwell.github.io/"
+base.url <- "/"
+dir.create(paste0("../figures/", date))
+fig.path <- paste0("../figures/", date, "/")
+
+knitr::opts_chunk$set(
+  fig.asp = 5/7,
+  fig.width = 7,
+  dpi = 300,
+  fig.align = "center",
+  out.width = "80%",
+  comment = "#>",
+  collapse = TRUE,
+  dev = "png",
+  base.dir = base.dir, 
+  base.url = base.url,
+  fig.path = fig.path
+  )
+```
+
+### Introduction
+
+Philosophies around re-installing packages after updating or changing R versions vary. For some, waiting to re-install packages until they are needed is a good way to trim the fat, so to speak, and effectively eliminate the packages that were installed once and forgotten about from their new library. Others (myself included) prefer a more complete migration -- <i>just in case</i> that <i>one</i> package is needed some day.
+
+To aid in this migration, I have written two helper functions -- <code>address_packages()</code> and <code>deliver_packages()</code> -- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
