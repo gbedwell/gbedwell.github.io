@@ -89,10 +89,26 @@ abbreviations:
   - &where_jvirol Journal of Virology
   - &where_langmuir  Langmuir
   - &where_medrxiv medRxiv
+  - &where_CRAN CRAN
 
 
 publications:
 
+  -
+    authors:
+      - *gjb
+    when:
+      year: 2023
+    title: >
+      nbconv: Evaluate Arbitrary Negative Binomial Convolutions
+    where:
+      journal: *where_CRAN
+      volume:
+      pages:
+    doi: https://cran.r-project.org/web/packages/nbconv/index.html 
+    bonus:
+      text:  >
+        &#128275;&nbsp;Open Access.
   -
     authors:
       - *am 
