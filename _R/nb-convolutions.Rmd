@@ -1,6 +1,6 @@
 ---
 title: nbconv
-excerpt: An R package to evaluation negative binomial convolutions.
+excerpt: An R package to evaluate negative binomial convolutions.
 classes: wide
 output:
   md_document:

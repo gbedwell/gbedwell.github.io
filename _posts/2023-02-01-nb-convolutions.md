@@ -1,6 +1,6 @@
 ---
 title: nbconv
-excerpt: An R package to evaluation negative binomial convolutions.
+excerpt: An R package to evaluate negative binomial convolutions.
 classes: wide
 output:
   md_document:
@@ -196,11 +196,11 @@ df$method <- factor( df$method, levels = c("empirical", "exact", "moments", "sad
 library( ggplot2 )
 
 ggplot(data = df,
-             aes(x = count, y = probability , fill = method ) ) +
+       aes(x = count, y = probability , fill = method ) ) +
   geom_area(data = df[df$method == "empirical",],
-              aes(x = count, y = probability ),
-              color = "gray50", fill="gray50",
-              inherit.aes = FALSE, alpha = 0.5 ) +  
+            aes(x = count, y = probability ),
+            color = "gray50", fill="gray50",
+            inherit.aes = FALSE, alpha = 0.5 ) +  
   geom_point(shape = 21, size = 2, color = "#00000000") +
   scale_fill_manual(values = c("gray50","darkblue","darkred","darkgreen"),
                      labels = c("Empirical", "Exact", "Moments", "Saddlepoint" ),
