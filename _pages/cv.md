@@ -19,40 +19,40 @@ permalink: /cv.html
 
 **Instructor in Medicine** - Dana-Farber Cancer Institute/Harvard Medical School.
 
-These days, my principal scientific interests are in computational and systems biology. I am particularly interested in developing ways to better understand retroviral integration targeting biases and how those biases relate to provirus expression and/or latency. To this end, I am developing a statistical method, xInt, to define the "expected" number of integration events within defined genomic features/regions. xInt will allow researchers to rigorously define baseline integration targeting preferences for a given retrovirus, and to identify differentially targeted regions under distinct infection conditions. I am additionally involved in collaborations aimed at better defining role that integration targeting plays in the establishment of particular clincal phenotypes and I am actively involved in designing, performing, and analyzing biophysical experiments related to protein phase separation.
-
+My current work lies at the intersection of computational and systems biology. I am developing ways to better understand retroviral integration targeting biases, how those biases relate to provirus expression and disease progression, and how host factors influence said targeting biases. I pursue these questions using both wet and dry lab approaches. I am actively developing an improved computational and statistical framework for determining integration targeting biases within datasets and assessing differential targeting between them. I am additionally involved in designing, performing, and interpreting biophysical experiments related to understanding the role of liquid-liquid phase separation in HIV-1 infection and integration targeting. Beyond my particular research projects, I actively mentor undergraduate students, research technicians, and other trainees in both wet and dry lab research.
 
 **Consulting** - Freelance.
 
-I have consulted companies on processing and wrangling large data files into smaller, more user-friendly data formats. I am open to more consulting opportunities in data wrangling, bioinformatics, and data analysis. If interested, please [get in touch](mailto:gregoryjbedwell@gmail.com)!
+I have consulted companies on processing and wrangling large data files into smaller, more user-friendly formats. I am open to more consulting opportunities in data wrangling, bioinformatics, and data analysis. If interested, please [get in touch](mailto:gregoryjbedwell@gmail.com)!
 
 
 ## <i class="fas fa-map-marker-alt"></i> Previous positions
 
 **Post-doctoral fellow** - Dana-Farber Cancer Institute/Harvard Medical School
 
-As a post-doctoral fellow, I devised a recombinant protein expression system and purification scheme for the human protein CPSF6, a protein with low sequence complexity and strong compositional biases. This expression system has subsequently been extended to several similar protein targets that could not be easily purified previously. I additionally began my foray into conceptualizing and developing computational methods to better define HIV-1 integration targeting preferences. To this end, I built phenomenological models of theoretical random integration in order to define genes preferentially integrated into or avoided during HIV-1 infection. The methodology and findings were published in Nucleic Acids Research. This approach, however, has since been superseded by a newer, more robust method: xInt (not yet published).
+As a post-doctoral fellow, I devised a recombinant protein expression system and purification scheme for the human protein CPSF6, a protein with low sequence complexity and strong compositional biases. This expression system has since been successfully applied to several similar protein targets. I additionally began my foray into conceptualizing and developing computational methods to better define HIV-1 integration targeting preferences. A strategy for categorizing genes into recurrently targeted and recurrently avoided populations was published in Nucleic Acids Research in 2021.
 
 **Graduate student** - University of Alabama at Birmingham.
 
-As a graduate student, I was interested in understanding and exploiting the architecture of bacteriophage P22. I devised a system to selectively mineralize photocatalytic titanium dioxide within the pseudo-icosahedral shell of procapsid-like particles. Confining highly insoluble titanium dioxide within the capsid shell works to effectively "solubilize" the material, making it potentially more tractable for use in aqueous environments. In addition, I sought to understand the mechanism of so-called "headful" packaging. In this packaging strategy, dsDNA bacteriophage are able to effectively "sense" the amount of DNA that has been packaged within their capsid and stop when the capsids are full. I was able to show that the P22 portal protein acts as a biological pressure sensor that responds to pressure introduced by genome packaging.
+As a graduate student, I was interested in understanding and exploiting the architecture of bacteriophage P22. I devised a system to selectively mineralize photocatalytic titanium dioxide within the pseudo-icosahedral shell of procapsid-like particles. Confining highly insoluble titanium dioxide within the capsid shell works to effectively "solubilize" the material, making it potentially more tractable for use in aqueous environments. In addition, I sought to understand the mechanism of so-called "headful" packaging. I was able to show that the P22 portal protein acts as a biological pressure sensor that responds to the increasing internal pressure introduced by increasing incorporation of dsDNA.
 
 
 ## <i class="fas fa-chart-bar"></i> Programming and statistics
 
 **Languages**: Proficiency in R. Competency with Python, AWK, sed, etc. Exposure to Julia.
 
-**Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, knitr/Rmarkdown/quarto/xaringan, LaTeX, HPC clusters (SLURM and Grid Engine), jq.
+**Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, knitr/Rmarkdown/quarto/xaringan, LaTeX, HPC clusters (SLURM and Grid Engine), SageMath, jq.
 
 **Bioinformatic tools**: 
-  - <u>Bioconductor</u>: GenomicRanges, Biostrings, DESeq2, BSgenome, SummarizedExperiment, Rsamtools, and many more. 
-  - <u>Miscellaneous software</u>: bedtools, samtools, MACS2, and more. 
+  - <u>Bioconductor</u>: GenomicRanges, Biostrings, BSgenome, SummarizedExperiment, Rsamtools, DESeq2, and many more. 
+  - <u>Miscellaneous bioinformatics software</u>: FastQC, bedtools, samtools, MACS2, and more. 
   - <u>Sequence (pseudo)aligners</u>: Rsubread, BWA, STAR, kallisto.
   - <u>Multiple sequence alignment</u>: hh-suite, Clustal Omega, MUSCLE.
-  - <u>Macromolecular modeling</u>: hullrad, HYDROPRO.
-  - <u>Structure prediction</u>: AlphaFold, OmegaFold.
+  - <u>Hydrodynamic modeling</u>: hullrad, HYDROPRO.
+  - <u>Structure prediction</u>: MODELLER, trRosetta, AlphaFold, OmegaFold, RoseTTAFold, ESMFold. 
+  - <u>Protein design</u>: trDesign, RFdiffusion, EvoDiff.
 
-**Statistics**: categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric models/tests, null hypothesis significance testing, bootstrapping, maximum likelihood estimation, optimization, hidden Markov models, empirical Bayes.
+**Statistics**: discrete/categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric models/tests, null hypothesis significance testing, bootstrapping, maximum likelihood estimation, optimization, hidden Markov models, empirical Bayes, etc.
 
 
 ## <i class="fas fa-code"></i> Software
