@@ -305,7 +305,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          6 minute read
+          7 minute read
         
       </span>
     
@@ -318,15 +318,15 @@
       <section class="page__content e-content" itemprop="text">
         
         <p>In the analysis of genomic integration site data, a theoretical random
-integration site distribution is often used as a lower boundary for
+integration site distribution is often used as a reference point for
 feature enrichment. That is, whether or not a given feature (e.g. a
 particular gene) harbors more integration sites than would be expected
-given a true random distribution. In principle, the derivation of an
+given a uniform random distribution. In principle, the derivation of an
 expected random distribution is not too difficult. Given the genome
-size, $L_G$, the binomial probability of integration into a particular
-region $i$ is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$.
-Therefore, the expected number of integration sites in $i$ can be
-expressed as $I \sim Bin(n, p_i)$.</p>
+size, $L_G$, the probability of integration into a particular region $i$
+is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$. Therefore,
+the expected number of integration sites in $i$ can be expressed as
+$I \sim Bin(n, p_i)$.</p>
 
 <p>In reality, however, the entire genome is rarely accessible by common
 next-generation sequencing technologies. While long-read sequencing is
@@ -337,8 +337,8 @@ highly repetitive regions, are effectively “invisible” due to the
 inability to confidently align short reads to them. In addition,
 different genome fragmentation strategies may influence the mappable
 regions of a genome in a given experiment. For example, when using a
-restriction enzyme (or a cocktail of restriction enzymes) to fragment
-the genome, certain regions deficient in the target recognition
+restriction enzyme (or a cocktail of several restriction enzymes) to
+fragment the genome, certain regions deficient in the target recognition
 sequence(s) will have comparatively fewer mapped reads than other
 regions.</p>
 
@@ -386,7 +386,7 @@ human genome build.</p>
 generating random genome fragments is to extract the sequences of each
 chromosome.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chr.seqs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">get_chromosome_seqs</span><span class="p">(</span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chr.seqs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">get_chromosome_seqs</span><span class="p">(</span><span class="w"> </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <p>The output of <code>get_chromosome_seqs()</code> is a list of DNAString
@@ -406,8 +406,8 @@ the possible fragmentation positions on both forward and reverse strands
 of each chromosome. You must supply the recognition sequences of the
 enzymes being used as a character vector.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re.cuts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">digest</span><span class="p">(</span><span class="n">string.list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chr.seqs</span><span class="p">,</span><span class="w"> 
-                        </span><span class="n">re.sites</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s2">"TTAA"</span><span class="p">,</span><span class="s2">"AGATCT"</span><span class="p">))</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re.cuts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">digest</span><span class="p">(</span><span class="w"> </span><span class="n">string.list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chr.seqs</span><span class="p">,</span><span class="w"> 
+                   </span><span class="n">re.sites</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="s2">"TTAA"</span><span class="p">,</span><span class="s2">"AGATCT"</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <h3 id="random-integration-site-positions">Random integration site positions</h3>
@@ -420,8 +420,8 @@ estimation of the mappable genome, this number should be rather high
 dataset, however, this number can be much smaller (e.g. $10^4-10^5$
 sites). For example purposes, I’ll generate $10^5$ sites.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rand.sites</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">random_sites</span><span class="p">(</span><span class="n">n.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1E5</span><span class="p">,</span><span class="w"> 
-                                 </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rand.sites</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">random_sites</span><span class="p">(</span><span class="w"> </span><span class="n">n.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1E5</span><span class="p">,</span><span class="w">
+                            </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <h3 id="generating-genomic-fragments">Generating genomic fragments</h3>
@@ -437,10 +437,10 @@ the integration site. This is analogous to sequencing off of the viral
 3’ LTR. I have not yet incorporated a way to simulate fragments
 generated from the viral 5’ LTR.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re.fragments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">make_fragments</span><span class="p">(</span><span class="n">int.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.sites</span><span class="p">,</span><span class="w"> 
-                                     </span><span class="n">frag.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re.cuts</span><span class="p">,</span><span class="w">
-                                     </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
-                                     </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re.fragments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">make_fragments</span><span class="p">(</span><span class="w"> </span><span class="n">int.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.sites</span><span class="p">,</span><span class="w">
+                                </span><span class="n">frag.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re.cuts</span><span class="p">,</span><span class="w">
+                                </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
+                                </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <p>For random fragmentation, you want to set <code>frag.sites = NULL</code>
@@ -451,12 +451,12 @@ from a log-normal distribution with the defined parameters and fragment
 end positions are calculated relative to each simulated random
 integration site.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rand.fragments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">make_fragments</span><span class="p">(</span><span class="n">int.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.sites</span><span class="p">,</span><span class="w"> 
-                                       </span><span class="n">frag.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NULL</span><span class="p">,</span><span class="w"> 
-                                       </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> 
-                                       </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> 
-                                       </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">250</span><span class="p">,</span><span class="w">
-                                       </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rand.fragments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">make_fragments</span><span class="p">(</span><span class="w"> </span><span class="n">int.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.sites</span><span class="p">,</span><span class="w">
+                                  </span><span class="n">frag.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NULL</span><span class="p">,</span><span class="w"> 
+                                  </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
+                                  </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> 
+                                  </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">250</span><span class="p">,</span><span class="w">
+                                  </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <h3 id="extracting-and-trimming-fragment-sequences">Extracting and trimming fragment sequences</h3>
@@ -465,24 +465,24 @@ integration site.</p>
 corresponding to the fragment positions. These sequences are intended to
 mimic the genomic fragments sequenced in the sequencing reaction.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">frag.seqs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">BSgenome</span><span class="o">::</span><span class="n">getSeq</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">,</span><span class="w">
-                              </span><span class="n">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.fragments</span><span class="p">,</span><span class="w">
-                              </span><span class="n">as.character</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">frag.seqs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">getSeq</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">,</span><span class="w">
+                     </span><span class="n">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.fragments</span><span class="p">,</span><span class="w">
+                     </span><span class="n">as.character</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; DNAStringSet object of length 100000:
 #&gt;          width seq
-#&gt;      [1]   808 TTAATGGAAAGAGGAGGAGGAGGACGGGGGT...CAATGCAAAAAGCATACTGCCTTCTCTTCTG
-#&gt;      [2]   693 AAAATGAAAGAACAGTTAAATAAATCATGGC...GCAGACTGGCTCCTTCAGTGGGTAGGCCAGC
-#&gt;      [3]   360 GCTAGGTCAAGGTGAACACCAGTGTTGAGTT...TAGGCGACTTTACACAATAAAATAGGCAATG
-#&gt;      [4]   797 TTTATAGTCTTTAAAAAGCAGGAACTACAAA...TGGGTGTGTAGGAGTGTGAATACGAACACGT
-#&gt;      [5]   124 CCAACAGTAAAAACACCAAATAATCCAGTTA...TTCCATCAGCCACCAGGGAGATGCAAATTAC
+#&gt;      [1]   771 TTAGTATGCCTCGGCCACTTAGAAATAGCAA...ACCCCCAGGCAGAAATTCAGGCATTGGAGCA
+#&gt;      [2]   546 GACCTTTCATTGGTGATTTAATTTCCTTATT...CTACCTGATTTTAGAATATATTTCAAAGCAT
+#&gt;      [3]   834 TCTGAACCTGGCCCCACCACCTATGGGCAGA...TTAAAAAGTAAAAGGTGTTCCCATTGTTTAG
+#&gt;      [4]   313 GTGAGATGTTAGTTCGGAGGGAAAGGAAATC...ACCTCCCAGATTCAGCCCGTGTGCCAGGGCT
+#&gt;      [5]   530 ACTCCCCAAAGTAATTTATAAAAGAATTCAA...AATACCATTCAGGACATAGGCATGGGCAAAG
 #&gt;      ...   ... ...
-#&gt;  [99996]   524 TAGAGGATTTTTGTGAGATTATGTATATAAA...AAGAGATTGGCTATATTTAGTACTGGGTAGG
-#&gt;  [99997]   359 GTGTGAAGGAGCTGTTGGTAAAATGTGTTAT...ATGTCACCATTTTGGGAGCAAGACAGCTAAT
-#&gt;  [99998]   197 TATGGTGAAAAGAAAAGGCTTAACACTACTG...AAGACACCTGTACTTGTATGTTTATCACAGC
-#&gt;  [99999]   718 TAAAACTAACTCTGAGATTAAAGAAAAAAGC...GTCAGCATAGGGTTAAGTTTAGGGGTTAGGG
-#&gt; [100000]   487 TGTCAAGTTGAGGGGAGGAGGGAATGGAGAG...AGTGTAAGCATGCTGGATCCATACAAATGTA
+#&gt;  [99996]   798 TTTCTTTCCTGGTTTAAGTTGAACATATTAT...TTGTTTATTTTGGTATTTCTCCTGCTTGGTA
+#&gt;  [99997]   580 TAGGTGATGCCTTTCACTGAATGAGAAAAAA...GTCACTTAGTGAGGGAGACTTTCCATAACCA
+#&gt;  [99998]   493 CCTTGATATAATGCATACAGTTCAAAATGAT...ATTTCATTCCATTCATCAAATGCTCAAAAGG
+#&gt;  [99999]   555 CATCTCAAAAAAAAAGAAAAAAAGAAAAAAA...GGAAGAGAACAACACACACTGGGGCCTGTCG
+#&gt; [100000]   502 CAAGGATCCAGTCTGGCCCCATCGATTTCTA...TAACACACATCTGGTCAGTCGTTTTCTGGGC
 </code></pre></div></div>
 
 <p>To mimic the sequencing output, however, the genomic fragments must be
@@ -500,41 +500,41 @@ of output read pairs, so don’t be alarmed if the lengths of the
 <code>trim_seqs()</code> list elements is less than the number of
 generated sites.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">frag.trim</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xInt</span><span class="o">::</span><span class="n">trim_seqs</span><span class="p">(</span><span class="n">fragments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frag.seqs</span><span class="p">,</span><span class="w"> 
-                             </span><span class="n">min.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">,</span><span class="w"> 
-                             </span><span class="n">max.distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> 
-                             </span><span class="n">max.bp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">150</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">frag.trim</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">trim_seqs</span><span class="p">(</span><span class="w"> </span><span class="n">fragments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frag.seqs</span><span class="p">,</span><span class="w">
+                        </span><span class="n">min.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">,</span><span class="w">
+                        </span><span class="n">max.distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w">
+                        </span><span class="n">max.bp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">150</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; [[1]]
-#&gt; DNAStringSet object of length 98821:
+#&gt; DNAStringSet object of length 98835:
 #&gt;         width seq                                           names               
-#&gt;     [1]   150 TTAATGGAAAGAGGAGGAGGA...TGCTTTTATTAGTTGATGTCT sequence_1
-#&gt;     [2]   150 AAAATGAAAGAACAGTTAAAT...CAGGTGGGGGCCAAGCGAGAT sequence_2
-#&gt;     [3]   150 GCTAGGTCAAGGTGAACACCA...GTCCCATGCCGCAAAGATGGG sequence_3
-#&gt;     [4]   150 TTTATAGTCTTTAAAAAGCAG...GGATTATATGTGTGACAGTGT sequence_4
-#&gt;     [5]   124 CCAACAGTAAAAACACCAAAT...CACCAGGGAGATGCAAATTAC sequence_5
+#&gt;     [1]   150 TTAGTATGCCTCGGCCACTTA...TGTGAGCAAACAGTCAACATG sequence_1
+#&gt;     [2]   150 GACCTTTCATTGGTGATTTAA...ATAGTAGTATGTTATGATTTT sequence_2
+#&gt;     [3]   150 TCTGAACCTGGCCCCACCACC...TCTCCCTGTACATATGAGATT sequence_3
+#&gt;     [4]   150 GTGAGATGTTAGTTCGGAGGG...CCTGAGCATTTCAGACCTGGG sequence_4
+#&gt;     [5]   150 ACTCCCCAAAGTAATTTATAA...AATTCTAAGCAAAAATAACAA sequence_5
 #&gt;     ...   ... ...
-#&gt; [98817]   150 TAGAGGATTTTTGTGAGATTA...TGGGAAGATTTTAAAATAAGC sequence_98817
-#&gt; [98818]   150 GTGTGAAGGAGCTGTTGGTAA...AAGCTCCAAAAATAGTCTCAG sequence_98818
-#&gt; [98819]   150 TATGGTGAAAAGAAAAGGCTT...TGGGTATCTACTCAAAGGGAA sequence_98819
-#&gt; [98820]   150 TAAAACTAACTCTGAGATTAA...GCCCAGATGTCTGAAGTTGTT sequence_98820
-#&gt; [98821]   150 TGTCAAGTTGAGGGGAGGAGG...ATGTTAATATCACTGAACTGT sequence_98821
+#&gt; [98831]   150 TTTCTTTCCTGGTTTAAGTTG...CTAAATCTACTTTCAAATAAC sequence_98831
+#&gt; [98832]   150 TAGGTGATGCCTTTCACTGAA...ACAGTTGCGATAGCTCCCTAA sequence_98832
+#&gt; [98833]   150 CCTTGATATAATGCATACAGT...CTATGTGTGTTCTCTTTTTGT sequence_98833
+#&gt; [98834]   150 CATCTCAAAAAAAAAGAAAAA...GCAACCAAAAATATGTCCCAT sequence_98834
+#&gt; [98835]   150 CAAGGATCCAGTCTGGCCCCA...TTTCCTTTCTGAAGGTGGACT sequence_98835
 #&gt; 
 #&gt; [[2]]
-#&gt; DNAStringSet object of length 98821:
+#&gt; DNAStringSet object of length 98835:
 #&gt;         width seq                                           names               
-#&gt;     [1]   150 CAGAAGAGAAGGCAGTATGCT...CCCAGCCAGAAAAACACTTTA sequence_1
-#&gt;     [2]   150 GCTGGCCTACCCACTGAAGGA...AAAGAGAGCTCCTAGGGGTCC sequence_2
-#&gt;     [3]   150 CATTGCCTATTTTATTGTGTA...GGATTTTGATCTTTGGGATTT sequence_3
-#&gt;     [4]   150 ACGTGTTCGTATTCACACTCC...CTCACTCATACACACCGATTG sequence_4
-#&gt;     [5]   124 GTAATTTGCATCTCCCTGGTG...ATTTGGTGTTTTTACTGTTGG sequence_5
+#&gt;     [1]   150 TGCTCCAATGCCTGAATTTCT...CTGGCTGCAAGTTTCATCACC sequence_1
+#&gt;     [2]   150 ATGCTTTGAAATATATTCTAA...AAAAAAAGATCTCAAATAAGC sequence_2
+#&gt;     [3]   150 CTAAACAATGGGAACACCTTT...CAGATTTTCAGTGTAAAGTGA sequence_3
+#&gt;     [4]   150 AGCCCTGGCACACGGGCTGAA...ACAAGGTAGGAACTGAGTGTG sequence_4
+#&gt;     [5]   150 CTTTGCCCATGCCTATGTCCT...TCCAGTTTCAATTTCTGCATA sequence_5
 #&gt;     ...   ... ...
-#&gt; [98817]   150 CCTACCCAGTACTAAATATAG...TCTTGTTATACTTTCTCTCCC sequence_98817
-#&gt; [98818]   150 ATTAGCTGTCTTGCTCCCAAA...GCCAAAGAGGGTAAGCGTTTA sequence_98818
-#&gt; [98819]   150 GCTGTGATAAACATACAAGTA...TGTTTTCCATAGAGGTTGTAC sequence_98819
-#&gt; [98820]   150 CCCTAACCCCTAAACTTAACC...GACCCAATCTCTGACCCCTAA sequence_98820
-#&gt; [98821]   150 TACATTTGTATGGATCCAGCA...CTCAGCCTCCTGAATAGCTGG sequence_98821
+#&gt; [98831]   150 TACCAAGCAGGAGAAATACCA...TTAGAAGAACAAGGGTAAGAA sequence_98831
+#&gt; [98832]   150 TGGTTATGGAAAGTCTCCCTC...AGAATGTACTTGATGTGTTCT sequence_98832
+#&gt; [98833]   150 CCTTTTGAGCATTTGATGAAT...AAAAGTTGTGGAACTCTTTAA sequence_98833
+#&gt; [98834]   150 CGACAGGCCCCAGTGTGTGTT...TTCCAGCTTCACGTGATGTGT sequence_98834
+#&gt; [98835]   150 GCCCAGAAAACGACTGACCAG...GAACAGAAGAAAAAGGGGTGC sequence_98835
 </code></pre></div></div>
 
 <h3 id="generating-fasta-files">Generating fasta files</h3>
@@ -546,10 +546,10 @@ save space. Given the input parameters below, the files will be saved as
 <code>path/to/directory/prefix_R1.fa(.gz)</code> and
 <code>path/to/directory/prefix_R2.fa(.gz)</code>, respectively.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xInt</span><span class="o">::</span><span class="n">save_fasta</span><span class="p">(</span><span class="n">trimmed.seqs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frag.trim</span><span class="p">,</span><span class="w"> 
-                 </span><span class="n">directory.path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"path/to/directory"</span><span class="p">,</span><span class="w">
-                 </span><span class="n">file.prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"prefix"</span><span class="p">,</span><span class="w">
-                 </span><span class="n">compress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">save_fasta</span><span class="p">(</span><span class="w"> </span><span class="n">reads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frag.trim</span><span class="p">,</span><span class="w">
+            </span><span class="n">directory.path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"path/to/directory"</span><span class="p">,</span><span class="w">
+            </span><span class="n">file.prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"prefix"</span><span class="p">,</span><span class="w">
+            </span><span class="n">compress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <h3 id="conclusions">Conclusions</h3>
@@ -560,8 +560,15 @@ sites generated, this run time will increase. For generating extremely
 large datasets, I would recommend moving this to an HPC cluster.
 Regardless of where you run this, I hope I’ve demonstrated how easy it
 can be to generate random genome fragments in a way that should
-integrate (lol, get it?!) seamlessly with your other Bioconductor
-workflows!</p>
+integrate seamlessly with your other Bioconductor workflows!</p>
+
+<h3 id="addendum-08012023">Addendum: 08/01/2023</h3>
+
+<p>A wrapper function, <code>simulate_random_data()</code>, was included in
+the package that automatically calls all of these functions. See the
+<a href="https://github.com/gbedwell/xInt/blob/master/R/simulate_random_data.R">source
+code</a>
+for more information.</p>
 
         
       </section>
@@ -726,7 +733,7 @@ workflows!</p>
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">An R package to evaluation negative binomial convolutions.
+    <p class="archive__item-excerpt" itemprop="description">An R package to evaluate negative binomial convolutions.
 </p>
   </article>
 </div>

@@ -228,3 +228,5 @@ evaluated distribution to random deviates!
 Hopefully this brief example effectively demonstrates the general
 workflow of <code>nbconv</code>. If you have any comments or questions,
 please reach out!
+
+[![](https://cranlogs.r-pkg.org/badges/nbconv)](https://cran.r-project.org/package=nbconv)

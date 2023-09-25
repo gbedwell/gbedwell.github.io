@@ -50,7 +50,7 @@ As a graduate student, I was interested in understanding and exploiting the arch
   - <u>Multiple sequence alignment</u>: hh-suite, Clustal Omega, MUSCLE.
   - <u>Hydrodynamic modeling</u>: hullrad, HYDROPRO.
   - <u>Structure prediction</u>: MODELLER, trRosetta, AlphaFold, OmegaFold, RoseTTAFold, ESMFold. 
-  - <u>Protein design</u>: trDesign, RFdiffusion, EvoDiff.
+  - <u>Protein design</u>: RFdiffusion, ProteinMPNN, EvoDiff.
 
 **Statistics**: discrete/categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric models/tests, null hypothesis significance testing, bootstrapping, maximum likelihood estimation, optimization, hidden Markov models, empirical Bayes, etc.
 
