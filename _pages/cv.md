@@ -46,13 +46,13 @@ As a graduate student, I was interested in understanding and exploiting the arch
 **Bioinformatic tools**: 
   - <u>Bioconductor</u>: GenomicRanges, Biostrings, BSgenome, SummarizedExperiment, Rsamtools, DESeq2, and many more. 
   - <u>Miscellaneous bioinformatics software</u>: FastQC, bedtools, samtools, MACS2, and more. 
-  - <u>Sequence (pseudo)aligners</u>: Rsubread, BWA, STAR, kallisto.
+  - <u>Sequence (pseudo)aligners</u>: Rsubread, BWA-MEM, STAR, kallisto.
   - <u>Multiple sequence alignment</u>: hh-suite, Clustal Omega, MUSCLE.
   - <u>Hydrodynamic modeling</u>: hullrad, HYDROPRO.
-  - <u>Structure prediction</u>: MODELLER, trRosetta, AlphaFold, OmegaFold, RoseTTAFold, ESMFold. 
-  - <u>Protein design</u>: RFdiffusion, ProteinMPNN, EvoDiff.
+  - <u>Structure prediction</u>: MODELLER, AlphaFold, RoseTTAFold, ESMFold. 
+  - <u>Protein design</u>: RFdiffusion.
 
-**Statistics**: discrete/categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric models/tests, null hypothesis significance testing, bootstrapping, maximum likelihood estimation, optimization, hidden Markov models, empirical Bayes, etc.
+**Statistics**: discrete/categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric models/tests, null hypothesis significance testing, bootstrapping, maximum likelihood estimation, optimization, hidden Markov models, etc.
 
 
 ## <i class="fas fa-code"></i> Software
