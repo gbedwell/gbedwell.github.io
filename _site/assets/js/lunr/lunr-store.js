@@ -22,4 +22,10 @@ var store = [{
         "tags": [],
         "url": "/ecf-three/",
         "teaser": null
+      },{
+        "title": "Ship packages",
+        "excerpt":"Introduction Re-installing packages after an R update always seems be a bit of a pain. I can never remember exactly what I did the last time I updated, so I always end up looking through the same Google search results, trying to land on the easiest/most efficient way of making...","categories": [],
+        "tags": [],
+        "url": "/ship_packages/",
+        "teaser": null
       },]

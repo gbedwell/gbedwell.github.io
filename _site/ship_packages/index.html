@@ -9,28 +9,32 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Signal From Noise</title>
-<meta name="description" content="">
+<!-- begin _includes/seo.html --><title>Ship packages - Signal From Noise</title>
+<meta name="description" content="Semi-automating package installation after R updates.">
 
 
   <meta name="author" content="Greg Bedwell">
   
+  <meta property="article:author" content="Greg Bedwell">
+  
 
 
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Signal From Noise">
-<meta property="og:title" content="Signal From Noise">
-<meta property="og:url" content="http://localhost:4000/">
+<meta property="og:title" content="Ship packages">
+<meta property="og:url" content="http://localhost:4000/ship_packages/">
 
 
-  <meta property="og:description" content="">
-
-
-
+  <meta property="og:description" content="Semi-automating package installation after R updates.">
 
 
 
+
+
+
+
+  <meta property="article:published_time" content="2023-08-01T00:00:00-04:00">
 
 
 
@@ -41,7 +45,7 @@
   
 
 
-<link rel="canonical" href="http://localhost:4000/">
+<link rel="canonical" href="http://localhost:4000/ship_packages/">
 
 
 
@@ -92,7 +96,7 @@
 
   </head>
 
-  <body class="layout--home">
+  <body class="layout--single wide">
     <nav class="skip-links">
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
@@ -133,6 +137,8 @@
 
     <div class="initial-content">
       
+
+
 
 
 
@@ -272,33 +278,20 @@
 
 
 
-  <div class="archive">
-    
-      <h1 id="page-title" class="page__title"></h1>
-    
-    
-
-<h3 class="archive__subtitle">Recent posts</h3>
-
-
-
-
-<div class="entries-list">
-  
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Ship packages">
+    <meta itemprop="description" content="Semi-automating package installation after R updates.">
+    <meta itemprop="datePublished" content="2023-08-01T00:00:00-04:00">
     
 
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    <div class="page__inner-wrap">
       
-        <a href="/ship_packages/" rel="permalink">Ship packages
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/ship_packages/" class="u-url" itemprop="url">Ship packages
 </a>
-      
-    </h2>
-    
+          </h1>
+          
 
   <p class="page__meta">
     
@@ -319,17 +312,158 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Semi-automating package installation after R updates.
-</p>
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h3 id="introduction">Introduction</h3>
+
+<p>Re-installing packages after an R update always seems be a bit of a
+pain. I can never remember exactly what I did the last time I updated,
+so I always end up looking through the same Google search results,
+trying to land on the easiest/most efficient way of making library
+migration a little easier.</p>
+
+<p>Eventually, I decided that it was time to standardize this process. I
+wrote an R script,
+<a href="https://github.com/gbedwell/ship_packages">ship_packages.R</a>, that
+contains two functions. These functions will:</p>
+
+<ol>
+  <li>
+    <p>Export information for all of the packages in the current R library
+to a CSV file.</p>
+  </li>
+  <li>
+    <p>Read that CSV file and automatically install packages from CRAN,
+Bioconductor, and/or GitHub.</p>
+  </li>
+</ol>
+
+<p>The script itself is best used when <code>source</code>’d.</p>
+
+<h3 id="address-packages">Address packages</h3>
+
+<p>The first function in the R script is <code>address_packages()</code>.
+This function uses <code>installed_packages()</code> and
+<code>packageDescription()</code> to retrieve package information about
+the packages installed in a given library. The information retrieved
+includes package name, path, version, dependencies, imports, R build
+version, and location (e.g., CRAN, Bioconductor, GitHub, etc.).</p>
+
+<p>Τhe default behavior of <code>address_packages()</code> is to write
+information about the <i>current</i> library (i.e., <i>before
+updating</i>) into a CSV file in the current working directory. This can
+be done by simply running <code>address_packages()</code>. However, the
+behavior is somewhat flexible.</p>
+
+<p>In the event that you forget to run the function before updating, you
+can specify a specific library path with the <code>lib.path</code>
+argument. In this case, you can also avoid writing a CSV file and run
+the function directly in the new R environment by setting <code>write =
+FALSE</code>. If you’re retrieving information about a library that is
+not the current R library, the version of the <i>target</i> library must
+be provided. The function will check that the provided version and the
+provided library path are compatible. This is intended to help ensure
+that the retrieved information is the desired information.</p>
+
+<h3 id="deliver-packages">Deliver packages</h3>
+
+<p><code>deliver_packages()</code> takes as input the output of
+<code>address_packages()</code>. The <code>pkgs</code> argument in
+<code>deliver_packages()</code> can accept either a file path (to the
+CSV file) or a data frame. Package information is the parsed and
+packages from the defined repositories (currently any/all of CRAN,
+Bioconductor, and/or GitHub) are installed. Installation from CRAN does
+not require any exogenous packages. Installation from Bioconductor and
+GitHub, however, require the installation of BiocManger and devtools,
+respectively. These packages are automatically installed (if they are
+not already) if installation from these repositories is requested. If
+there are packages included in the input information that you <i>do
+not</i> want installed, define them by name with the <code>omit</code>
+argument.</p>
+
+<h3 id="example-usage">Example usage</h3>
+
+<ul>
+  <li>In the <i>current</i> R version (before updating), run
+<code>address_packages()</code>. The code below will write out a CSV
+file to the stated directory path. The current R library/version are
+exported by default.</li>
+</ul>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">address_packages</span><span class="p">(</span><span class="w"> </span><span class="n">dir.path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"~/path/to/directory"</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Update R.</p>
+  </li>
+  <li>
+    <p>In the <i>new</i> R version, run <code>deliver_packages()</code>. By
+default, the function will install <i>all</i> packages from CRAN,
+Bioconductor, and GitHub (i.e., no packages are omitted).</p>
+  </li>
+</ul>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">deliver_packages</span><span class="p">(</span><span class="w"> </span><span class="n">pkgs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"~/path/to/directory/packages_R-4.3.1_2023-10-25.csv"</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2023-08-01T00:00:00-04:00">August 1, 2023</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Ship+packages%20http%3A%2F%2Flocalhost%3A4000%2Fship_packages%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fship_packages%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fship_packages%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/ecf-three/" class="pagination--pager" title="The 2023 ECF, the 3 point shot, and under-/over-performance
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
   </article>
-</div>
 
   
-    
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You may also enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -364,12 +498,12 @@
   </article>
 </div>
 
-  
-    
+        
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -404,12 +538,12 @@
   </article>
 </div>
 
-  
-    
+        
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -444,12 +578,12 @@
   </article>
 </div>
 
-  
-    
+        
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -484,14 +618,13 @@
   </article>
 </div>
 
+        
+      </div>
+    </div>
+  
   
 </div>
 
-
-
-
-  </div>
-</div>
     </div>
 
     
