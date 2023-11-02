@@ -30,11 +30,11 @@ wrote an R script,
 [ship_packages.R](https://github.com/gbedwell/ship_packages), that
 contains two functions. These functions will:
 
-1.  Export information for all of the packages in the current R library
-    to a CSV file.
+1.  Export information for all of the packages in a given R library to a
+    CSV file or data frame.
 
-2.  Read that CSV file and automatically install packages from CRAN,
-    Bioconductor, and/or GitHub.
+2.  Automatically install packages from CRAN, Bioconductor, and/or
+    GitHub based on the information output from the first function.
 
 The script itself is best used when <code>source</code>’d.
 
@@ -45,7 +45,7 @@ This function uses <code>installed_packages()</code> and
 <code>packageDescription()</code> to retrieve package information about
 the packages installed in a given library. The information retrieved
 includes package name, path, version, dependencies, imports, R build
-version, and location (e.g., CRAN, Bioconductor, GitHub, etc.).
+version, and repository (e.g., CRAN, Bioconductor, GitHub, etc.).
 
 Τhe default behavior of <code>address_packages()</code> is to write
 information about the <i>current</i> library (i.e., <i>before
@@ -65,19 +65,19 @@ that the retrieved information is the desired information.
 
 ### Deliver packages
 
-<code>deliver_packages()</code> takes as input the output of
-<code>address_packages()</code>. The <code>pkgs</code> argument in
-<code>deliver_packages()</code> can accept either a file path (to the
-CSV file) or a data frame. Package information is the parsed and
-packages from the defined repositories (currently any/all of CRAN,
-Bioconductor, and/or GitHub) are installed. Installation from CRAN does
-not require any exogenous packages. Installation from Bioconductor and
-GitHub, however, require the installation of BiocManger and devtools,
-respectively. These packages are automatically installed (if they are
-not already) if installation from these repositories is requested. If
-there are packages included in the input information that you <i>do
-not</i> want installed, define them by name with the <code>omit</code>
-argument.
+The second function is <code>deliver_packages()</code>. This function
+takes as input the output of <code>address_packages()</code>. The
+<code>pkgs</code> argument in <code>deliver_packages()</code> can accept
+either a file path (to the CSV file) or a data frame. Package
+information is then parsed and packages from the defined repositories
+(currently any/all of CRAN, Bioconductor, and/or GitHub) are installed.
+Installation from CRAN does not require any exogenous packages.
+Installation from Bioconductor and GitHub, however, require the
+installation of BiocManger and devtools, respectively. These packages
+are automatically installed (if they are not already) if installation
+from these repositories is requested. If there are packages included in
+the input information that you <i>do not</i> want installed, define them
+by name with the <code>omit</code> argument.
 
 ### Example usage
 
