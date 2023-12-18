@@ -1,6 +1,6 @@
 ---
 title: Generating random genome fragments in R
-excerpt: Quickly and easily generating simulated random fragments of a chosen genome.
+excerpt: Quickly and easily generating random genomic fragments.
 classes: wide
 output:
   md_document:
@@ -17,50 +17,44 @@ knit: (function(input, ...) {
   })
 ---
 
-In the analysis of genomic integration site data, a theoretical random
-integration site distribution is often used as a reference point for
-feature enrichment. That is, whether or not a given feature (e.g. a
-particular gene) harbors more integration sites than would be expected
-given a uniform random distribution. In principle, the derivation of an
-expected random distribution is not too difficult. Given the genome
-size, $L_G$, the probability of integration into a particular region $i$
-is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$. Therefore,
-the expected number of integration sites in $i$ can be expressed as
-$I \sim Bin(n, p_i)$.
+In the analysis of genomic data, a theoretical random distribution is
+often used as a reference point for feature enrichment or depletion. In
+principle, the derivation of an expected random distribution is not too
+difficult. Given the genome size, $L_G$, the probability of integration
+into a particular region $i$ is simply $p_i = L_i/L_G$, where $L_i$ is
+the length of $i$. Therefore, the expected number of integration sites
+in $i$ can be expressed as $I \sim Bin(n, p_i)$.
 
 In reality, however, the entire genome is rarely accessible by common
 next-generation sequencing technologies. While long-read sequencing is
 growing in both accessibility and throughput, it is still common for
-integration site mapping to be done using e.g. 150 bp paired-end
-sequencing. Because of this, certain regions of the genome, such has
-highly repetitive regions, are effectively “invisible” due to the
-inability to confidently align short reads to them. In addition,
-different genome fragmentation strategies may influence the mappable
-regions of a genome in a given experiment. For example, when using a
-restriction enzyme (or a cocktail of several restriction enzymes) to
-fragment the genome, certain regions deficient in the target recognition
-sequence(s) will have comparatively fewer mapped reads than other
-regions.
+genomic experiments to be done using e.g. 150 bp paired-end sequencing.
+Because of this, certain regions of the genome, such has highly
+repetitive regions, are effectively “invisible” due to the inability to
+confidently align short reads to them. In addition, different genome
+fragmentation strategies may influence the mappable regions of a genome
+in a given experiment. For example, when using a restriction enzyme (or
+a cocktail of restriction enzymes) to fragment the genome, certain
+regions deficient in the target recognition sequence(s) will have
+comparatively fewer mapped reads than other regions.
 
 To accurately calculate $p_i$ for a given set of sequencing conditions,
 one really needs to know the <i>effective</i> genome length,
 $L_{G_{eff}}$. Because mappable regions of the genome can depend on
-things like fragmentation strategy, it is convenient to be able to
-easily estimate the mappable genome using simulated genomic fragments
-that match both the genome fragmentation method used and the sequencing
-approach.
+things like fragmentation strategy, it is convenient to derive the
+mappable genome using simulated genomic fragments that match both the
+genome fragmentation method used and the sequencing approach.
 
 This idea is not new. People doing integration site analyses have been
 using simulated random datasets for many years in one way or another.
-However, many of the scripts in use (at least that I have seen), are
-rather slow, somewhat inflexible, and are provided as stand alone
-software. After spending a substantial amount of time adapting and
-eventually wholly rewriting some existing Python scripts for random
-fragment generation, I decided to develop an R approach that would slot
-seamlessly into the Bioconductor framework. I’ve wrapped those functions
-up in the xInt package that is still under development (as of 12/2022).
-This aspect of the package, however, is functional. I’ll briefly explain
-the workflow below.
+However, many of the scripts in use (at least that I have seen and
+used), are rather slow and somewhat inflexible. After spending a
+substantial amount of time adapting and eventually wholly rewriting some
+existing Python scripts for random fragment generation, I decided to
+develop an R approach that would slot seamlessly into the Bioconductor
+framework. I’ve wrapped those functions up in the xInt package that is
+still under development (as of 12/2022). This aspect of the package,
+however, is functional. I’ll briefly explain the workflow below.
 
 ### Load packages
 
@@ -115,13 +109,15 @@ re.cuts <- digest( string.list = chr.seqs,
 
 ### Random integration site positions
 
-Now you want to generate random integration sites throughout the genome.
-This step is the same regardless of the fragmentation method used.
-First, define the number of sites that you want to generate. For good
-estimation of the mappable genome, this number should be rather high
-(e.g. $10^7-10^8$ sites). If you just want a representative random
-dataset, however, this number can be much smaller (e.g. $10^4-10^5$
-sites). For example purposes, I’ll generate $10^5$ sites.
+Now you want to generate random positions-of-interest throughout the
+genome. These positions could represent integration site locations,
+binding site locations, etc. This step is the same regardless of the
+fragmentation method used. First, define the number of sites that you
+want to generate. For good estimation of the mappable genome, this
+number should be rather high (e.g. $10^8-10^9$ sites). If you just want
+a representative random dataset, however, this number can be much
+smaller (e.g. $10^4-10^5$ sites). For example purposes, I’ll generate
+$10^5$ sites.
 
 ``` r
 rand.sites <- random_sites( n.sites = 1E5,
@@ -135,14 +131,11 @@ obtained in your experiment. For restriction digestion, you want to use
 the random sites and the restriction enzyme cut positions generated with
 the <code>digest()</code> function to generate the fragments. Be sure to
 set <code>random = FALSE</code> in <code>make_fragments()</code>.
-Fragment coordinates are defined from the simulated random integration
-site to the nearest restriction enzyme cut position <i>downstream</i> of
-the integration site. This is analogous to sequencing off of the viral
-3’ LTR. I have not yet incorporated a way to simulate fragments
-generated from the viral 5’ LTR.
+Fragment coordinates are defined from the random position-of-interest to
+the nearest <i>downstream</i> restriction enzyme cut position.
 
 ``` r
-re.fragments <- make_fragments( int.sites = rand.sites,
+re.fragments <- make_fragments( insert.sites = rand.sites,
                                 frag.sites = re.cuts,
                                 random = FALSE,
                                 genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0 )
@@ -157,7 +150,7 @@ end positions are calculated relative to each simulated random
 integration site.
 
 ``` r
-rand.fragments <- make_fragments( int.sites = rand.sites,
+rand.fragments <- make_fragments( insert.sites = rand.sites,
                                   frag.sites = NULL, 
                                   random = TRUE,
                                   mean = 500, 
@@ -179,17 +172,17 @@ frag.seqs <- getSeq( x = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0,
 
     #> DNAStringSet object of length 100000:
     #>          width seq
-    #>      [1]   771 TTAGTATGCCTCGGCCACTTAGAAATAGCAA...ACCCCCAGGCAGAAATTCAGGCATTGGAGCA
-    #>      [2]   546 GACCTTTCATTGGTGATTTAATTTCCTTATT...CTACCTGATTTTAGAATATATTTCAAAGCAT
-    #>      [3]   834 TCTGAACCTGGCCCCACCACCTATGGGCAGA...TTAAAAAGTAAAAGGTGTTCCCATTGTTTAG
-    #>      [4]   313 GTGAGATGTTAGTTCGGAGGGAAAGGAAATC...ACCTCCCAGATTCAGCCCGTGTGCCAGGGCT
-    #>      [5]   530 ACTCCCCAAAGTAATTTATAAAAGAATTCAA...AATACCATTCAGGACATAGGCATGGGCAAAG
+    #>      [1]   512 AAGGAAGAGAGAGCCGGGGGAGGTGGCGGGC...CCGCCAGGCCTGGGCATCTCCTCTCCTGCAG
+    #>      [2]   448 TCATTGGAATTTTTTCTGTTAGTTAAATAAA...TGCACACCAGATGTGGCCCAATTGTTAATAA
+    #>      [3]   495 TGAGAGGCCCTAGTGTGTGTTGTTCCCCTCC...GAGGCCCTGGTGTGTGTTGTTCCCCTCCATG
+    #>      [4]   434 GTGCAAGCCTCAAGCTTTGGCAGCTTCCATG...ACCATGGGAACCCACCACTTGCATGAGTATG
+    #>      [5]   759 CCAGCCTGGGTGACAGAGTGAGACCCTGTCT...GCTCAAACTTCAGCATTCCGAGTAGCTGGGA
     #>      ...   ... ...
-    #>  [99996]   798 TTTCTTTCCTGGTTTAAGTTGAACATATTAT...TTGTTTATTTTGGTATTTCTCCTGCTTGGTA
-    #>  [99997]   580 TAGGTGATGCCTTTCACTGAATGAGAAAAAA...GTCACTTAGTGAGGGAGACTTTCCATAACCA
-    #>  [99998]   493 CCTTGATATAATGCATACAGTTCAAAATGAT...ATTTCATTCCATTCATCAAATGCTCAAAAGG
-    #>  [99999]   555 CATCTCAAAAAAAAAGAAAAAAAGAAAAAAA...GGAAGAGAACAACACACACTGGGGCCTGTCG
-    #> [100000]   502 CAAGGATCCAGTCTGGCCCCATCGATTTCTA...TAACACACATCTGGTCAGTCGTTTTCTGGGC
+    #>  [99996]   332 CAGTGTGACTATATTTGGAGACAAGGCCTTT...ATACCTGGTTTATATCATAGTCCCTTTCCCT
+    #>  [99997]   326 TGTTCTTCTGATCTTCTGGTACCTGCCTTCC...TGGGAAGCAACCCAGTATCTTTGTCTATCTT
+    #>  [99998]   281 GATTTTGGAAATTAAAACTGAAAGAGAGCCT...CATTCATAAAAACTAGAAACACAGTTAAAAG
+    #>  [99999]   760 AGAAACGGGATTTCACCATGTTGCCCAGGGT...AGACTGTGTGTTCTGTTATATTTCTCTGGAG
+    #> [100000]   904 CCACTGACATGACTTTCCAAAAAACACATAA...CAAACCCCCTGAAGCTTCACCGGCGCAGTCA
 
 To mimic the sequencing output, however, the genomic fragments must be
 trimmed. The function <code>trim_seqs()</code> will trim the ends of
@@ -214,34 +207,34 @@ frag.trim <- trim_seqs( fragments = frag.seqs,
 ```
 
     #> [[1]]
-    #> DNAStringSet object of length 98835:
+    #> DNAStringSet object of length 98797:
     #>         width seq                                           names               
-    #>     [1]   150 TTAGTATGCCTCGGCCACTTA...TGTGAGCAAACAGTCAACATG sequence_1
-    #>     [2]   150 GACCTTTCATTGGTGATTTAA...ATAGTAGTATGTTATGATTTT sequence_2
-    #>     [3]   150 TCTGAACCTGGCCCCACCACC...TCTCCCTGTACATATGAGATT sequence_3
-    #>     [4]   150 GTGAGATGTTAGTTCGGAGGG...CCTGAGCATTTCAGACCTGGG sequence_4
-    #>     [5]   150 ACTCCCCAAAGTAATTTATAA...AATTCTAAGCAAAAATAACAA sequence_5
+    #>     [1]   150 AAGGAAGAGAGAGCCGGGGGA...CCTGAGCCCACCCTTCGCGGC sequence_1
+    #>     [2]   150 TCATTGGAATTTTTTCTGTTA...GCAAACAAGGATCTTCTATCC sequence_2
+    #>     [3]   150 TGAGAGGCCCTAGTGTGTGTT...ATGGTCTCCTACCCCCTGTCC sequence_3
+    #>     [4]   150 GTGCAAGCCTCAAGCTTTGGC...AGAAGTTTGCTGCAGGGGTGA sequence_4
+    #>     [5]   150 CCAGCCTGGGTGACAGAGTGA...CTTACCAACTCTGTCTTCAGT sequence_5
     #>     ...   ... ...
-    #> [98831]   150 TTTCTTTCCTGGTTTAAGTTG...CTAAATCTACTTTCAAATAAC sequence_98831
-    #> [98832]   150 TAGGTGATGCCTTTCACTGAA...ACAGTTGCGATAGCTCCCTAA sequence_98832
-    #> [98833]   150 CCTTGATATAATGCATACAGT...CTATGTGTGTTCTCTTTTTGT sequence_98833
-    #> [98834]   150 CATCTCAAAAAAAAAGAAAAA...GCAACCAAAAATATGTCCCAT sequence_98834
-    #> [98835]   150 CAAGGATCCAGTCTGGCCCCA...TTTCCTTTCTGAAGGTGGACT sequence_98835
+    #> [98793]   150 CAGTGTGACTATATTTGGAGA...CCACCTGAGAACACAGCAAGA sequence_98793
+    #> [98794]   150 TGTTCTTCTGATCTTCTGGTA...CTGGATTCACGCTGATATACA sequence_98794
+    #> [98795]   150 GATTTTGGAAATTAAAACTGA...ATGGATAAAACTGGAATTTGA sequence_98795
+    #> [98796]   150 AGAAACGGGATTTCACCATGT...TTAAGATGCACTTTTTGCTTA sequence_98796
+    #> [98797]   150 CCACTGACATGACTTTCCAAA...TTTTCCTCCGACCCCCTAACA sequence_98797
     #> 
     #> [[2]]
-    #> DNAStringSet object of length 98835:
+    #> DNAStringSet object of length 98797:
     #>         width seq                                           names               
-    #>     [1]   150 TGCTCCAATGCCTGAATTTCT...CTGGCTGCAAGTTTCATCACC sequence_1
-    #>     [2]   150 ATGCTTTGAAATATATTCTAA...AAAAAAAGATCTCAAATAAGC sequence_2
-    #>     [3]   150 CTAAACAATGGGAACACCTTT...CAGATTTTCAGTGTAAAGTGA sequence_3
-    #>     [4]   150 AGCCCTGGCACACGGGCTGAA...ACAAGGTAGGAACTGAGTGTG sequence_4
-    #>     [5]   150 CTTTGCCCATGCCTATGTCCT...TCCAGTTTCAATTTCTGCATA sequence_5
+    #>     [1]   150 CTGCAGGAGAGGAGATGCCCA...GGCGGCGCTGCAGGAGAGGAG sequence_1
+    #>     [2]   150 TTATTAACAATTGGGCCACAT...AGAGGATGCCTATCAGACTAA sequence_2
+    #>     [3]   150 CATGGAGGGGAACAACACACA...GACCATCAAGACAAACACGTG sequence_3
+    #>     [4]   150 CATACTCATGCAAGTGGTGGG...CAAGCTGTCGGTGATCTACCA sequence_4
+    #>     [5]   150 TCCCAGCTACTCGGAATGCTG...ATTTACAGACAGAAAAGAAAT sequence_5
     #>     ...   ... ...
-    #> [98831]   150 TACCAAGCAGGAGAAATACCA...TTAGAAGAACAAGGGTAAGAA sequence_98831
-    #> [98832]   150 TGGTTATGGAAAGTCTCCCTC...AGAATGTACTTGATGTGTTCT sequence_98832
-    #> [98833]   150 CCTTTTGAGCATTTGATGAAT...AAAAGTTGTGGAACTCTTTAA sequence_98833
-    #> [98834]   150 CGACAGGCCCCAGTGTGTGTT...TTCCAGCTTCACGTGATGTGT sequence_98834
-    #> [98835]   150 GCCCAGAAAACGACTGACCAG...GAACAGAAGAAAAAGGGGTGC sequence_98835
+    #> [98793]   150 AGGGAAAGGGACTATGATATA...CGCTAATTCAGTTCTTGATGA sequence_98793
+    #> [98794]   150 AAGATAGACAAAGATACTGGG...CTTCTCAAGTATAATAAACAG sequence_98794
+    #> [98795]   150 CTTTTAACTGTGTTTCTAGTT...TTTCAAATTCCAGTTTTATCC sequence_98795
+    #> [98796]   150 CTCCAGAGAAATATAACAGAA...TCAATGAAGATTGACTTCCAG sequence_98796
+    #> [98797]   150 TGACTGCGCCGGTGAAGCTTC...TAATTATGCCTCATAGGGATA sequence_98797
 
 ### Generating fasta files
 
@@ -271,8 +264,31 @@ integrate seamlessly with your other Bioconductor workflows!
 
 ### Addendum: 08/01/2023
 
-A wrapper function, <code>simulate_random_data()</code>, was included in
-the package that automatically calls all of these functions. See the
-[source
-code](https://github.com/gbedwell/xInt/blob/master/R/simulate_random_data.R)
-for more information.
+A wrapper function, <code>simulate_random_data()</code>, has been
+included in the package that automatically calls all of these functions.
+There are some convenient additions to this function that are not part
+of the other functions, including the ability to simultaneously generate
+multiple random datasets. Concatenating multiple smaller random datasets
+together is a convenient and reasonably quick way to generate extremely
+large random datasets. The general syntax of this function is below. The
+source code with argument descriptions can be found on
+[GitHub](https://github.com/gbedwell/xInt/blob/master/R/simulate_random_data.R).
+
+``` r
+simulate_random_data( genome.obj,
+                      re.sites = NULL,
+                      cut.after = 1,
+                      n.sites,
+                      mean,
+                      sd,
+                      min.width = 14,
+                      max.distance = 1000,
+                      max.bp = 150,
+                      iterations = 1,
+                      n.cores = 1,
+                      write.ranges = FALSE,
+                      prefix = NULL,
+                      directory.path = NULL,
+                      compress = TRUE,
+                      collapse = TRUE )
+```

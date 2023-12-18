@@ -1,6 +1,6 @@
 ---
 title: Generating random genome fragments in R
-excerpt: Quickly and easily generating simulated random fragments of a chosen genome.
+excerpt: Quickly and easily generating random genomic fragments.
 classes: wide
 output:
   md_document:
@@ -38,13 +38,13 @@ knitr::opts_chunk$set(
   )
 ```
 
-In the analysis of genomic integration site data, a theoretical random integration site distribution is often used as a reference point for feature enrichment. That is, whether or not a given feature (e.g. a particular gene) harbors more integration sites than would be expected given a uniform random distribution. In principle, the derivation of an expected random distribution is not too difficult. Given the genome size, $L_G$, the probability of integration into a particular region $i$ is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$. Therefore, the expected number of integration sites in $i$ can be expressed as $I \sim Bin(n, p_i)$.
+In the analysis of genomic data, a theoretical random distribution is often used as a reference point for feature enrichment or depletion. In principle, the derivation of an expected random distribution is not too difficult. Given the genome size, $L_G$, the probability of integration into a particular region $i$ is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$. Therefore, the expected number of integration sites in $i$ can be expressed as $I \sim Bin(n, p_i)$.
 
-In reality, however, the entire genome is rarely accessible by common next-generation sequencing technologies. While long-read sequencing is growing in both accessibility and throughput, it is still common for integration site mapping to be done using e.g. 150 bp paired-end sequencing. Because of this, certain regions of the genome, such has highly repetitive regions, are effectively "invisible" due to the inability to confidently align short reads to them. In addition, different genome fragmentation strategies may influence the mappable regions of a genome in a given experiment. For example, when using a restriction enzyme (or a cocktail of several restriction enzymes) to fragment the genome, certain regions deficient in the target recognition sequence(s) will have comparatively fewer mapped reads than other regions.
+In reality, however, the entire genome is rarely accessible by common next-generation sequencing technologies. While long-read sequencing is growing in both accessibility and throughput, it is still common for genomic experiments to be done using e.g. 150 bp paired-end sequencing. Because of this, certain regions of the genome, such has highly repetitive regions, are effectively "invisible" due to the inability to confidently align short reads to them. In addition, different genome fragmentation strategies may influence the mappable regions of a genome in a given experiment. For example, when using a restriction enzyme (or a cocktail of restriction enzymes) to fragment the genome, certain regions deficient in the target recognition sequence(s) will have comparatively fewer mapped reads than other regions.
 
-To accurately calculate $p_i$ for a given set of sequencing conditions, one really needs to know the <i>effective</i> genome length, $L_{G_{eff}}$. Because mappable regions of the genome can depend on things like fragmentation strategy, it is convenient to be able to easily estimate the mappable genome using simulated genomic fragments that match both the genome fragmentation method used and the sequencing approach.
+To accurately calculate $p_i$ for a given set of sequencing conditions, one really needs to know the <i>effective</i> genome length, $L_{G_{eff}}$. Because mappable regions of the genome can depend on things like fragmentation strategy, it is convenient to derive the mappable genome using simulated genomic fragments that match both the genome fragmentation method used and the sequencing approach.
 
-This idea is not new. People doing integration site analyses have been using simulated random datasets for many years in one way or another. However, many of the scripts in use (at least that I have seen), are rather slow, somewhat inflexible, and are provided as stand alone software. After spending a substantial amount of time adapting and eventually wholly rewriting some existing Python scripts for random fragment generation, I decided to develop an R approach that would slot seamlessly into the Bioconductor framework. I've wrapped those functions up in the xInt package that is still under development (as of 12/2022). This aspect of the package, however, is functional. I'll briefly explain the workflow below.
+This idea is not new. People doing integration site analyses have been using simulated random datasets for many years in one way or another. However, many of the scripts in use (at least that I have seen and used), are rather slow and somewhat inflexible. After spending a substantial amount of time adapting and eventually wholly rewriting some existing Python scripts for random fragment generation, I decided to develop an R approach that would slot seamlessly into the Bioconductor framework. I've wrapped those functions up in the xInt package that is still under development (as of 12/2022). This aspect of the package, however, is functional. I'll briefly explain the workflow below.
 
 ### Load packages
 
@@ -83,7 +83,7 @@ re.cuts <- digest( string.list = chr.seqs,
 
 ### Random integration site positions
 
-Now you want to generate random integration sites throughout the genome. This step is the same regardless of the fragmentation method used. First, define the number of sites that you want to generate. For good estimation of the mappable genome, this number should be rather high (e.g. $10^7-10^8$ sites). If you just want a representative random dataset, however, this number can be much smaller (e.g. $10^4-10^5$ sites). For example purposes, I'll generate $10^5$ sites.
+Now you want to generate random positions-of-interest throughout the genome. These positions could represent integration site locations, binding site locations, etc. This step is the same regardless of the fragmentation method used. First, define the number of sites that you want to generate. For good estimation of the mappable genome, this number should be rather high (e.g. $10^8-10^9$ sites). If you just want a representative random dataset, however, this number can be much smaller (e.g. $10^4-10^5$ sites). For example purposes, I'll generate $10^5$ sites.
 
 ```{r}
 rand.sites <- random_sites( n.sites = 1E5,
@@ -92,10 +92,10 @@ rand.sites <- random_sites( n.sites = 1E5,
 
 ### Generating genomic fragments
 
-You now want to make genomic fragments that mimic the genomic fragments obtained in your experiment. For restriction digestion, you want to use the random sites and the restriction enzyme cut positions generated with the <code>digest()</code> function to generate the fragments. Be sure to set <code>random = FALSE</code> in <code>make_fragments()</code>. Fragment coordinates are defined from the simulated random integration site to the nearest restriction enzyme cut position <i>downstream</i> of the integration site. This is analogous to sequencing off of the viral 3' LTR. I have not yet incorporated a way to simulate fragments generated from the viral 5' LTR.
+You now want to make genomic fragments that mimic the genomic fragments obtained in your experiment. For restriction digestion, you want to use the random sites and the restriction enzyme cut positions generated with the <code>digest()</code> function to generate the fragments. Be sure to set <code>random = FALSE</code> in <code>make_fragments()</code>. Fragment coordinates are defined from the random position-of-interest to the nearest <i>downstream</i> restriction enzyme cut position.
 
 ```{r}
-re.fragments <- make_fragments( int.sites = rand.sites,
+re.fragments <- make_fragments( insert.sites = rand.sites,
                                 frag.sites = re.cuts,
                                 random = FALSE,
                                 genome.obj = BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0 )
@@ -104,7 +104,7 @@ re.fragments <- make_fragments( int.sites = rand.sites,
 For random fragmentation, you want to set <code>frag.sites = NULL</code> and <code>random = TRUE</code> in <code>make_fragments()</code>. You also want to set the mean ± sd fragment lengths (default values of 500 bp and 250 bp, respectively). Fragments lengths are randomly sampled from a log-normal distribution with the defined parameters and fragment end positions are calculated relative to each simulated random integration site.
 
 ```{r}
-rand.fragments <- make_fragments( int.sites = rand.sites,
+rand.fragments <- make_fragments( insert.sites = rand.sites,
                                   frag.sites = NULL, 
                                   random = TRUE,
                                   mean = 500, 
@@ -159,4 +159,23 @@ On my 2 GHz quad-core laptop with 16 GB RAM, this entire process ran in just ove
 
 ### Addendum: 08/01/2023
 
-A wrapper function, <code>simulate_random_data()</code>, was included in the package that automatically calls all of these functions. See the [source code](https://github.com/gbedwell/xInt/blob/master/R/simulate_random_data.R) for more information.
+A wrapper function, <code>simulate_random_data()</code>, has been included in the package that automatically calls all of these functions. There are some convenient additions to this function that are not part of the other functions, including the ability to simultaneously generate multiple random datasets. Concatenating multiple smaller random datasets together is a convenient and reasonably quick way to generate extremely large random datasets. The general syntax of this function is below. The source code with argument descriptions can be found on [GitHub](https://github.com/gbedwell/xInt/blob/master/R/simulate_random_data.R). 
+
+```{r, eval=FALSE}
+simulate_random_data( genome.obj,
+                      re.sites = NULL,
+                      cut.after = 1,
+                      n.sites,
+                      mean,
+                      sd,
+                      min.width = 14,
+                      max.distance = 1000,
+                      max.bp = 150,
+                      iterations = 1,
+                      n.cores = 1,
+                      write.ranges = FALSE,
+                      prefix = NULL,
+                      directory.path = NULL,
+                      compress = TRUE,
+                      collapse = TRUE )
+```
