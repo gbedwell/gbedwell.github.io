@@ -1,7 +1,7 @@
 ---
 title: Curriculum vitae
 layout: single
-modified: 2022-11-21
+modified: 2024-02-29
 excerpt: ""
 share: false
 paragraph-indent: false;
@@ -19,7 +19,7 @@ permalink: /cv.html
 
 **Instructor in Medicine** - Dana-Farber Cancer Institute/Harvard Medical School.
 
-My current work lies at the intersection of computational and systems biology. I am developing ways to better understand retroviral integration targeting biases, how those biases relate to provirus expression and disease progression, and how host factors influence said targeting biases. I pursue these questions using both wet and dry lab approaches. I am actively developing an improved computational and statistical framework for determining integration targeting biases within datasets and assessing differential targeting between them. I am additionally involved in designing, performing, and interpreting biophysical experiments related to understanding the role of liquid-liquid phase separation in HIV-1 infection and integration targeting. Beyond my particular research projects, I actively mentor undergraduate students, research technicians, and other trainees in both wet and dry lab research.
+My current work lies at the intersection of computational and systems biology. I am working to better define the genomic landscape of retroviral integration and the factors that influence that landscape. I have performed bioinformatic analyses for numerous collaborative projects across Harvard Medical School, the National Institutes of Health, and other scientific insitutions across the world. I am additionally working to develop tools and strategies that will enable scientists to more robustly characterize patterns of integration in their system-of-interest. These efforts include software/pipeline development and improvement, leveraging publically available datasets to better define genomic regions pertinent to integration, and developing methods to improve the resolution of integration site analysis. Beyond my research efforts, I actively mentor and advise undergraduate students, graduate students, research technicians, and others in the lab in both wet and dry lab research.
 
 **Consulting** - Freelance.
 
@@ -30,30 +30,29 @@ I have consulted companies on processing and wrangling large data files into sma
 
 **Post-doctoral fellow** - Dana-Farber Cancer Institute/Harvard Medical School
 
-As a post-doctoral fellow, I devised a recombinant protein expression system and purification scheme for the human protein CPSF6, a protein with low sequence complexity and strong compositional biases. This expression system has since been successfully applied to several similar protein targets. I additionally began my foray into conceptualizing and developing computational methods to better define HIV-1 integration targeting preferences. A strategy for categorizing genes into recurrently targeted and recurrently avoided populations was published in Nucleic Acids Research in 2021.
+I began my post-doctoral fellowship leveraging my knowledge of protein chemsitry and biophysics to devise a recombinant protein expression system for difficult human protein targets. These proteins often exhibit low sequence complexity, strong compositional biases, and a large degree of disorder. The expression system I devised has been successfully applied to several protein targets, enabling their biochemical and biophysical characterization for the first time. Over time, I began to pursue my long-standing interests in computational biology and bioinformatics with increasing seriousness. In pursuing these interests, I was able to devise a new strategy for better defining the preferred gene targets of HIV-1 integration. This project formed the conceptual basis for the work that I continue to develop today.
 
 **Graduate student** - University of Alabama at Birmingham.
 
-As a graduate student, I was interested in understanding and exploiting the architecture of bacteriophage P22. I devised a system to selectively mineralize photocatalytic titanium dioxide within the pseudo-icosahedral shell of procapsid-like particles. Confining highly insoluble titanium dioxide within the capsid shell works to effectively "solubilize" the material, making it potentially more tractable for use in aqueous environments. In addition, I sought to understand the mechanism of so-called "headful" packaging. I was able to show that the P22 portal protein acts as a biological pressure sensor that responds to the increasing internal pressure introduced by increasing incorporation of dsDNA.
+As a graduate student, I was interested in understanding and exploiting the architecture of the bacteriophage P22. I devised a system to selectively mineralize photocatalytic titanium dioxide within the pseudo-icosahedral shell of P22 procapsid-like particles. Confining highly insoluble titanium dioxide within the capsid shell works to effectively solubilize the material, making it more tractable for use in aqueous environments. In addition, I sought to understand the mechanism of so-called "headful" packaging, a packaging strategy utilized by many dsDNA viruses. I was able to show that the P22 portal acts as a biological pressure sensor that responds to the increasing internal pressure within the viral procapsid during genome packaging.
 
 
 ## <i class="fas fa-chart-bar"></i> Programming and statistics
 
-**Languages**: Proficiency in R. Competency with Python, AWK, sed, etc. Exposure to Julia.
+**Languages**: Proficiency in R. Competency with Python, AWK, etc. Exposure to Julia.
 
-**Computing tools and technologies**: bash scripting, git and GitHub, tidy data and R tidyverse, knitr/Rmarkdown/quarto/xaringan, LaTeX, HPC clusters (SLURM and Grid Engine), SageMath, jq.
+**Computing tools and technologies**: bash scripting, HPC clusters (SLURM and Grid Engine), git and GitHub, tidy data, knitr/Rmarkdown/quarto/xaringan, LaTeX, SageMath.
 
 **Bioinformatic tools**: 
-  - <u>Bioconductor</u>: GenomicRanges, Biostrings, BSgenome, SummarizedExperiment, Rsamtools, DESeq2, and many more. 
+  - <u>Bioconductor</u>: GenomicRanges, Biostrings, rtracklayer, BSgenome, SummarizedExperiment, and many more. 
   - <u>Miscellaneous bioinformatics software</u>: FastQC, bedtools, samtools, MACS2, and more. 
-  - <u>Sequence (pseudo)aligners</u>: Rsubread, BWA-MEM, STAR, kallisto.
+  - <u>Sequence aligners</u>: BWA-MEM, Bowtie2, Rsubread, STAR.
   - <u>Multiple sequence alignment</u>: hh-suite, Clustal Omega, MUSCLE.
   - <u>Hydrodynamic modeling</u>: hullrad, HYDROPRO.
-  - <u>Structure prediction</u>: MODELLER, AlphaFold, RoseTTAFold, ESMFold. 
-  - <u>Protein design</u>: RFdiffusion.
+  - <u>Structure prediction</u>: AlphaFold, ESMFold.
+  - <u>Molecular dynamics</u>: CALVADOS.
 
-**Statistics**: discrete/categorical data analysis, linear and nonlinear least squares, generalized linear models, parametric and nonparametric models/tests, null hypothesis significance testing, bootstrapping, maximum likelihood estimation, optimization, hidden Markov models, etc.
-
+**Statistics**: nonlinear least squares, generalized linear models, bootstrapping, hidden Markov models, changepoint detection, hull hypothesis significance testing, etc.
 
 ## <i class="fas fa-code"></i> Software
 
