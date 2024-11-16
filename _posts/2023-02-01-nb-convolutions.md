@@ -150,7 +150,7 @@ to skewness and kurotosis than the method of moments approximation, but
 I won’t explore this point in any more detail here.
 
 ``` r
-nbconv_params( mus = mus, phis = phis )
+nbconv_params(mus = mus, phis = phis)
 #>         mean       sigma2     skewness  ex.kurtosis       K.mean 
 #> 259.98524927 722.99508196   0.17586635   0.04909827  26.26988006
 ```
@@ -164,17 +164,17 @@ empirical probability masses from random deviates sampled using
 <code>rnbconv()</code> to serve as reference data.
 
 ``` r
-samps <- rnbconv( mus = mus, phis = phis, n.samp = 1e6, n.cores = 1 )
+samps <- rnbconv(mus = mus, phis = phis, n.samp = 1e6, n.cores = 1)
 
 empirical <- stats::density(x = samps, from = 0, to = 500, n = 500 + 1)$y
 
-exact <- dnbconv( mus = mus, phis = phis, counts = 0:500, 
-                  method = "exact", n.terms = 1000, n.cores = 1 )
+exact <- dnbconv(mus = mus, phis = phis, counts = 0:500, 
+                 method = "exact", n.terms = 1000, n.cores = 1)
 
-moments <- dnbconv( mus = mus, phis = phis, counts = 0:500, method = "moments" )
+moments <- dnbconv(mus = mus, phis = phis, counts = 0:500, method = "moments")
 
-saddlepoint <- dnbconv( mus = mus, phis = phis, counts = 0:500, 
-                        method = "saddlepoint", n.cores = 1, normalize = TRUE )
+saddlepoint <- dnbconv(mus = mus, phis = phis, counts = 0:500, 
+                       method = "saddlepoint", n.cores = 1, normalize = TRUE)
 ```
 
 For easier visualization, I’ll combine the four calculated probability
@@ -183,37 +183,37 @@ mass vectors into a single long data frame.
 ``` r
 df <- data.frame( empirical, exact, moments, saddlepoint )
 
-df$count <- c( 0:500 )
+df$count <- c(0:500)
 
 df <- df |>
-  tidyr::pivot_longer( cols = !count, names_to = "method", values_to = "probability") |>
-  dplyr::arrange( method, count )
+  tidyr::pivot_longer(cols = !count, names_to = "method", values_to = "probability") |>
+  dplyr::arrange(method, count)
 
-df$method <- factor( df$method, levels = c("empirical", "exact", "moments", "saddlepoint") )
+df$method <- factor(df$method, levels = c("empirical", "exact", "moments", "saddlepoint"))
 ```
 
 ``` r
 library( ggplot2 )
 
 ggplot(data = df,
-       aes(x = count, y = probability , fill = method ) ) +
+       aes(x = count, y = probability , fill = method )) +
   geom_area(data = df[df$method == "empirical",],
-            aes(x = count, y = probability ),
+            aes(x = count, y = probability),
             color = "gray50", fill="gray50",
-            inherit.aes = FALSE, alpha = 0.5 ) +  
+            inherit.aes = FALSE, alpha = 0.5) +  
   geom_point(shape = 21, size = 2, color = "#00000000") +
   scale_fill_manual(values = c("gray50","darkblue","darkred","darkgreen"),
-                     labels = c("Empirical", "Exact", "Moments", "Saddlepoint" ),
+                     labels = c("Empirical", "Exact", "Moments", "Saddlepoint"),
                      guide = guide_legend(title.position = "top",
                                           title.hjust = 0.5,
-                                          override.aes = list( size = 2.5 ) ) ) +
+                                          override.aes = list(size = 2.5))) +
   theme_bw() +
   theme(axis.title = element_text(size = 16),
         axis.text = element_text(size = 14),
         legend.position = "top",
         legend.title = element_blank(),
         legend.key.size = unit(3, "point"),
-        panel.spacing = unit(1, "lines") ) +
+        panel.spacing = unit(1, "lines")) +
   labs(x = "Counts", y = "Probability")
 ```
 

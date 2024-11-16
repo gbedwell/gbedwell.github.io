@@ -75,10 +75,10 @@ Next, I will use the <code>calibrate_colorimetric()</code> function in
 <code>bca()</code>, to do all of the downstream data analysis for me.
 
 ``` r
-bca <- calibrate_colorimetric( conc = conc,
-                               abs = c( rep1, rep2, rep3 ),
-                               with.blank = TRUE,
-                               nrep = 3 )
+bca <- calibrate_colorimetric(conc = conc,
+                              abs = c( rep1, rep2, rep3 ),
+                              with.blank = TRUE,
+                              nrep = 3)
 ```
 
 With the calibrated function defined, we can do one of two things. The
@@ -93,21 +93,21 @@ widely across assays, I intentionally left units off of the example
 plot.
 
 ``` r
-library( ggplot2 )
+library(ggplot2)
 
-bca.df <- data.frame( conc = conc,
-                      meas = c( rep1, rep2, rep3 ) )
+bca.df <- data.frame(conc = conc,
+                     meas = c(rep1, rep2, rep3))
 
-bca.fit.df <- data.frame( conc = conc, 
-                          fit = bca( a = conc, return.conc = FALSE ) )
+bca.fit.df <- data.frame(conc = conc, 
+                         fit = bca(a = conc, return.conc = FALSE))
 
-ggplot( bca.df, aes( x = conc, y = meas ) ) +
+ggplot(bca.df, aes(x = conc, y = meas)) +
   geom_point(shape = 21, color = "black", fill = "gray75", size = 2.5) +
-  geom_line( data = bca.fit.df, aes( x = conc, y = fit ), color = "red", linewidth = 0.75 ) +
+  geom_line(data = bca.fit.df, aes(x = conc, y = fit), color = "red", linewidth = 0.75) +
   theme_bw() + 
-  theme( axis.text = element_text( size = 14 ),
-         axis.title = element_text( size = 16 ) ) +
-  labs( x = "Concentration", y = "Signal" )
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text( size = 16)) +
+  labs(x = "Concentration", y = "Signal")
 ```
 
 <img src="../figures/2023-06-08/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" />
@@ -123,10 +123,10 @@ factor(s), respectively. The returned units of concentration are the
 same as the units of concentration used to make the standard curve.
 
 ``` r
-set.seed( 1234 )
+set.seed(1234)
 unk <- runif(5, min = 0.3, max = 2)
 
-bca( a = unk, return.conc = TRUE, df = 2 )
+bca(a = unk, return.conc = TRUE, df = 2)
 #> [1] 0.5453686 2.2248925 2.1818814 2.2284591 3.0128681
 ```
 
@@ -153,15 +153,15 @@ reactions. The first reaction has 2 input fragments and the second has
 3.
 
 ``` r
-gibson( insert.conc = c( 35, 78, 48, 37, 40 ), 
-        insert.len = c( 1894, 2403, 887, 1764, 943 ),
-        vec.conc = c( 55, 65 ), 
-        vec.len = c( 4710, 5934 ), 
-        n.frag = c( 2, 3 ), 
-        vec.mass = rep( 50, 2 ),
-        molar.ratio = rep( 3, 2 ), 
-        final.vol = rep( 5, 2 ), 
-        ids = c( "Reaction 1", "Reaction 2" ) )
+gibson( insert.conc = c(35, 78, 48, 37, 40), 
+        insert.len = c(1894, 2403, 887, 1764, 943),
+        vec.conc = c(55, 65), 
+        vec.len = c(4710, 5934), 
+        n.frag = c(2, 3), 
+        vec.mass = rep(50, 2),
+        molar.ratio = rep(3, 2), 
+        final.vol = rep(5, 2), 
+        ids = c("Reaction 1", "Reaction 2"))
 #> $`Reaction 1`
 #>            Volume
 #> Fragment 1   1.72
@@ -209,9 +209,9 @@ rep3 <- c( 13.38, 16.09, 17.58, 18.48, 20.33 )
 ```
 
 ``` r
-sec.rh <- calibrate_sec( vols = c( rep1, rep2, rep3 ),
-                         masses = masses,
-                         parameter = "rh" )
+sec.rh <- calibrate_sec(vols = c(rep1, rep2, rep3),
+                        masses = masses,
+                        parameter = "rh")
 ```
 
 Running <code>calibrate_sec()</code> returns a function for downstream
@@ -237,19 +237,19 @@ values are returned in the same units. Hydrodynamic radius values are
 returned in nm.
 
 ``` r
-sec.df <- data.frame( vols = c( rep1, rep2, rep3 ),
-                      rads = mass_to_radius( masses = masses ) )
+sec.df <- data.frame(vols = c(rep1, rep2, rep3),
+                     rads = mass_to_radius(masses = masses))
 
-sec.fit <- data.frame( vols = seq( 13, 21, 0.01 ),
-                       fit = sec.rh( seq( 13, 21, 0.01 ) ) )
+sec.fit <- data.frame(vols = seq(13, 21, 0.01),
+                      fit = sec.rh(seq( 13, 21, 0.01)))
 
-ggplot( sec.df, aes( x = vols, y = log( rads ) ) ) +
+ggplot(sec.df, aes(x = vols, y = log(rads))) +
   geom_point(shape = 21, color = "black", fill = "gray75", size = 2.5) +
-  geom_line( data = sec.fit, aes( x = vols, y = log( fit ) ), color = "red", linewidth = 0.75 ) +
+  geom_line(data = sec.fit, aes(x = vols, y = log(fit)), color = "red", linewidth = 0.75) +
   theme_bw() + 
-  theme( axis.text = element_text( size = 14 ),
-         axis.title = element_text( size = 16 ) ) +
-  labs( x = "Elution Volume", y = "log(Rh)" )
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 16)) +
+  labs(x = "Elution Volume", y = "log(Rh)")
 ```
 
 <img src="../figures/2023-06-08/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" />
@@ -261,7 +261,7 @@ volumes, the function <code>normalize_ev()</code> will normalize the
 analyte elution volumes based on the column’s void and column volumes.
 
 ``` r
-sec.rh( 16.495 )
+sec.rh(16.495)
 #>      a 
 #> 3.9831
 ```
@@ -286,9 +286,9 @@ returns concentrations in same concentration units used in the
 extinction coefficient. In the example, that is molar units.
 
 ``` r
-uv_vis( abs = 0.491, 
-        ext = 35000,
-        df = 2,
-        type = "protein" )
+uv_vis(abs = 0.491, 
+       ext = 35000,
+       df = 2,
+       type = "protein")
 #> [1] 2.805714e-05
 ```
