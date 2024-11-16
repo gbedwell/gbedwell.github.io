@@ -45,10 +45,10 @@ As a graduate student, I was interested in understanding and exploiting the arch
 
 **Software**: 
   - <u>Bioconductor</u>: GenomicRanges, Biostrings, rtracklayer, BSgenome, SummarizedExperiment, GenomicAlignments, bamsignals, edgeR, limma, and many more. 
-  - <u>Bioinformatics software</u>: FastQC, bedtools, samtools, Biopython, pysam, and more. 
+  - <u>Misc. bioinformatics software</u>: FastQC, bedtools, samtools, Biopython, pysam, and more. 
   - <u>Data science software</u>: Tidyverse, DuckDB, data.table, caret, and more.
   - <u>Sequence aligners</u>: BWA-MEM, bowtie, bowtie2, Rsubread, STAR.
-  - <u>Sequence alignment and searching</u>: hh-suite, MMseqs2, PSI-BLAST, Clustal Omega, MUSCLE.
+  - <u>Sequence searching</u>: hh-suite, MMseqs2, PSI-BLAST.
   - <u>Hydrodynamic modeling</u>: hullrad, HYDROPRO.
   - <u>Structure prediction</u>: AlphaFold, ColabFold, ESMFold.
 
