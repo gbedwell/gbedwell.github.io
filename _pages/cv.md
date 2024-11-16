@@ -48,7 +48,7 @@ As a graduate student, I was interested in understanding and exploiting the arch
   - <u>Bioinformatics software</u>: FastQC, bedtools, samtools, Biopython, pysam, gffread, and more. 
   - <u>Data science software</u>: Tidyverse, DuckDB, data.table, caret, and more.
   - <u>Sequence aligners</u>: BWA-MEM, bowtie, bowtie2, Rsubread, STAR.
-  - <u>Sequence profiles</u>: hh-suite, MMseqs2, PSI-BLAST.
+  - <u>MSA/search software</u>: hh-suite, MMseqs2, PSI-BLAST, Clustal Omega, MUSCLE.
   - <u>Hydrodynamic modeling</u>: hullrad, HYDROPRO.
   - <u>Structure prediction</u>: AlphaFold, ColabFold, ESMFold.
 
