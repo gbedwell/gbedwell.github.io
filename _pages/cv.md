@@ -54,13 +54,13 @@ As a graduate student, I was interested in understanding and exploiting the arch
 
 ## <i class="fas fa-code"></i> Software
 
--[intmap](https://github.com/gbedwell/intmap):
+- [intmap](https://github.com/gbedwell/intmap): An end-to-end pipeline for mapping genomic integration site positions from NGS data.
 
--[xInt](https://github.com/gbedwell/xInt):
+- [xInt](https://github.com/gbedwell/xInt): An R/Bioconductor package to analyze integration site data post-mapping. Incoporates a wide variety of functionalities intended to provide users with a comprehensive toolkit for rigorously assessing integration site targeting trends/biases.
 
 - [calibrateR](https://github.com/gbedwell/calibrateR): An R package written to streamline common laboratory calculations. A brief description of the package and general usage can be found [here](https://gbedwell.github.io/calibrateR/).
 
-- [nbconv](https://github.com/gbedwell/nbconv): An R package that implements multiple methods for evaluating arbitrary negative binomial convolutions. See [this post](https://gbedwell.github.io/nb-convolutions/) for more information. nbconv can be found on [CRAN](https://cran.r-project.org/web/packages/nbconv/index.html).
+- [nbconv](https://github.com/gbedwell/nbconv): An R package that implements multiple methods for evaluating arbitrary negative binomial convolutions. See [this post](https://gbedwell.github.io/nb-convolutions/) for more information. nbconv can be found on [CRAN](https://cran.r-project.org/web/packages/nbconv/index.html) and [GitHub](https://github.com/gbedwell/nbconv).
 
 
 ## <i class="fas fa-align-left"></i> Selected Publications
