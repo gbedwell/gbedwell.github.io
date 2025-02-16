@@ -164,7 +164,7 @@
     </h3>
     
       <div class="author__bio p-note" itemprop="description">
-        <p>computational biologist <code class="language-plaintext highlighter-rouge">|</code> protein chemist</p>
+        <p>computational biologist <code class="language-plaintext highlighter-rouge">|</code> data enthusiast</p>
 
       </div>
     
@@ -332,12 +332,12 @@ contains two functions. These functions will:</p>
 
 <ol>
   <li>
-    <p>Export information for all of the packages in the current R library
-to a CSV file.</p>
+    <p>Export information for all of the packages in a given R library to a
+CSV file or data frame.</p>
   </li>
   <li>
-    <p>Read that CSV file and automatically install packages from CRAN,
-Bioconductor, and/or GitHub.</p>
+    <p>Automatically install packages from CRAN, Bioconductor, and/or
+GitHub based on the information output from the first function.</p>
   </li>
 </ol>
 
@@ -350,7 +350,7 @@ This function uses <code>installed_packages()</code> and
 <code>packageDescription()</code> to retrieve package information about
 the packages installed in a given library. The information retrieved
 includes package name, path, version, dependencies, imports, R build
-version, and location (e.g., CRAN, Bioconductor, GitHub, etc.).</p>
+version, and repository (e.g., CRAN, Bioconductor, GitHub, etc.).</p>
 
 <p>Τhe default behavior of <code>address_packages()</code> is to write
 information about the <i>current</i> library (i.e., <i>before
@@ -370,19 +370,19 @@ that the retrieved information is the desired information.</p>
 
 <h3 id="deliver-packages">Deliver packages</h3>
 
-<p><code>deliver_packages()</code> takes as input the output of
-<code>address_packages()</code>. The <code>pkgs</code> argument in
-<code>deliver_packages()</code> can accept either a file path (to the
-CSV file) or a data frame. Package information is the parsed and
-packages from the defined repositories (currently any/all of CRAN,
-Bioconductor, and/or GitHub) are installed. Installation from CRAN does
-not require any exogenous packages. Installation from Bioconductor and
-GitHub, however, require the installation of BiocManger and devtools,
-respectively. These packages are automatically installed (if they are
-not already) if installation from these repositories is requested. If
-there are packages included in the input information that you <i>do
-not</i> want installed, define them by name with the <code>omit</code>
-argument.</p>
+<p>The second function is <code>deliver_packages()</code>. This function
+takes as input the output of <code>address_packages()</code>. The
+<code>pkgs</code> argument in <code>deliver_packages()</code> can accept
+either a file path (to the CSV file) or a data frame. Package
+information is then parsed and packages from the defined repositories
+(currently any/all of CRAN, Bioconductor, and/or GitHub) are installed.
+Installation from CRAN does not require any exogenous packages.
+Installation from Bioconductor and GitHub, however, require the
+installation of BiocManger and devtools, respectively. These packages
+are automatically installed (if they are not already) if installation
+from these repositories is requested. If there are packages included in
+the input information that you <i>do not</i> want installed, define them
+by name with the <code>omit</code> argument.</p>
 
 <h3 id="example-usage">Example usage</h3>
 
@@ -579,46 +579,6 @@ Bioconductor, and GitHub (i.e., no packages are omitted).</p>
 </div>
 
         
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/random-genome-fragments/" rel="permalink">Generating random genome fragments in R
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          7 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">Quickly and easily generating simulated random fragments of a chosen genome.
-</p>
-  </article>
-</div>
-
-        
       </div>
     </div>
   
@@ -662,7 +622,7 @@ Bioconductor, and GitHub (i.e., no packages are omitted).</p>
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2023 Greg Bedwell. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2024 Greg Bedwell. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

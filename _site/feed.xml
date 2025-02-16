@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-11-01T09:53:48-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Signal From Noise</title><subtitle></subtitle><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><entry><title type="html">Ship packages</title><link href="http://localhost:4000/ship_packages/" rel="alternate" type="text/html" title="Ship packages" /><published>2023-08-01T00:00:00-04:00</published><updated>2023-08-01T00:00:00-04:00</updated><id>http://localhost:4000/ship_packages</id><content type="html" xml:base="http://localhost:4000/ship_packages/"><![CDATA[<h3 id="introduction">Introduction</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-11-21T12:41:02-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Signal From Noise</title><subtitle></subtitle><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><entry><title type="html">Ship packages</title><link href="http://localhost:4000/ship_packages/" rel="alternate" type="text/html" title="Ship packages" /><published>2023-08-01T00:00:00-04:00</published><updated>2023-08-01T00:00:00-04:00</updated><id>http://localhost:4000/ship_packages</id><content type="html" xml:base="http://localhost:4000/ship_packages/"><![CDATA[<h3 id="introduction">Introduction</h3>
 
 <p>Re-installing packages after an R update always seems be a bit of a
 pain. I can never remember exactly what I did the last time I updated,
@@ -13,12 +13,12 @@ contains two functions. These functions will:</p>
 
 <ol>
   <li>
-    <p>Export information for all of the packages in the current R library
-to a CSV file.</p>
+    <p>Export information for all of the packages in a given R library to a
+CSV file or data frame.</p>
   </li>
   <li>
-    <p>Read that CSV file and automatically install packages from CRAN,
-Bioconductor, and/or GitHub.</p>
+    <p>Automatically install packages from CRAN, Bioconductor, and/or
+GitHub based on the information output from the first function.</p>
   </li>
 </ol>
 
@@ -31,7 +31,7 @@ This function uses <code>installed_packages()</code> and
 <code>packageDescription()</code> to retrieve package information about
 the packages installed in a given library. The information retrieved
 includes package name, path, version, dependencies, imports, R build
-version, and location (e.g., CRAN, Bioconductor, GitHub, etc.).</p>
+version, and repository (e.g., CRAN, Bioconductor, GitHub, etc.).</p>
 
 <p>Τhe default behavior of <code>address_packages()</code> is to write
 information about the <i>current</i> library (i.e., <i>before
@@ -51,19 +51,19 @@ that the retrieved information is the desired information.</p>
 
 <h3 id="deliver-packages">Deliver packages</h3>
 
-<p><code>deliver_packages()</code> takes as input the output of
-<code>address_packages()</code>. The <code>pkgs</code> argument in
-<code>deliver_packages()</code> can accept either a file path (to the
-CSV file) or a data frame. Package information is the parsed and
-packages from the defined repositories (currently any/all of CRAN,
-Bioconductor, and/or GitHub) are installed. Installation from CRAN does
-not require any exogenous packages. Installation from Bioconductor and
-GitHub, however, require the installation of BiocManger and devtools,
-respectively. These packages are automatically installed (if they are
-not already) if installation from these repositories is requested. If
-there are packages included in the input information that you <i>do
-not</i> want installed, define them by name with the <code>omit</code>
-argument.</p>
+<p>The second function is <code>deliver_packages()</code>. This function
+takes as input the output of <code>address_packages()</code>. The
+<code>pkgs</code> argument in <code>deliver_packages()</code> can accept
+either a file path (to the CSV file) or a data frame. Package
+information is then parsed and packages from the defined repositories
+(currently any/all of CRAN, Bioconductor, and/or GitHub) are installed.
+Installation from CRAN does not require any exogenous packages.
+Installation from Bioconductor and GitHub, however, require the
+installation of BiocManger and devtools, respectively. These packages
+are automatically installed (if they are not already) if installation
+from these repositories is requested. If there are packages included in
+the input information that you <i>do not</i> want installed, define them
+by name with the <code>omit</code> argument.</p>
 
 <h3 id="example-usage">Example usage</h3>
 
@@ -367,10 +367,10 @@ concentrations.</p>
 <code>calibrateR</code> to create a new function, here called
 <code>bca()</code>, to do all of the downstream data analysis for me.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bca</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">calibrate_colorimetric</span><span class="p">(</span><span class="w"> </span><span class="n">conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w">
-                               </span><span class="n">abs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="w"> </span><span class="p">),</span><span class="w">
-                               </span><span class="n">with.blank</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
-                               </span><span class="n">nrep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bca</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">calibrate_colorimetric</span><span class="p">(</span><span class="n">conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w">
+                              </span><span class="n">abs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="w"> </span><span class="p">),</span><span class="w">
+                              </span><span class="n">with.blank</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
+                              </span><span class="n">nrep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <p>With the calibrated function defined, we can do one of two things. The
@@ -384,21 +384,21 @@ values). Because the units of both concentration and signal can vary
 widely across assays, I intentionally left units off of the example
 plot.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">ggplot2</span><span class="w"> </span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span><span class="w">
 
-</span><span class="n">bca.df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w">
-                      </span><span class="n">meas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">bca.df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w">
+                     </span><span class="n">meas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="p">))</span><span class="w">
 
-</span><span class="n">bca.fit.df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> 
-                          </span><span class="n">fit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bca</span><span class="p">(</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> </span><span class="n">return.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">bca.fit.df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> 
+                         </span><span class="n">fit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bca</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> </span><span class="n">return.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">))</span><span class="w">
 
-</span><span class="n">ggplot</span><span class="p">(</span><span class="w"> </span><span class="n">bca.df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">meas</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span><span class="n">ggplot</span><span class="p">(</span><span class="n">bca.df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">meas</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_point</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray75"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_line</span><span class="p">(</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bca.fit.df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.75</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bca.fit.df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">conc</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fit</span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.75</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">theme</span><span class="p">(</span><span class="w"> </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="p">),</span><span class="w">
-         </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Concentration"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Signal"</span><span class="w"> </span><span class="p">)</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">),</span><span class="w">
+        </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Concentration"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Signal"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <p><img src="../figures/2023-06-08/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" />
@@ -413,10 +413,10 @@ five unknown samples and that each unknown sample was measured at a
 factor(s), respectively. The returned units of concentration are the
 same as the units of concentration used to make the standard curve.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">set.seed</span><span class="p">(</span><span class="w"> </span><span class="m">1234</span><span class="w"> </span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">set.seed</span><span class="p">(</span><span class="m">1234</span><span class="p">)</span><span class="w">
 </span><span class="n">unk</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">runif</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.3</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
 
-</span><span class="n">bca</span><span class="p">(</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unk</span><span class="p">,</span><span class="w"> </span><span class="n">return.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">bca</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unk</span><span class="p">,</span><span class="w"> </span><span class="n">return.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w">
 </span><span class="c1">#&gt; [1] 0.5453686 2.2248925 2.1818814 2.2284591 3.0128681</span><span class="w">
 </span></code></pre></div></div>
 
@@ -442,15 +442,15 @@ represents a unique reaction.</p>
 reactions. The first reaction has 2 input fragments and the second has
 3.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gibson</span><span class="p">(</span><span class="w"> </span><span class="n">insert.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">35</span><span class="p">,</span><span class="w"> </span><span class="m">78</span><span class="p">,</span><span class="w"> </span><span class="m">48</span><span class="p">,</span><span class="w"> </span><span class="m">37</span><span class="p">,</span><span class="w"> </span><span class="m">40</span><span class="w"> </span><span class="p">),</span><span class="w"> 
-        </span><span class="n">insert.len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">1894</span><span class="p">,</span><span class="w"> </span><span class="m">2403</span><span class="p">,</span><span class="w"> </span><span class="m">887</span><span class="p">,</span><span class="w"> </span><span class="m">1764</span><span class="p">,</span><span class="w"> </span><span class="m">943</span><span class="w"> </span><span class="p">),</span><span class="w">
-        </span><span class="n">vec.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">55</span><span class="p">,</span><span class="w"> </span><span class="m">65</span><span class="w"> </span><span class="p">),</span><span class="w"> 
-        </span><span class="n">vec.len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">4710</span><span class="p">,</span><span class="w"> </span><span class="m">5934</span><span class="w"> </span><span class="p">),</span><span class="w"> 
-        </span><span class="n">n.frag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">),</span><span class="w"> 
-        </span><span class="n">vec.mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="w"> </span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">),</span><span class="w">
-        </span><span class="n">molar.ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">),</span><span class="w"> 
-        </span><span class="n">final.vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">),</span><span class="w"> 
-        </span><span class="n">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="s2">"Reaction 1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Reaction 2"</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gibson</span><span class="p">(</span><span class="w"> </span><span class="n">insert.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">35</span><span class="p">,</span><span class="w"> </span><span class="m">78</span><span class="p">,</span><span class="w"> </span><span class="m">48</span><span class="p">,</span><span class="w"> </span><span class="m">37</span><span class="p">,</span><span class="w"> </span><span class="m">40</span><span class="p">),</span><span class="w"> 
+        </span><span class="n">insert.len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">1894</span><span class="p">,</span><span class="w"> </span><span class="m">2403</span><span class="p">,</span><span class="w"> </span><span class="m">887</span><span class="p">,</span><span class="w"> </span><span class="m">1764</span><span class="p">,</span><span class="w"> </span><span class="m">943</span><span class="p">),</span><span class="w">
+        </span><span class="n">vec.conc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">55</span><span class="p">,</span><span class="w"> </span><span class="m">65</span><span class="p">),</span><span class="w"> 
+        </span><span class="n">vec.len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">4710</span><span class="p">,</span><span class="w"> </span><span class="m">5934</span><span class="p">),</span><span class="w"> 
+        </span><span class="n">n.frag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> 
+        </span><span class="n">vec.mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">),</span><span class="w">
+        </span><span class="n">molar.ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">),</span><span class="w"> 
+        </span><span class="n">final.vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">),</span><span class="w"> 
+        </span><span class="n">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Reaction 1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Reaction 2"</span><span class="p">))</span><span class="w">
 </span><span class="c1">#&gt; $`Reaction 1`</span><span class="w">
 </span><span class="c1">#&gt;            Volume</span><span class="w">
 </span><span class="c1">#&gt; Fragment 1   1.72</span><span class="w">
@@ -496,9 +496,9 @@ macromolecular parameter of interest – either molecular weight
 </span><span class="n">rep3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">13.38</span><span class="p">,</span><span class="w"> </span><span class="m">16.09</span><span class="p">,</span><span class="w"> </span><span class="m">17.58</span><span class="p">,</span><span class="w"> </span><span class="m">18.48</span><span class="p">,</span><span class="w"> </span><span class="m">20.33</span><span class="w"> </span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sec.rh</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">calibrate_sec</span><span class="p">(</span><span class="w"> </span><span class="n">vols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="w"> </span><span class="p">),</span><span class="w">
-                         </span><span class="n">masses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">masses</span><span class="p">,</span><span class="w">
-                         </span><span class="n">parameter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"rh"</span><span class="w"> </span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sec.rh</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">calibrate_sec</span><span class="p">(</span><span class="n">vols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="p">),</span><span class="w">
+                        </span><span class="n">masses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">masses</span><span class="p">,</span><span class="w">
+                        </span><span class="n">parameter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"rh"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <p>Running <code>calibrate_sec()</code> returns a function for downstream
@@ -523,19 +523,19 @@ Note that the input mass units must be g/mol (Daltons). Calculated mass
 values are returned in the same units. Hydrodynamic radius values are
 returned in nm.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sec.df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">vols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="w"> </span><span class="p">),</span><span class="w">
-                      </span><span class="n">rads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mass_to_radius</span><span class="p">(</span><span class="w"> </span><span class="n">masses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">masses</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sec.df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">vols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">rep1</span><span class="p">,</span><span class="w"> </span><span class="n">rep2</span><span class="p">,</span><span class="w"> </span><span class="n">rep3</span><span class="p">),</span><span class="w">
+                     </span><span class="n">rads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mass_to_radius</span><span class="p">(</span><span class="n">masses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">masses</span><span class="p">))</span><span class="w">
 
-</span><span class="n">sec.fit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">vols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="m">13</span><span class="p">,</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="m">0.01</span><span class="w"> </span><span class="p">),</span><span class="w">
-                       </span><span class="n">fit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec.rh</span><span class="p">(</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="m">13</span><span class="p">,</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="m">0.01</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">sec.fit</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="n">vols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seq</span><span class="p">(</span><span class="m">13</span><span class="p">,</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="m">0.01</span><span class="p">),</span><span class="w">
+                      </span><span class="n">fit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec.rh</span><span class="p">(</span><span class="n">seq</span><span class="p">(</span><span class="w"> </span><span class="m">13</span><span class="p">,</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="m">0.01</span><span class="p">)))</span><span class="w">
 
-</span><span class="n">ggplot</span><span class="p">(</span><span class="w"> </span><span class="n">sec.df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vols</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="w"> </span><span class="n">rads</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span><span class="n">ggplot</span><span class="p">(</span><span class="n">sec.df</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vols</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">rads</span><span class="p">)))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_point</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray75"</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">geom_line</span><span class="p">(</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec.fit</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vols</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="w"> </span><span class="n">fit</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.75</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec.fit</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vols</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">fit</span><span class="p">)),</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.75</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-  </span><span class="n">theme</span><span class="p">(</span><span class="w"> </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="p">),</span><span class="w">
-         </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
-  </span><span class="n">labs</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Elution Volume"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"log(Rh)"</span><span class="w"> </span><span class="p">)</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">),</span><span class="w">
+        </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Elution Volume"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"log(Rh)"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <p><img src="../figures/2023-06-08/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /></p>
@@ -546,7 +546,7 @@ function. If the column calibration was done using normalized elution
 volumes, the function <code>normalize_ev()</code> will normalize the
 analyte elution volumes based on the column’s void and column volumes.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sec.rh</span><span class="p">(</span><span class="w"> </span><span class="m">16.495</span><span class="w"> </span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sec.rh</span><span class="p">(</span><span class="m">16.495</span><span class="p">)</span><span class="w">
 </span><span class="c1">#&gt;      a </span><span class="w">
 </span><span class="c1">#&gt; 3.9831</span><span class="w">
 </span></code></pre></div></div>
@@ -570,10 +570,10 @@ measured to have an absorbance of 0.491 at 280 nm. <code>uv_vis()</code>
 returns concentrations in same concentration units used in the
 extinction coefficient. In the example, that is molar units.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">uv_vis</span><span class="p">(</span><span class="w"> </span><span class="n">abs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.491</span><span class="p">,</span><span class="w"> 
-        </span><span class="n">ext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">35000</span><span class="p">,</span><span class="w">
-        </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w">
-        </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"protein"</span><span class="w"> </span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">uv_vis</span><span class="p">(</span><span class="n">abs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.491</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">ext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">35000</span><span class="p">,</span><span class="w">
+       </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w">
+       </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"protein"</span><span class="p">)</span><span class="w">
 </span><span class="c1">#&gt; [1] 2.805714e-05</span><span class="w">
 </span></code></pre></div></div>]]></content><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><summary type="html"><![CDATA[An R package to streamline standard laboratory calculations.]]></summary></entry><entry><title type="html">nbconv</title><link href="http://localhost:4000/nb-convolutions/" rel="alternate" type="text/html" title="nbconv" /><published>2023-02-01T00:00:00-05:00</published><updated>2023-02-01T00:00:00-05:00</updated><id>http://localhost:4000/nb-convolutions</id><content type="html" xml:base="http://localhost:4000/nb-convolutions/"><![CDATA[<h3 id="introduction">Introduction</h3>
 
@@ -705,7 +705,7 @@ Anecdotally, the saddlepoint approximation is a little bit more robust
 to skewness and kurotosis than the method of moments approximation, but
 I won’t explore this point in any more detail here.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nbconv_params</span><span class="p">(</span><span class="w"> </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nbconv_params</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">)</span><span class="w">
 </span><span class="c1">#&gt;         mean       sigma2     skewness  ex.kurtosis       K.mean </span><span class="w">
 </span><span class="c1">#&gt; 259.98524927 722.99508196   0.17586635   0.04909827  26.26988006</span><span class="w">
 </span></code></pre></div></div>
@@ -718,17 +718,17 @@ however, I’ll go ahead and use them all. I’ll additionally calculate
 empirical probability masses from random deviates sampled using
 <code>rnbconv()</code> to serve as reference data.</p>
 
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">samps</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rnbconv</span><span class="p">(</span><span class="w"> </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">n.samp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e6</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">)</span><span class="w">
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">samps</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rnbconv</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">n.samp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1e6</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
 
 </span><span class="n">empirical</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">stats</span><span class="o">::</span><span class="n">density</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">samps</span><span class="p">,</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">500</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="o">$</span><span class="n">y</span><span class="w">
 
-</span><span class="n">exact</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dnbconv</span><span class="p">(</span><span class="w"> </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="p">,</span><span class="w"> 
-                  </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"exact"</span><span class="p">,</span><span class="w"> </span><span class="n">n.terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">exact</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dnbconv</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="p">,</span><span class="w"> 
+                 </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"exact"</span><span class="p">,</span><span class="w"> </span><span class="n">n.terms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
 
-</span><span class="n">moments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dnbconv</span><span class="p">(</span><span class="w"> </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"moments"</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">moments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dnbconv</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"moments"</span><span class="p">)</span><span class="w">
 
-</span><span class="n">saddlepoint</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dnbconv</span><span class="p">(</span><span class="w"> </span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="p">,</span><span class="w"> 
-                        </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"saddlepoint"</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">saddlepoint</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dnbconv</span><span class="p">(</span><span class="n">mus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mus</span><span class="p">,</span><span class="w"> </span><span class="n">phis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phis</span><span class="p">,</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="p">,</span><span class="w"> 
+                       </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"saddlepoint"</span><span class="p">,</span><span class="w"> </span><span class="n">n.cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">normalize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
 <p>For easier visualization, I’ll combine the four calculated probability
@@ -736,36 +736,36 @@ mass vectors into a single long data frame.</p>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data.frame</span><span class="p">(</span><span class="w"> </span><span class="n">empirical</span><span class="p">,</span><span class="w"> </span><span class="n">exact</span><span class="p">,</span><span class="w"> </span><span class="n">moments</span><span class="p">,</span><span class="w"> </span><span class="n">saddlepoint</span><span class="w"> </span><span class="p">)</span><span class="w">
 
-</span><span class="n">df</span><span class="o">$</span><span class="n">count</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">df</span><span class="o">$</span><span class="n">count</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="o">:</span><span class="m">500</span><span class="p">)</span><span class="w">
 
 </span><span class="n">df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
-  </span><span class="n">tidyr</span><span class="o">::</span><span class="n">pivot_longer</span><span class="p">(</span><span class="w"> </span><span class="n">cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">names_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"method"</span><span class="p">,</span><span class="w"> </span><span class="n">values_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"probability"</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
-  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">arrange</span><span class="p">(</span><span class="w"> </span><span class="n">method</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="p">)</span><span class="w">
+  </span><span class="n">tidyr</span><span class="o">::</span><span class="n">pivot_longer</span><span class="p">(</span><span class="n">cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">names_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"method"</span><span class="p">,</span><span class="w"> </span><span class="n">values_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"probability"</span><span class="p">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w">
+  </span><span class="n">dplyr</span><span class="o">::</span><span class="n">arrange</span><span class="p">(</span><span class="n">method</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">)</span><span class="w">
 
-</span><span class="n">df</span><span class="o">$</span><span class="n">method</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="w"> </span><span class="n">df</span><span class="o">$</span><span class="n">method</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"empirical"</span><span class="p">,</span><span class="w"> </span><span class="s2">"exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"moments"</span><span class="p">,</span><span class="w"> </span><span class="s2">"saddlepoint"</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
+</span><span class="n">df</span><span class="o">$</span><span class="n">method</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">df</span><span class="o">$</span><span class="n">method</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"empirical"</span><span class="p">,</span><span class="w"> </span><span class="s2">"exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"moments"</span><span class="p">,</span><span class="w"> </span><span class="s2">"saddlepoint"</span><span class="p">))</span><span class="w">
 </span></code></pre></div></div>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="w"> </span><span class="n">ggplot2</span><span class="w"> </span><span class="p">)</span><span class="w">
 
 </span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">,</span><span class="w">
-       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">probability</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">probability</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_area</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">$</span><span class="n">method</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"empirical"</span><span class="p">,],</span><span class="w">
-            </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">probability</span><span class="w"> </span><span class="p">),</span><span class="w">
+            </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">probability</span><span class="p">),</span><span class="w">
             </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gray50"</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="s2">"gray50"</span><span class="p">,</span><span class="w">
-            </span><span class="n">inherit.aes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
+            </span><span class="n">inherit.aes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">  
   </span><span class="n">geom_point</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"#00000000"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">scale_fill_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"gray50"</span><span class="p">,</span><span class="s2">"darkblue"</span><span class="p">,</span><span class="s2">"darkred"</span><span class="p">,</span><span class="s2">"darkgreen"</span><span class="p">),</span><span class="w">
-                     </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Empirical"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Moments"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Saddlepoint"</span><span class="w"> </span><span class="p">),</span><span class="w">
+                     </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"Empirical"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Exact"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Moments"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Saddlepoint"</span><span class="p">),</span><span class="w">
                      </span><span class="n">guide</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">guide_legend</span><span class="p">(</span><span class="n">title.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"top"</span><span class="p">,</span><span class="w">
                                           </span><span class="n">title.hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w">
-                                          </span><span class="n">override.aes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+                                          </span><span class="n">override.aes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="p">)))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">theme</span><span class="p">(</span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">),</span><span class="w">
         </span><span class="n">axis.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">),</span><span class="w">
         </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"top"</span><span class="p">,</span><span class="w">
         </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_blank</span><span class="p">(),</span><span class="w">
         </span><span class="n">legend.key.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="s2">"point"</span><span class="p">),</span><span class="w">
-        </span><span class="n">panel.spacing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s2">"lines"</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+        </span><span class="n">panel.spacing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unit</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s2">"lines"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Counts"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Probability"</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
@@ -781,255 +781,4 @@ evaluated distribution to random deviates!</p>
 workflow of <code>nbconv</code>. If you have any comments or questions,
 please reach out!</p>
 
-<p><a href="https://cran.r-project.org/package=nbconv"><img src="https://cranlogs.r-pkg.org/badges/nbconv" alt="" /></a></p>]]></content><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><summary type="html"><![CDATA[An R package to evaluate negative binomial convolutions.]]></summary></entry><entry><title type="html">Generating random genome fragments in R</title><link href="http://localhost:4000/random-genome-fragments/" rel="alternate" type="text/html" title="Generating random genome fragments in R" /><published>2022-12-27T00:00:00-05:00</published><updated>2022-12-27T00:00:00-05:00</updated><id>http://localhost:4000/random-genome-fragments</id><content type="html" xml:base="http://localhost:4000/random-genome-fragments/"><![CDATA[<p>In the analysis of genomic integration site data, a theoretical random
-integration site distribution is often used as a reference point for
-feature enrichment. That is, whether or not a given feature (e.g. a
-particular gene) harbors more integration sites than would be expected
-given a uniform random distribution. In principle, the derivation of an
-expected random distribution is not too difficult. Given the genome
-size, $L_G$, the probability of integration into a particular region $i$
-is simply $p_i = L_i/L_G$, where $L_i$ is the length of $i$. Therefore,
-the expected number of integration sites in $i$ can be expressed as
-$I \sim Bin(n, p_i)$.</p>
-
-<p>In reality, however, the entire genome is rarely accessible by common
-next-generation sequencing technologies. While long-read sequencing is
-growing in both accessibility and throughput, it is still common for
-integration site mapping to be done using e.g. 150 bp paired-end
-sequencing. Because of this, certain regions of the genome, such has
-highly repetitive regions, are effectively “invisible” due to the
-inability to confidently align short reads to them. In addition,
-different genome fragmentation strategies may influence the mappable
-regions of a genome in a given experiment. For example, when using a
-restriction enzyme (or a cocktail of several restriction enzymes) to
-fragment the genome, certain regions deficient in the target recognition
-sequence(s) will have comparatively fewer mapped reads than other
-regions.</p>
-
-<p>To accurately calculate $p_i$ for a given set of sequencing conditions,
-one really needs to know the <i>effective</i> genome length,
-$L_{G_{eff}}$. Because mappable regions of the genome can depend on
-things like fragmentation strategy, it is convenient to be able to
-easily estimate the mappable genome using simulated genomic fragments
-that match both the genome fragmentation method used and the sequencing
-approach.</p>
-
-<p>This idea is not new. People doing integration site analyses have been
-using simulated random datasets for many years in one way or another.
-However, many of the scripts in use (at least that I have seen), are
-rather slow, somewhat inflexible, and are provided as stand alone
-software. After spending a substantial amount of time adapting and
-eventually wholly rewriting some existing Python scripts for random
-fragment generation, I decided to develop an R approach that would slot
-seamlessly into the Bioconductor framework. I’ve wrapped those functions
-up in the xInt package that is still under development (as of 12/2022).
-This aspect of the package, however, is functional. I’ll briefly explain
-the workflow below.</p>
-
-<h3 id="load-packages">Load packages</h3>
-
-<p>To get started, install xInt if it isn’t already.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">devtools</span><span class="o">::</span><span class="n">install_github</span><span class="p">(</span><span class="n">repo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gbedwell/xInt"</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<p>Next, load xInt and the <a href="https://bioconductor.org/packages/release/bioc/html/BSgenome.html">BSgenome
-object</a>
-that corresponds to the genome of interest. In this example, I’ll be
-using the new <a href="https://bioconductor.org/packages/release/data/annotation/html/BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0.html">CHM13v2
-T2T</a>
-human genome build.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">xInt</span><span class="p">)</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<h3 id="restriction-enzyme-cut-positions">Restriction enzyme cut positions</h3>
-
-<p>If fragmenting the genome by restriction digestion, the first step in
-generating random genome fragments is to extract the sequences of each
-chromosome.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chr.seqs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">get_chromosome_seqs</span><span class="p">(</span><span class="w"> </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="w"> </span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<p>The output of <code>get_chromosome_seqs()</code> is a list of DNAString
-objects corresponding to each of the chromosomes in the target genome.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; $`1`
-#&gt; 248387328-letter DNAString object
-#&gt; seq: CACCCTAAACCCTAACCCCTAACCCTAACCCTAACC...AGGGTTAGGGTTAGGGTTAGGGTTAGGGTTAGGGTT
-#&gt; 
-#&gt; $`2`
-#&gt; 242696752-letter DNAString object
-#&gt; seq: TAACCCTAACCCTAACCCTAACCCTAACCCTAACCC...TAGGGTTAGGGTTTAGGGGTTTAGGGTTAGGGTTAG
-</code></pre></div></div>
-
-<p>Next, you can use the <code>digest()</code> function to identify all of
-the possible fragmentation positions on both forward and reverse strands
-of each chromosome. You must supply the recognition sequences of the
-enzymes being used as a character vector.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re.cuts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">digest</span><span class="p">(</span><span class="w"> </span><span class="n">string.list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chr.seqs</span><span class="p">,</span><span class="w"> 
-                   </span><span class="n">re.sites</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="w"> </span><span class="s2">"TTAA"</span><span class="p">,</span><span class="s2">"AGATCT"</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<h3 id="random-integration-site-positions">Random integration site positions</h3>
-
-<p>Now you want to generate random integration sites throughout the genome.
-This step is the same regardless of the fragmentation method used.
-First, define the number of sites that you want to generate. For good
-estimation of the mappable genome, this number should be rather high
-(e.g. $10^7-10^8$ sites). If you just want a representative random
-dataset, however, this number can be much smaller (e.g. $10^4-10^5$
-sites). For example purposes, I’ll generate $10^5$ sites.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rand.sites</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">random_sites</span><span class="p">(</span><span class="w"> </span><span class="n">n.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1E5</span><span class="p">,</span><span class="w">
-                            </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="w"> </span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<h3 id="generating-genomic-fragments">Generating genomic fragments</h3>
-
-<p>You now want to make genomic fragments that mimic the genomic fragments
-obtained in your experiment. For restriction digestion, you want to use
-the random sites and the restriction enzyme cut positions generated with
-the <code>digest()</code> function to generate the fragments. Be sure to
-set <code>random = FALSE</code> in <code>make_fragments()</code>.
-Fragment coordinates are defined from the simulated random integration
-site to the nearest restriction enzyme cut position <i>downstream</i> of
-the integration site. This is analogous to sequencing off of the viral
-3’ LTR. I have not yet incorporated a way to simulate fragments
-generated from the viral 5’ LTR.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re.fragments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">make_fragments</span><span class="p">(</span><span class="w"> </span><span class="n">int.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.sites</span><span class="p">,</span><span class="w">
-                                </span><span class="n">frag.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">re.cuts</span><span class="p">,</span><span class="w">
-                                </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w">
-                                </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="w"> </span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<p>For random fragmentation, you want to set <code>frag.sites = NULL</code>
-and <code>random = TRUE</code> in <code>make_fragments()</code>. You
-also want to set the mean ± sd fragment lengths (default values of 500
-bp and 250 bp, respectively). Fragments lengths are randomly sampled
-from a log-normal distribution with the defined parameters and fragment
-end positions are calculated relative to each simulated random
-integration site.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rand.fragments</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">make_fragments</span><span class="p">(</span><span class="w"> </span><span class="n">int.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.sites</span><span class="p">,</span><span class="w">
-                                  </span><span class="n">frag.sites</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NULL</span><span class="p">,</span><span class="w"> 
-                                  </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">
-                                  </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">500</span><span class="p">,</span><span class="w"> 
-                                  </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">250</span><span class="p">,</span><span class="w">
-                                  </span><span class="n">genome.obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="w"> </span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<h3 id="extracting-and-trimming-fragment-sequences">Extracting and trimming fragment sequences</h3>
-
-<p>I rely on <code>BSgenome::getSeq()</code> to extract the sequences
-corresponding to the fragment positions. These sequences are intended to
-mimic the genomic fragments sequenced in the sequencing reaction.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">frag.seqs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">getSeq</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BSgenome.Hsapiens.NCBI.T2T.CHM13v2.0</span><span class="p">,</span><span class="w">
-                     </span><span class="n">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand.fragments</span><span class="p">,</span><span class="w">
-                     </span><span class="n">as.character</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="w"> </span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; DNAStringSet object of length 100000:
-#&gt;          width seq
-#&gt;      [1]   771 TTAGTATGCCTCGGCCACTTAGAAATAGCAA...ACCCCCAGGCAGAAATTCAGGCATTGGAGCA
-#&gt;      [2]   546 GACCTTTCATTGGTGATTTAATTTCCTTATT...CTACCTGATTTTAGAATATATTTCAAAGCAT
-#&gt;      [3]   834 TCTGAACCTGGCCCCACCACCTATGGGCAGA...TTAAAAAGTAAAAGGTGTTCCCATTGTTTAG
-#&gt;      [4]   313 GTGAGATGTTAGTTCGGAGGGAAAGGAAATC...ACCTCCCAGATTCAGCCCGTGTGCCAGGGCT
-#&gt;      [5]   530 ACTCCCCAAAGTAATTTATAAAAGAATTCAA...AATACCATTCAGGACATAGGCATGGGCAAAG
-#&gt;      ...   ... ...
-#&gt;  [99996]   798 TTTCTTTCCTGGTTTAAGTTGAACATATTAT...TTGTTTATTTTGGTATTTCTCCTGCTTGGTA
-#&gt;  [99997]   580 TAGGTGATGCCTTTCACTGAATGAGAAAAAA...GTCACTTAGTGAGGGAGACTTTCCATAACCA
-#&gt;  [99998]   493 CCTTGATATAATGCATACAGTTCAAAATGAT...ATTTCATTCCATTCATCAAATGCTCAAAAGG
-#&gt;  [99999]   555 CATCTCAAAAAAAAAGAAAAAAAGAAAAAAA...GGAAGAGAACAACACACACTGGGGCCTGTCG
-#&gt; [100000]   502 CAAGGATCCAGTCTGGCCCCATCGATTTCTA...TAACACACATCTGGTCAGTCGTTTTCTGGGC
-</code></pre></div></div>
-
-<p>To mimic the sequencing output, however, the genomic fragments must be
-trimmed. The function <code>trim_seqs()</code> will trim the ends of
-each fragment to the maximum desired length and return the paired reads
-as matched entries in one of two list elements. The first list element
-corresponds to forward reads and the second list element corresponds to
-reverse reads. The reverse reads are returned in 5’ to 3’ orientation.</p>
-
-<p>In addition to defining the maximum read length,
-<code>trim_seqs()</code> has options to define the minimum fragment
-width (default 14 bp) and the maximum inner distance between pairs
-(default 1000 bp). These filtering parameters will decrease the number
-of output read pairs, so don’t be alarmed if the lengths of the
-<code>trim_seqs()</code> list elements is less than the number of
-generated sites.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">frag.trim</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">trim_seqs</span><span class="p">(</span><span class="w"> </span><span class="n">fragments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frag.seqs</span><span class="p">,</span><span class="w">
-                        </span><span class="n">min.width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">,</span><span class="w">
-                        </span><span class="n">max.distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1000</span><span class="p">,</span><span class="w">
-                        </span><span class="n">max.bp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">150</span><span class="w"> </span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#&gt; [[1]]
-#&gt; DNAStringSet object of length 98835:
-#&gt;         width seq                                           names               
-#&gt;     [1]   150 TTAGTATGCCTCGGCCACTTA...TGTGAGCAAACAGTCAACATG sequence_1
-#&gt;     [2]   150 GACCTTTCATTGGTGATTTAA...ATAGTAGTATGTTATGATTTT sequence_2
-#&gt;     [3]   150 TCTGAACCTGGCCCCACCACC...TCTCCCTGTACATATGAGATT sequence_3
-#&gt;     [4]   150 GTGAGATGTTAGTTCGGAGGG...CCTGAGCATTTCAGACCTGGG sequence_4
-#&gt;     [5]   150 ACTCCCCAAAGTAATTTATAA...AATTCTAAGCAAAAATAACAA sequence_5
-#&gt;     ...   ... ...
-#&gt; [98831]   150 TTTCTTTCCTGGTTTAAGTTG...CTAAATCTACTTTCAAATAAC sequence_98831
-#&gt; [98832]   150 TAGGTGATGCCTTTCACTGAA...ACAGTTGCGATAGCTCCCTAA sequence_98832
-#&gt; [98833]   150 CCTTGATATAATGCATACAGT...CTATGTGTGTTCTCTTTTTGT sequence_98833
-#&gt; [98834]   150 CATCTCAAAAAAAAAGAAAAA...GCAACCAAAAATATGTCCCAT sequence_98834
-#&gt; [98835]   150 CAAGGATCCAGTCTGGCCCCA...TTTCCTTTCTGAAGGTGGACT sequence_98835
-#&gt; 
-#&gt; [[2]]
-#&gt; DNAStringSet object of length 98835:
-#&gt;         width seq                                           names               
-#&gt;     [1]   150 TGCTCCAATGCCTGAATTTCT...CTGGCTGCAAGTTTCATCACC sequence_1
-#&gt;     [2]   150 ATGCTTTGAAATATATTCTAA...AAAAAAAGATCTCAAATAAGC sequence_2
-#&gt;     [3]   150 CTAAACAATGGGAACACCTTT...CAGATTTTCAGTGTAAAGTGA sequence_3
-#&gt;     [4]   150 AGCCCTGGCACACGGGCTGAA...ACAAGGTAGGAACTGAGTGTG sequence_4
-#&gt;     [5]   150 CTTTGCCCATGCCTATGTCCT...TCCAGTTTCAATTTCTGCATA sequence_5
-#&gt;     ...   ... ...
-#&gt; [98831]   150 TACCAAGCAGGAGAAATACCA...TTAGAAGAACAAGGGTAAGAA sequence_98831
-#&gt; [98832]   150 TGGTTATGGAAAGTCTCCCTC...AGAATGTACTTGATGTGTTCT sequence_98832
-#&gt; [98833]   150 CCTTTTGAGCATTTGATGAAT...AAAAGTTGTGGAACTCTTTAA sequence_98833
-#&gt; [98834]   150 CGACAGGCCCCAGTGTGTGTT...TTCCAGCTTCACGTGATGTGT sequence_98834
-#&gt; [98835]   150 GCCCAGAAAACGACTGACCAG...GAACAGAAGAAAAAGGGGTGC sequence_98835
-</code></pre></div></div>
-
-<h3 id="generating-fasta-files">Generating fasta files</h3>
-
-<p>Finally, now that your pairs have been generated, you can save the pairs
-as R1 and R2 fasta files for genome alignment. The <code>compress</code>
-option in <code>save_fasta()</code> will compress the fasta files to
-save space. Given the input parameters below, the files will be saved as
-<code>path/to/directory/prefix_R1.fa(.gz)</code> and
-<code>path/to/directory/prefix_R2.fa(.gz)</code>, respectively.</p>
-
-<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">save_fasta</span><span class="p">(</span><span class="w"> </span><span class="n">reads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frag.trim</span><span class="p">,</span><span class="w">
-            </span><span class="n">directory.path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"path/to/directory"</span><span class="p">,</span><span class="w">
-            </span><span class="n">file.prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"prefix"</span><span class="p">,</span><span class="w">
-            </span><span class="n">compress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="w"> </span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
-
-<h3 id="conclusions">Conclusions</h3>
-
-<p>On my 2 GHz quad-core laptop with 16 GB RAM, this entire process ran in
-just over 2 minutes. Obviously, as you increase the number of random
-sites generated, this run time will increase. For generating extremely
-large datasets, I would recommend moving this to an HPC cluster.
-Regardless of where you run this, I hope I’ve demonstrated how easy it
-can be to generate random genome fragments in a way that should
-integrate seamlessly with your other Bioconductor workflows!</p>
-
-<h3 id="addendum-08012023">Addendum: 08/01/2023</h3>
-
-<p>A wrapper function, <code>simulate_random_data()</code>, was included in
-the package that automatically calls all of these functions. See the
-<a href="https://github.com/gbedwell/xInt/blob/master/R/simulate_random_data.R">source
-code</a>
-for more information.</p>]]></content><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><summary type="html"><![CDATA[Quickly and easily generating simulated random fragments of a chosen genome.]]></summary></entry></feed>
+<p><a href="https://cran.r-project.org/package=nbconv"><img src="https://cranlogs.r-pkg.org/badges/nbconv" alt="" /></a></p>]]></content><author><name>Greg Bedwell</name><email>gregoryjbedwell@gmail.com</email></author><summary type="html"><![CDATA[An R package to evaluate negative binomial convolutions.]]></summary></entry></feed>
