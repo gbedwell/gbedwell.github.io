@@ -1,0 +1,56 @@
+---
+title: Introducing intmap
+excerpt: A Python package for mapping genomic integration sites from NGS data
+classes: wide
+output:
+  md_document:
+    variant: gfm
+    preserve_yaml: true
+knit: (function(input, ...) {
+    rmarkdown::render(
+      input,
+      output_file = paste0(
+        '/Users/gbedwell/Documents/github/gbedwell.github.io/_posts/', '2025-05-12', '-', 'intmap','.md'
+      ),
+      envir = globalenv()
+    )
+  })
+---
+
+```{r, include=FALSE}
+date <- "2023-10-25"
+
+base.dir <- "/Users/gbedwell/Documents/github/gbedwell.github.io/"
+base.url <- "/"
+dir.create(paste0("../figures/", date))
+fig.path <- paste0("../figures/", date, "/")
+
+knitr::opts_chunk$set(
+  fig.asp = 5/7,
+  fig.width = 7,
+  dpi = 300,
+  fig.align = "center",
+  out.width = "80%",
+  comment = "#>",
+  collapse = TRUE,
+  dev = "png",
+  base.dir = base.dir, 
+  base.url = base.url,
+  fig.path = fig.path
+  )
+```
+
+This page is not yet built...stay tuned!
+
+
+
+
+
+
+
+
+
+
+
+
+
