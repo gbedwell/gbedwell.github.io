@@ -39,19 +39,19 @@ As a graduate student, I was interested in understanding and exploiting the arch
 
 ## <i class="fas fa-chart-bar"></i> Programming and statistics
 
-**Languages**: R (primary), Python, and Bash.
+**Languages**: R, Python, and Bash.
 
-**Computing tools and technologies**: bash scripting, git and GitHub, tidy data, knitr/Rmarkdown/quarto, VS Code, LaTeX, conda, HPC clusters (SLURM and Grid Engine).
+**Computing**: Git, SLURM, Grid Engine, VS Code, Quarto, conda, etc.
 
-**Software**: 
-  - <u>Bioinformatics</u>: GenomicRanges, bedtools, samtools, cutadapt, Bowtie(2), BWA, STAR, MACS2, epigraHMM, edgeR, limma, AlphaFold, MMseqs2, ESM(-fold), bio-embeddings, etc.
-  - <u>Data science</u>: Tidyverse, NumPy, DuckDB, tidymodels, k-NN, FAISS, DBSCAN, PCA, t-SNE, union-find, HMMs, ggplot2, etc.
-  - <u>Development</u>: Git, SLURM, Grid Engine, VS Code, Quarto
+**Bioinformatics**: GenomicRanges, bedtools, samtools, cutadapt, Bowtie(2), BWA, STAR, MACS2, epigraHMM, edgeR, limma, AlphaFold, MMseqs2, ESM(-fold), bio-embeddings, etc.
+
+**Data Science**: Tidyverse, NumPy, DuckDB, tidymodels, k-NN, FAISS, DBSCAN, PCA, t-SNE, union-find, HMMs, ggplot2, etc.
+
 **Statistics**: GLMs, nonlinear regression, regularization, change point detection, null hypothesis testing, expectation-maximization, etc.
 
 ## <i class="fas fa-code"></i> Software
 
-- [intmap](https://github.com/gbedwell/intmap): An end-to-end pipeline for mapping genomic integration site positions from NGS data.
+- [intmap](https://github.com/gbedwell/intmap): An end-to-end pipeline for mapping positions of genomic integration from NGS data.
 
 - [xInt](https://github.com/gbedwell/xInt): An R/Bioconductor package to analyze integration site data post-mapping. Incoporates a wide variety of functionalities intended to provide users with a comprehensive toolkit for rigorously assessing integration site targeting trends/biases.
 
