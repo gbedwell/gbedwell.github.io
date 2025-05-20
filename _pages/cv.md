@@ -1,7 +1,7 @@
 ---
 title: Curriculum vitae
 layout: single
-modified: 2025-02-16
+modified: 2025-05-14
 excerpt: ""
 share: false
 paragraph-indent: false;
@@ -19,7 +19,7 @@ permalink: /cv.html
 
 **Instructor in Medicine** - Dana-Farber Cancer Institute/Harvard Medical School.
 
-My current research is broadly focused on genomic integration. This work has direct applications to many areas of science, including basic virology, clinical virology, gene/cell therapy, and more. Even more generally, I am very interested in the development and application of computational methods/tools to biological questions. I have developed end-to-end pipelines and packages for the analysis of integration site data, utilized state-of-the-art protein language models and sequence databases to aid in hypothesis generation and data interpretation, used machine learning techniques to better define conserved chromatin states relative to nuclear compartments, and much more. Beyond my research efforts, I actively mentor and advise undergraduate students, graduate students, research technicians, and others in both wet and dry lab research.
+My current research is focused on using and developing computational approaches to better understand genomic integration, intrinsically disordered proteins, and nuclear compartmentalization. This work is applicable to basic and clinical virology, gene therapy, cell therapy, protein design, and cell biology. I have developed novel tools for the improved mapping and analysis of genomic integration sites; applied machine learning algorithms and wet-bench experiments to better understand the conformational ensembles, solution behavior, and sequence determinants of specific properties of intrinsically disordered proteins; and identified conserved chromatin states related to nuclear compartmentalization. Through this interdisciplinary approach combining computational methods with biological insights, I aim to advance our understanding of complex cellular processes and contribute to the development of novel therapeutic strategies.
 
 **Consulting** - Freelance.
 
@@ -30,35 +30,30 @@ I have consulted companies on processing and wrangling large, asynchronous data 
 
 **Post-doctoral fellow** - Dana-Farber Cancer Institute/Harvard Medical School
 
-I began my post-doctoral fellowship leveraging my knowledge of protein chemsitry and biophysics to devise a recombinant protein expression system for difficult human protein targets. This work has enabled the biochemical characterization of some of these proteins for the first time. Eventually, I began to more proactively pursue my long-standing interests in computational biology and bioinformatics. To this end, I was able to more granularly define the preferred gene targets of HIV-1 integration. My post-doctoral work ultimately formed the basis of the research that I continue to perform today.
+During my post-doctoral fellowship, I developed a novel computational approach to better define the preferred gene targets of HIV-1 integration. This work resulted in the identification of previously un/under-appreciated target genes with implications for viral persistence. I additionally developed and optimized protein expression and purification protocols for challening protein targets -- namely intrinsically disordered proteins with a propensity to undergo phase separation in solution. This work has resulted in the biochemical and structural characterization of some of these proteins for the first time.
 
 **Graduate student** - University of Alabama at Birmingham.
 
-As a graduate student, I was interested in understanding and exploiting the architecture of the bacteriophage P22. I exploited architectural features of the viral capsid to direct the synthesis of photocatalytic materials within the capsid interior, effectively solubilizing the otherwise insoluble material. I additionally worked to better define the packaging mechanism of dsDNA viruses.
+As a graduate student, I was interested in understanding and exploiting the architecture of the bacteriophage P22. I utilized the architectural features of the viral capsid to direct the synthesis of photocatalytic materials within the capsid interior, effectively solubilizing the otherwise insoluble material. I additionally worked to better define the packaging mechanism of dsDNA viruses.
 
 
 ## <i class="fas fa-chart-bar"></i> Programming and statistics
 
 **Languages**: R (primary), Python, and Bash.
 
-**Computing tools and technologies**: bash scripting, HPC clusters (SLURM and Grid Engine), git and GitHub, tidy data, knitr/Rmarkdown/quarto, VS Code, LaTeX, SageMath, conda.
+**Computing tools and technologies**: bash scripting, git and GitHub, tidy data, knitr/Rmarkdown/quarto, VS Code, LaTeX, conda, HPC clusters (SLURM and Grid Engine).
 
 **Software**: 
-  - <u>Bioconductor</u>: GenomicRanges, Biostrings, rtracklayer, BSgenome, SummarizedExperiment, GenomicAlignments, bamsignals, edgeR, limma, and many more. 
-  - <u>Misc. bioinformatics software</u>: FastQC, bedtools, samtools, Biopython, pysam, BWA, Bowtie2, MMSeqs2, FoldSeek, and more. 
-  - <u>Data science and machine learning</u>: Tidyverse, tidymodels, DuckDB, data.table, caret, FAISS, similarity search algorithms (LSH, MinHash, k-NN, etc.), cluster analysis (k-means clustering, hierarchical clustering, DBSCAN, etc.), graph algorithms (DFS, BFS), hidden Markov models, and more.
-  - <u>Hydrodynamic modeling</u>: hullrad, HYDROPRO.
-  - <u>Structure prediction</u>: AlphaFold/ColabFold, ESMFold, Boltz-1, AlphaFold-Metainference
-
-**Statistics**: nonlinear least squares, generalized linear models, regularized regression, bootstrapping, change point detection, and more.
+  - <u>Bioinformatics</u>: GenomicRanges, bedtools, samtools, cutadapt, Bowtie(2), BWA, STAR, MACS2, epigraHMM, edgeR, limma, AlphaFold, MMseqs2, ESM(-fold), bio-embeddings, etc.
+  - <u>Data science</u>: Tidyverse, NumPy, DuckDB, tidymodels, k-NN, FAISS, DBSCAN, PCA, t-SNE, union-find, HMMs, ggplot2, etc.
+  - <u>Development</u>: Git, SLURM, Grid Engine, VS Code, Quarto
+**Statistics**: GLMs, nonlinear regression, regularization, change point detection, null hypothesis testing, expectation-maximization, etc.
 
 ## <i class="fas fa-code"></i> Software
 
 - [intmap](https://github.com/gbedwell/intmap): An end-to-end pipeline for mapping genomic integration site positions from NGS data.
 
 - [xInt](https://github.com/gbedwell/xInt): An R/Bioconductor package to analyze integration site data post-mapping. Incoporates a wide variety of functionalities intended to provide users with a comprehensive toolkit for rigorously assessing integration site targeting trends/biases.
-
-- [calibrateR](https://github.com/gbedwell/calibrateR): An R package written to streamline common laboratory calculations. A brief description of the package and general usage can be found [here](https://gbedwell.github.io/calibrateR/).
 
 - [nbconv](https://github.com/gbedwell/nbconv): An R package that implements multiple methods for evaluating arbitrary negative binomial convolutions. See [this post](https://gbedwell.github.io/nb-convolutions/) for more information. nbconv can be found on [CRAN](https://cran.r-project.org/web/packages/nbconv/index.html) and [GitHub](https://github.com/gbedwell/nbconv).
 
